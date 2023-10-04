@@ -58,5 +58,4 @@ Per ulteriori dettagli legali sulla licenza, consulta il file LICENSE incluso ne
 
 Buon divertimento e buona codifica!
 
-dfdgd
 ---
