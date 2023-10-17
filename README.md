@@ -7,7 +7,7 @@ Benvenuti nella repository del progetto "Tris", una versione del gioco del tris 
 I principali collaboratori per questo progetto sono:
 
 - Giorgio Citterio
-- Umberto Colombo
+- Umberto Colombo (the best)
 - Andrea Panzeri
 - Marco Passoni
 - Gabriele Viganò
