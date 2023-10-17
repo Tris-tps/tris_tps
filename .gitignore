@@ -1,1 +1,29 @@
+### Visual paradigm files ###
 
+.vpprefdata/
+*.vpp~*
+*.vpp.working
+*.vpp.working-journal
+*.lock
+tmp/*
+*.iml
+.idea/
+target
+.classpath
+.settings
+.project
+.factorypath
+*.log
+.vscode/
+# macOS
+.DS_Store
+
+#Visual Paradigm backup files
+
+*.vpp.vbak
+*.vpp.bak*
+*.vpp.lck
+
+# Runtime generated files
+
+/journalkeeper
