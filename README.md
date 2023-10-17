@@ -8,6 +8,7 @@ I principali collaboratori per questo progetto sono:
 
 - Giorgio Citterio
 - Umberto Colombo
+- Andrea Panzeri
 - Marco Passoni
 - Gabriele Viganò
 
