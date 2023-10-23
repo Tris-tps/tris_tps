@@ -1,34 +1,36 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
-using System.Net.WebSockets;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace WebSocketTrisServer
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        private static void Main(string[] args)
         {
-            TcpListener server = new TcpListener(IPAddress.Parse("127.0.0.1"), 5000);
-            server.Start();
-            Console.WriteLine("Server has started on 127.0.0.1:80.\nWaiting for a connection...");
+            Controller controller = new Controller(new Model());
+            var ipe = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 5000);
+            var listener = new Socket(ipe.AddressFamily,
+                SocketType.Stream,
+                ProtocolType.Tcp);
 
-            TcpClient client = await server.AcceptTcpClientAsync();
-            Console.WriteLine("A client connected.");
+            listener.Bind(ipe);
+            listener.Listen();
 
-            NetworkStream stream = client.GetStream();
+            List<Task> tasks = new List<Task>();
 
-            //enter to an infinite cycle to be able to handle every change in stream
-            while (true)
+            for (int i = 0; i < 3; i++)
             {
-                while (!stream.DataAvailable) ;
+                var socket = listener.Accept();
+                Console.WriteLine("Client connected");
+                var view = new VirtualView(socket);
+                controller.AddView(view);
 
-                byte[] bytes = new byte[client.Available];
-
-                stream.Read(bytes, 0, bytes.Length);
+                tasks.Add(Task.Run(view.Run));
             }
+
+            controller.Start();
+
+            Task.WaitAll(tasks.ToArray());
         }
     }
 }
