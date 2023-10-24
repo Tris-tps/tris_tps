@@ -12,19 +12,17 @@ namespace WebSocketTrisServer
             var listener = new Socket(ipe.AddressFamily,
                 SocketType.Stream,
                 ProtocolType.Tcp);
-
             listener.Bind(ipe);
             listener.Listen();
 
             List<Task> tasks = new List<Task>();
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 1; i++) //i<3
             {
                 var socket = listener.Accept();
                 Console.WriteLine("Client connected");
                 var view = new VirtualView(socket);
                 controller.AddView(view);
-
                 tasks.Add(Task.Run(view.Run));
             }
 

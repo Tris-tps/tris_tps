@@ -9,7 +9,7 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            var ipe = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8080);
+            var ipe = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 5000);
             var socket = new Socket(ipe.AddressFamily,
                 SocketType.Stream,
                 ProtocolType.Tcp);
@@ -23,7 +23,7 @@ namespace Client
 
             while (true)
             {
-                var msg = JsonSerializer.Deserialize<WebSocketTrisServer.Message>(reader.ReadLine());
+                var msg = JsonSerializer.Deserialize<Message>(reader.ReadLine());
 
                 switch (msg.MessageCode)
                 {

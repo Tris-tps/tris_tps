@@ -38,7 +38,6 @@ namespace WebSocketTrisServer
             }
         }
 
-
         public void SendMessage(Message msg)
         {
             _writer.WriteLine(JsonSerializer.Serialize(msg));

@@ -28,7 +28,6 @@ namespace WebSocketTrisServer
 
         public void Start()
         {
-
             foreach (var v in _views)
             {
                 v.SendMessage(new Message { MessageCode = Message.Code.StartGame });
