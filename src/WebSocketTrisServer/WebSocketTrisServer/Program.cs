@@ -43,10 +43,12 @@ namespace WebSocketTrisServer
             //    Task.WaitAll(tasks.ToArray());
 
             WebSocketServer server = new WebSocketServer("ws://127.0.0.1:5000");
+
             server.AddWebSocketService("/", () => //inizializer del server, inserisce i servizi
             {
                 return new Echo();
             });
+
             Console.WriteLine("server");
             server.Start();
             while (true) { };
