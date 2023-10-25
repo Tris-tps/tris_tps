@@ -17,13 +17,18 @@ namespace Client
             WebSocket client = new WebSocket("ws://127.0.0.1:5000");
             client.Connect();
             client.OnMessage += Message;
-            client.Send("ciao 5iB");
+            client.Send("5");
             while (true) { };
         }
 
         static void Message(object? obj, MessageEventArgs e)
         {
-
+            Console.WriteLine(e.Data);
         }
+
+        //static void Open(object? obj, EventArgs e) 
+        //{
+        //    Console.WriteLine(e.ToString());
+        //}
     }
 }
