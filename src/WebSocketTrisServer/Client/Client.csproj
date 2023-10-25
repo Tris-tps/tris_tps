@@ -7,6 +7,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="WebSocketSharp-NonPreRelease" Version="1.0.0" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<ProjectReference Include="..\WebSocketTrisServer\WebSocketTrisServer.csproj" />
 	</ItemGroup>

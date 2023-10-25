@@ -2,6 +2,10 @@
 using System.Net;
 using System.Text.Json;
 using WebSocketTrisServer;
+using System.IO;
+using System;
+using WebSocketSharp;
+using System.Linq.Expressions;
 
 namespace Client
 {
@@ -9,31 +13,17 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            var ipe = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 5000);
-            var socket = new Socket(ipe.AddressFamily,
-                SocketType.Stream,
-                ProtocolType.Tcp);
+            Console.WriteLine("client");
+            WebSocket client = new WebSocket("ws://127.0.0.1:5000");
+            client.Connect();
+            client.OnMessage += Message;
+            client.Send("ciao 5iB");
+            while (true) { };
+        }
 
-            socket.Connect(ipe);
+        static void Message(object? obj, MessageEventArgs e)
+        {
 
-            var reader = new StreamReader(new NetworkStream(socket));
-            var writer = new StreamWriter(new NetworkStream(socket));
-            writer.AutoFlush = true;
-
-
-            while (true)
-            {
-                var msg = JsonSerializer.Deserialize<Message>(reader.ReadLine());
-
-                switch (msg.MessageCode)
-                {
-                    case Message.Code.StartGame:
-                        {
-                            Console.WriteLine($"La partita è iniziata");
-                            break;
-                        }
-                }
-            }
         }
     }
 }
