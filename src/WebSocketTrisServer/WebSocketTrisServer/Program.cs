@@ -32,6 +32,7 @@ namespace WebSocketTrisServer
     {
         public static List<string> ConnectedClientIDs = ConnectedClientIDs = new();
         public static WebSocketServer server;
+        public static WebSocketServiceHost serviceHost;
         private static char[] board = new char[9] {'#', '#', '#', '#', '#', '#', '#', '#', '#'};
         private static bool isPlayer1Turn = true;
         private static string currentPlayerID = "";
@@ -50,21 +51,22 @@ namespace WebSocketTrisServer
             });
             Console.WriteLine("server");
             server.Start();
-            var serviceHost = server.WebSocketServices["/"];
-            while (ConnectedClientIDs.Count < 1) 
+            
+            serviceHost = server.WebSocketServices["/"];
+            while (ConnectedClientIDs.Count < 2) 
             {
                 Console.WriteLine("In attesa del client");
                 Thread.Sleep(100);
             }
             currentPlayerID = ConnectedClientIDs[0];
             //aspetto che almeno due client (1 per prova) si connettanno
-            serviceHost.Sessions.SendTo(currentPlayerID, currentPlayerID); //invio il messaggio che contiene l'id del client al client
-            serviceHost.Sessions.SendTo("La partita è iniziata", currentPlayerID); //invio il messaggio di inizio partita ai client
+            serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[0]); //invio il messaggio di inizio partita ai client
+            serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[1]); //invio il messaggio di inizio partita ai client
             //caso ipotetico dove inizia il client ConnectedClientIDs[0]
             Thread.Sleep(100);
-            serviceHost.Sessions.SendTo(BoardConvert(), currentPlayerID);
+            Print();
             Thread.Sleep(100);
-            serviceHost.Sessions.SendTo("+", currentPlayerID); //mando al client il "segnale", il quale specifica che è il suo turno, vedere nel client l'if del "+"
+            RichiediMossa(currentPlayerID);
         }
 
         public static string BoardConvert()
@@ -75,6 +77,17 @@ namespace WebSocketTrisServer
                 tabella += board[i];
             }
             return tabella;
+        }
+
+        public static void Print()
+        {
+            serviceHost.Sessions.SendTo(BoardConvert(), currentPlayerID);
+        }
+
+        public static void RichiediMossa(string id)
+        {
+            serviceHost.Sessions.SendTo("é il tuo turno, digita la tua mossa!", id);
+            serviceHost.Sessions.SendTo("+", id); //mando al client il "segnale", il quale specifica che è il suo turno, vedere nel client l'if del "+"
         }
 
         public static void MessageHandler(string ID, object message)
@@ -98,23 +111,25 @@ namespace WebSocketTrisServer
                         board[indexOfCell] = 'O';
 
                     // Passa il turno all'altro giocatore
+                    Console.WriteLine("Il player ha fatto la mossa");
                     isPlayer1Turn = !isPlayer1Turn;
                     currentPlayerID = isPlayer1Turn ? ConnectedClientIDs[0] : ConnectedClientIDs[1];
-
-                    for (int i = 0; i < board.Length; i++)
-                    {
-                        Console.Write("a" + board[i] + "\t");
-                    }
+                    Print();
+                    RichiediMossa(currentPlayerID);
                 }
                 else
                 {
                     Console.WriteLine("La cella è già occupata.");
-                    
+                    serviceHost.Sessions.SendTo("La cella è già occupata", ID);
+                    RichiediMossa(currentPlayerID);
+
                 }
             }
             else
             {
                 Console.WriteLine("Mossa non valida.");
+                serviceHost.Sessions.SendTo("Mossa non valida.", ID);
+                RichiediMossa(currentPlayerID); //ID
             }
 
             /*

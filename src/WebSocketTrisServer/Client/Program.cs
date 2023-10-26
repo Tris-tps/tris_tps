@@ -17,7 +17,6 @@ namespace Client
 
         public static void Mossa()
         {
-            Console.WriteLine("fai la tua mossa, guarda bene la tabella per la mossa migliore, digita il numero da 1 a 9 per mettere la tua mossa");
             var mossa = Console.ReadLine();
             client.Send(mossa);
         }
@@ -25,9 +24,7 @@ namespace Client
         public static void StampaBoard(string boardString)
         {
             List<string> board = new List<string>();
-            
-            Console.WriteLine("arrivato");
-            
+                       
             for (int i = 0; i < boardString.Length; i++)
             {
                 board.Add(boardString[i].ToString());
@@ -55,8 +52,9 @@ namespace Client
                 while (true) { }
             });
             threadWhileTrue.Start();
-            Console.WriteLine("client");
+            Console.WriteLine("client_1");
             client = new WebSocket("ws://127.0.0.1:5000");
+            Thread.Sleep(100);
             client.Connect();
             client.OnMessage += Message;
             
