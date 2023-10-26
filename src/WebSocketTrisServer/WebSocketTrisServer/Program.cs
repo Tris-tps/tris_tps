@@ -31,7 +31,7 @@ namespace WebSocketTrisServer
     public class Program
     {
         public static List<string> ConnectedClientIDs = ConnectedClientIDs = new();
-        private static char[] board = new char[9] { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
+        private static char[] board = new char[9] {'#', '#', '#', '#', '#', '#', '#', '#', '#'};
         private static bool isPlayer1Turn = true;
         private static string currentPlayerID = "";
         private static void Main(string[] args)
@@ -53,12 +53,26 @@ namespace WebSocketTrisServer
             {
                 Console.WriteLine("In attesa del client");
                 Thread.Sleep(100);
-            } //aspetto che almeno due client (1 per prova) si connettanno
-            serviceHost.Sessions.SendTo(ConnectedClientIDs[0], ConnectedClientIDs[0]); //invio il messaggio che contiene l'id del client al client
-            serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[0]); //invio il messaggio di inizio partita ai client
+            }
             currentPlayerID = ConnectedClientIDs[0];
+            //aspetto che almeno due client (1 per prova) si connettanno
+            serviceHost.Sessions.SendTo(currentPlayerID, currentPlayerID); //invio il messaggio che contiene l'id del client al client
+            serviceHost.Sessions.SendTo("La partita è iniziata", currentPlayerID); //invio il messaggio di inizio partita ai client
+            //caso ipotetico dove inizia il client ConnectedClientIDs[0]
+            serviceHost.Sessions.SendTo("Tocca a te", currentPlayerID);
+            serviceHost.Sessions.SendTo(BoardConvert(), currentPlayerID);
         }
         
+        public static string BoardConvert()
+        {
+            string tabella = "*";
+            for (int i = 0; i < board.Count(); i++)
+            {
+                tabella += board[i];
+            }
+            return tabella;
+        }
+
         public static void MessageHandler(string ID, object message)
         {
             if (ID != currentPlayerID)
@@ -72,7 +86,7 @@ namespace WebSocketTrisServer
             {
                 indexOfCell--; // Adatto l'indice della cella alla rappresentazione (0-8)
 
-                if (board[indexOfCell] == ' ')
+                if (board[indexOfCell] == '#')
                 {
                     if (ConnectedClientIDs[0].Equals(ID))
                         board[indexOfCell] = 'X';
