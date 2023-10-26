@@ -31,9 +31,11 @@ namespace WebSocketTrisServer
     public class Program
     {
         public static List<string> ConnectedClientIDs = ConnectedClientIDs = new();
+        public static WebSocketServer server;
         private static char[] board = new char[9] {'#', '#', '#', '#', '#', '#', '#', '#', '#'};
         private static bool isPlayer1Turn = true;
         private static string currentPlayerID = "";
+
         private static void Main(string[] args)
         {
             Thread threadWhileTrue = new Thread(() =>
@@ -41,7 +43,7 @@ namespace WebSocketTrisServer
                 while (true) { }
             });
             threadWhileTrue.Start();
-            WebSocketServer server = new WebSocketServer("ws://127.0.0.1:5000");
+            server = new WebSocketServer("ws://127.0.0.1:5000");
             server.AddWebSocketService("/", () => //inizializer del server, inserisce i servizi
             {
                 return new Echo();
@@ -59,10 +61,12 @@ namespace WebSocketTrisServer
             serviceHost.Sessions.SendTo(currentPlayerID, currentPlayerID); //invio il messaggio che contiene l'id del client al client
             serviceHost.Sessions.SendTo("La partita è iniziata", currentPlayerID); //invio il messaggio di inizio partita ai client
             //caso ipotetico dove inizia il client ConnectedClientIDs[0]
-            serviceHost.Sessions.SendTo("Tocca a te", currentPlayerID);
+            Thread.Sleep(100);
             serviceHost.Sessions.SendTo(BoardConvert(), currentPlayerID);
+            Thread.Sleep(100);
+            serviceHost.Sessions.SendTo("+", currentPlayerID); //mando al client il "segnale", il quale specifica che è il suo turno, vedere nel client l'if del "+"
         }
-        
+
         public static string BoardConvert()
         {
             string tabella = "*";
@@ -105,6 +109,7 @@ namespace WebSocketTrisServer
                 else
                 {
                     Console.WriteLine("La cella è già occupata.");
+                    
                 }
             }
             else

@@ -13,11 +13,19 @@ namespace Client
     {
         private static string myCurrentID = "";
         private static List<string> board = new List<string>();
+        public static WebSocket client;
+
+        public static void Mossa()
+        {
+            Console.WriteLine("fai la tua mossa, guarda bene la tabella per la mossa migliore, digita il numero da 1 a 9 per mettere la tua mossa");
+            var mossa = Console.ReadLine();
+            client.Send(mossa);
+        }
 
         public static void StampaBoard(string boardString)
         {
             List<string> board = new List<string>();
-
+            
             Console.WriteLine("arrivato");
             
             for (int i = 0; i < boardString.Length; i++)
@@ -48,10 +56,10 @@ namespace Client
             });
             threadWhileTrue.Start();
             Console.WriteLine("client");
-            WebSocket client = new WebSocket("ws://127.0.0.1:5000");
+            client = new WebSocket("ws://127.0.0.1:5000");
             client.Connect();
             client.OnMessage += Message;
-
+            
             #region while true
             //while (true) 
             //{
@@ -68,16 +76,19 @@ namespace Client
         static void Message(object? obj, MessageEventArgs e)
         {
             var dato = e.Data;
-            if (!(dato[0] == '*')) //il '*' è utilizzato per identificare che il dato sia la board
+            if (!(dato[0] == '*') && !(dato == "+")) //il '*' è utilizzato per identificare che il dato sia la board
             {
                 Console.WriteLine(dato);
+            }
+            else if (dato == "+")
+            {
+                Mossa();
             }
             else
             {
                 StampaBoard(dato);
             }
         }
-
         //static void Open(object? obj, EventArgs e) 
         //{
         //    Console.WriteLine(e.ToString());
