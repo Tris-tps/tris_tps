@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Numerics;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 
@@ -31,6 +32,7 @@ namespace WebSocketTrisServer
     public class Program
     {
         public static List<string> ConnectedClientIDs = ConnectedClientIDs = new();
+        public static bool winBool = false;
         public static WebSocketServer server;
         public static WebSocketServiceHost serviceHost;
         private static char[] board = new char[9] {'#', '#', '#', '#', '#', '#', '#', '#', '#'};
@@ -90,6 +92,36 @@ namespace WebSocketTrisServer
             serviceHost.Sessions.SendTo("+", id); //mando al client il "segnale", il quale specifica che è il suo turno, vedere nel client l'if del "+"
         }
 
+        public static void Win(string winPlayer)
+        {
+            Console.WriteLine("hai vinto");
+        }
+
+        public static bool CheckWin()
+        {
+            int[][] winningCombinations = new int[][]
+            {
+            new int[] {0, 1, 2}, // Righe
+            new int[] {3, 4, 5},
+            new int[] {6, 7, 8},
+            new int[] {0, 3, 6}, // Colonne
+            new int[] {1, 4, 7},
+            new int[] {2, 5, 8},
+            new int[] {0, 4, 8}, // Diagonali
+            new int[] {2, 4, 6}
+            };
+
+            foreach (var combination in winningCombinations)
+            {
+                if (combination.All(index => board[index] == 'X') || combination.All(index => board[index] == 'O'))
+                {
+                    Win(); //TODO: win error 
+                    return true; // Abbiamo una combinazione vincente
+                }
+            }
+            return false;
+        }
+
         public static void MessageHandler(string ID, object message)
         {
             if (ID != currentPlayerID)
@@ -114,7 +146,12 @@ namespace WebSocketTrisServer
                     Console.WriteLine("Il player ha fatto la mossa");
                     isPlayer1Turn = !isPlayer1Turn;
                     currentPlayerID = isPlayer1Turn ? ConnectedClientIDs[0] : ConnectedClientIDs[1];
+                    CheckWin();
                     Print();
+                    if (winBool)
+                    {
+                        return;
+                    }
                     RichiediMossa(currentPlayerID);
                 }
                 else
