@@ -30,8 +30,10 @@ namespace WebSocketTrisServer
 
     public class Program
     {
-        public static List<string>? ConnectedClientIDs = ConnectedClientIDs = new();
+        public static List<string> ConnectedClientIDs = ConnectedClientIDs = new();
         private static char[] board = new char[9] { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
+        private static bool isPlayer1Turn = true;
+        private static string currentPlayerID = "";
         private static void Main(string[] args)
         {
             Thread threadWhileTrue = new Thread(() =>
@@ -47,11 +49,56 @@ namespace WebSocketTrisServer
             Console.WriteLine("server");
             server.Start();
             var serviceHost = server.WebSocketServices["/"];
-            //serviceHost.Sessions.SendTo("ciao", ConnectedClientIDs[0]);
+            while (ConnectedClientIDs.Count < 1) 
+            {
+                Console.WriteLine("In attesa del client");
+                Thread.Sleep(100);
+            } //aspetto che almeno due client (1 per prova) si connettanno
+            serviceHost.Sessions.SendTo(ConnectedClientIDs[0], ConnectedClientIDs[0]); //invio il messaggio che contiene l'id del client al client
+            serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[0]); //invio il messaggio di inizio partita ai client
+            currentPlayerID = ConnectedClientIDs[0];
         }
         
         public static void MessageHandler(string ID, object message)
         {
+            if (ID != currentPlayerID)
+            {
+                Console.WriteLine($"Non è il tuo turno, giocatore {ID}");
+                return;
+            }
+
+            int indexOfCell;
+            if (int.TryParse((string)message, out indexOfCell) && indexOfCell >= 1 && indexOfCell <= 9)
+            {
+                indexOfCell--; // Adatto l'indice della cella alla rappresentazione (0-8)
+
+                if (board[indexOfCell] == ' ')
+                {
+                    if (ConnectedClientIDs[0].Equals(ID))
+                        board[indexOfCell] = 'X';
+                    else if (ConnectedClientIDs[1].Equals(ID))
+                        board[indexOfCell] = 'O';
+
+                    // Passa il turno all'altro giocatore
+                    isPlayer1Turn = !isPlayer1Turn;
+                    currentPlayerID = isPlayer1Turn ? ConnectedClientIDs[0] : ConnectedClientIDs[1];
+
+                    for (int i = 0; i < board.Length; i++)
+                    {
+                        Console.Write("a" + board[i] + "\t");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("La cella è già occupata.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Mossa non valida.");
+            }
+
+            /*
             int indexOfCell = int.Parse((string)message);
             indexOfCell -= 1;
             Console.WriteLine($"Il client {ID} ha inviato {(string)message}");
@@ -62,10 +109,15 @@ namespace WebSocketTrisServer
                 else if (ConnectedClientIDs[1].Equals(ID))
                     board[indexOfCell] = 'O';
             }
+            else
+            {
+                //TODO: il server invia messaggio di errore la cella è già piena
+            }
             for (int i = 0; i < board.Length; i++)
             {
                 Console.Write("a" + board[i] + "\t");
             }
+            */
         }
     }
 }

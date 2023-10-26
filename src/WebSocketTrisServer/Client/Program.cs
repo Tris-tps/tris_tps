@@ -11,14 +11,22 @@ namespace Client
 {
     public class Program
     {
+        private static string myCurrentID = "";
         static void Main(string[] args)
         {
             Console.WriteLine("client");
             WebSocket client = new WebSocket("ws://127.0.0.1:5000");
             client.Connect();
             client.OnMessage += Message;
-            client.Send("5");
-            while (true) { };
+            while (true) 
+            {
+                //if (currentPlayerID == "YourClientID") // Sostituisci "YourClientID" con l'ID del tuo client
+                //{
+                //    Console.Write("Inserisci la tua mossa (1-9): ");
+                //    string move = Console.ReadLine();
+                //    client.Send(move);
+                //}
+            };
         }
 
         static void Message(object? obj, MessageEventArgs e)
