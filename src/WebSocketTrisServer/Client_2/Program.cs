@@ -6,21 +6,21 @@ using System.IO;
 using System;
 using WebSocketSharp;
 using System.Linq.Expressions;
-namespace Client_2;
 
+namespace Client_2;
 public class Program
 {
     private static string myCurrentID = "";
     private static List<string> board = new List<string>();
     public static WebSocket client;
 
-    public static void Mossa()
+    public static void MakeMove()
     {
-        var mossa = Console.ReadLine();
-        client.Send(mossa);
+        var move = Console.ReadLine();
+        client.Send(move);
     }
 
-    public static void StampaBoard(string boardString)
+    public static void PrintBoard(string boardString)
     {
         List<string> board = new List<string>();
 
@@ -53,41 +53,25 @@ public class Program
         threadWhileTrue.Start();
         Console.WriteLine("client_2");
         client = new WebSocket("ws://127.0.0.1:5000");
-        Thread.Sleep(500);
+        Thread.Sleep(100);
         client.Connect();
         client.OnMessage += Message;
-
-        #region while true
-        //while (true) 
-        //{
-        //    //if (currentPlayerID == "YourClientID") // Sostituisci "YourClientID" con l'ID del tuo client
-        //    //{
-        //    //    Console.Write("Inserisci la tua mossa (1-9): ");
-        //    //    string move = Console.ReadLine();
-        //    //    client.Send(move);
-        //    //}
-        //};
-        #endregion
     }
 
     static void Message(object? obj, MessageEventArgs e)
     {
-        var dato = e.Data;
-        if (!(dato[0] == '*') && !(dato == "+")) //il '*' è utilizzato per identificare che il dato sia la board
+        var data = e.Data;
+        if (!(data[0] == '*') && !(data == "+")) //il '*' è utilizzato per identificare che il dato sia la board
         {
-            Console.WriteLine(dato);
+            Console.WriteLine(data);
         }
-        else if (dato == "+")
+        else if (data == "+")
         {
-            Mossa();
+            MakeMove();
         }
         else
         {
-            StampaBoard(dato);
+            PrintBoard(data);
         }
     }
-    //static void Open(object? obj, EventArgs e) 
-    //{
-    //    Console.WriteLine(e.ToString());
-    //}
 }

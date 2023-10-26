@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Numerics;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 
@@ -32,7 +31,7 @@ namespace WebSocketTrisServer
     public class Program
     {
         public static List<string> ConnectedClientIDs = ConnectedClientIDs = new();
-        public static bool winBool = false;
+        public static bool _winBool = false;
         public static WebSocketServer server;
         public static WebSocketServiceHost serviceHost;
         private static char[] board = new char[9] {'#', '#', '#', '#', '#', '#', '#', '#', '#'};
@@ -55,30 +54,30 @@ namespace WebSocketTrisServer
             server.Start();
             
             serviceHost = server.WebSocketServices["/"];
-            while (ConnectedClientIDs.Count < 2) 
+            while (ConnectedClientIDs.Count < 2) //aspetto che i 2 client si connettanno
             {
                 Console.WriteLine("In attesa del client");
-                Thread.Sleep(100);
+                Thread.Sleep(200);
             }
             currentPlayerID = ConnectedClientIDs[0];
-            //aspetto che almeno due client (1 per prova) si connettanno
-            serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[0]); //invio il messaggio di inizio partita ai client
-            serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[1]); //invio il messaggio di inizio partita ai client
+            //invio il messaggio di inizio partita ai client
+            serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[0]); 
+            serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[1]);
             //caso ipotetico dove inizia il client ConnectedClientIDs[0]
             Thread.Sleep(100);
             Print();
             Thread.Sleep(100);
-            RichiediMossa(currentPlayerID);
+            RequestMove(currentPlayerID);
         }
 
         public static string BoardConvert()
         {
-            string tabella = "*";
+            string table = "*";
             for (int i = 0; i < board.Count(); i++)
             {
-                tabella += board[i];
+                table += board[i];
             }
-            return tabella;
+            return table;
         }
 
         public static void Print()
@@ -86,14 +85,17 @@ namespace WebSocketTrisServer
             serviceHost.Sessions.SendTo(BoardConvert(), currentPlayerID);
         }
 
-        public static void RichiediMossa(string id)
+        public static void RequestMove(string ID)
         {
-            serviceHost.Sessions.SendTo("é il tuo turno, digita la tua mossa!", id);
-            serviceHost.Sessions.SendTo("+", id); //mando al client il "segnale", il quale specifica che è il suo turno, vedere nel client l'if del "+"
+            serviceHost.Sessions.SendTo("é il tuo turno, digita la tua mossa!", ID);
+            serviceHost.Sessions.SendTo("+", ID); //mando al client il "segnale", il quale specifica che è il suo turno, vedere nel client l'if del "+"
         }
 
-        public static void Win(string winPlayer)
+        public static void SendWinMessages(string winPlayerId, string looserPlayerId)
         {
+            _winBool = true;
+            serviceHost.Sessions.SendTo("Hai vinto!!!", winPlayerId);
+            serviceHost.Sessions.SendTo("Hai perso", looserPlayerId);
             Console.WriteLine("hai vinto");
         }
 
@@ -113,9 +115,14 @@ namespace WebSocketTrisServer
 
             foreach (var combination in winningCombinations)
             {
-                if (combination.All(index => board[index] == 'X') || combination.All(index => board[index] == 'O'))
+                if (combination.All(index => board[index] == 'X'))
                 {
-                    Win(); //TODO: win error 
+                    SendWinMessages(ConnectedClientIDs[0], ConnectedClientIDs[1]); 
+                    return true; // Abbiamo una combinazione vincente
+                }
+                if(combination.All(index => board[index] == 'O'))
+                {
+                    SendWinMessages(ConnectedClientIDs[1], ConnectedClientIDs[0]);
                     return true; // Abbiamo una combinazione vincente
                 }
             }
@@ -148,17 +155,17 @@ namespace WebSocketTrisServer
                     currentPlayerID = isPlayer1Turn ? ConnectedClientIDs[0] : ConnectedClientIDs[1];
                     CheckWin();
                     Print();
-                    if (winBool)
+                    if (_winBool)
                     {
                         return;
                     }
-                    RichiediMossa(currentPlayerID);
+                    RequestMove(currentPlayerID);
                 }
                 else
                 {
                     Console.WriteLine("La cella è già occupata.");
                     serviceHost.Sessions.SendTo("La cella è già occupata", ID);
-                    RichiediMossa(currentPlayerID);
+                    RequestMove(currentPlayerID);
 
                 }
             }
@@ -166,29 +173,8 @@ namespace WebSocketTrisServer
             {
                 Console.WriteLine("Mossa non valida.");
                 serviceHost.Sessions.SendTo("Mossa non valida.", ID);
-                RichiediMossa(currentPlayerID); //ID
+                RequestMove(currentPlayerID);
             }
-
-            /*
-            int indexOfCell = int.Parse((string)message);
-            indexOfCell -= 1;
-            Console.WriteLine($"Il client {ID} ha inviato {(string)message}");
-            if (board[indexOfCell] == ' ')
-            {
-                if (ConnectedClientIDs[0].Equals(ID))
-                    board[indexOfCell] = 'X';
-                else if (ConnectedClientIDs[1].Equals(ID))
-                    board[indexOfCell] = 'O';
-            }
-            else
-            {
-                //TODO: il server invia messaggio di errore la cella è già piena
-            }
-            for (int i = 0; i < board.Length; i++)
-            {
-                Console.Write("a" + board[i] + "\t");
-            }
-            */
         }
     }
 }

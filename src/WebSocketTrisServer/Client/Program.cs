@@ -7,89 +7,71 @@ using System;
 using WebSocketSharp;
 using System.Linq.Expressions;
 
-namespace Client
+namespace Client;
+public class Program
 {
-    public class Program
+    private static string myCurrentID = "";
+    private static List<string> board = new List<string>();
+    public static WebSocket client;
+
+    public static void MakeMove()
     {
-        private static string myCurrentID = "";
-        private static List<string> board = new List<string>();
-        public static WebSocket client;
+        var move = Console.ReadLine();
+        client.Send(move);
+    }
 
-        public static void Mossa()
-        {
-            var mossa = Console.ReadLine();
-            client.Send(mossa);
-        }
+    public static void PrintBoard(string boardString)
+    {
+        List<string> board = new List<string>();
 
-        public static void StampaBoard(string boardString)
+        for (int i = 0; i < boardString.Length; i++)
         {
-            List<string> board = new List<string>();
-                       
-            for (int i = 0; i < boardString.Length; i++)
+            board.Add(boardString[i].ToString());
+            if (i == 0)
             {
-                board.Add(boardString[i].ToString());
-                if (i == 0)
-                {
-                    var temp = board[i].Split('*');
-                    board[i] = temp[1];
-                }
-                if (i > 0 && i % 3 == 0)
-                {
-                    board[i] += "\n";
-                }
+                var temp = board[i].Split('*');
+                board[i] = temp[1];
             }
-
-            for (int i = 0; i < board.Count; i++)
+            if (i > 0 && i % 3 == 0)
             {
-                Console.Write(board[i]);
+                board[i] += "\n";
             }
         }
 
-        static void Main(string[] args)
+        for (int i = 0; i < board.Count; i++)
         {
-            Thread threadWhileTrue = new Thread(() =>
-            {
-                while (true) { }
-            });
-            threadWhileTrue.Start();
-            Console.WriteLine("client_1");
-            client = new WebSocket("ws://127.0.0.1:5000");
-            Thread.Sleep(100);
-            client.Connect();
-            client.OnMessage += Message;
-            
-            #region while true
-            //while (true) 
-            //{
-            //    //if (currentPlayerID == "YourClientID") // Sostituisci "YourClientID" con l'ID del tuo client
-            //    //{
-            //    //    Console.Write("Inserisci la tua mossa (1-9): ");
-            //    //    string move = Console.ReadLine();
-            //    //    client.Send(move);
-            //    //}
-            //};
-            #endregion
+            Console.Write(board[i]);
         }
+    }
 
-        static void Message(object? obj, MessageEventArgs e)
+    static void Main(string[] args)
+    {
+        Thread threadWhileTrue = new Thread(() =>
         {
-            var dato = e.Data;
-            if (!(dato[0] == '*') && !(dato == "+")) //il '*' è utilizzato per identificare che il dato sia la board
-            {
-                Console.WriteLine(dato);
-            }
-            else if (dato == "+")
-            {
-                Mossa();
-            }
-            else
-            {
-                StampaBoard(dato);
-            }
+            while (true) { }
+        });
+        threadWhileTrue.Start();
+        Console.WriteLine("client_1");
+        client = new WebSocket("ws://127.0.0.1:5000");
+        Thread.Sleep(100);
+        client.Connect();
+        client.OnMessage += Message;
+    }
+
+    static void Message(object? obj, MessageEventArgs e)
+    {
+        var data = e.Data;
+        if (!(data[0] == '*') && !(data == "+")) //il '*' è utilizzato per identificare che il dato sia la board
+        {
+            Console.WriteLine(data);
         }
-        //static void Open(object? obj, EventArgs e) 
-        //{
-        //    Console.WriteLine(e.ToString());
-        //}
+        else if (data == "+")
+        {
+            MakeMove();
+        }
+        else
+        {
+            PrintBoard(data);
+        }
     }
 }
