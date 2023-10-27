@@ -25,7 +25,7 @@ namespace WebSocketTrisServer
                 return false; // L'utente esiste già
             }
 
-            var user = new User { Username = username, Password = password };
+            var user = new User { Username = username };
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
             return true; // Registrazione avvenuta con successo
@@ -33,7 +33,7 @@ namespace WebSocketTrisServer
 
         public bool AuthenticateUser(string username, string password)
         {
-            return _dbContext.Users.Any(u => u.Username == username && u.Password == password);
+            return _dbContext.Users.Any(u => u.Username == username );
         }
     }
 }
