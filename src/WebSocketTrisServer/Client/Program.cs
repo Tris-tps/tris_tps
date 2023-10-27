@@ -20,6 +20,17 @@ public class Program
         client.Send(move);
     }
 
+    public static void ChooseMode(string message)
+    {
+        Console.WriteLine(message);
+        var mode = Console.ReadLine();
+        if (mode!="a"&& mode != "b")
+        {
+            ChooseMode(message);
+        }
+        client.Send(mode);
+    }
+
     public static void PrintBoard(string boardString)
     {
         List<string> board = new List<string>();
@@ -68,6 +79,9 @@ public class Program
         else if (data == "+")
         {
             MakeMove();
+        } else if (data[0] == '?')
+        {
+            ChooseMode(data.Split('?')[1]);
         }
         else
         {

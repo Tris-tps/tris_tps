@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using WebSocketSharp;
@@ -66,21 +67,29 @@ namespace WebSocketTrisServer
             server.Start();
             
             serviceHost = server.WebSocketServices["/"];
+            while (ConnectedClientIDs.Count < 1)
+            {
+                Console.WriteLine("In attesa che i client si connettano...");
+                Thread.Sleep(200);
+            }
+
+            currentPlayerID = ConnectedClientIDs[0];
+            serviceHost.Sessions.SendTo("?vuoi giocare con il bot o con un'altra persona? \n a) bot \n b) persona", currentPlayerID);
+            
             while (ConnectedClientIDs.Count < 2)
             {
                 Console.WriteLine("In attesa che i client si connettano...");
                 Thread.Sleep(200);
             }
-            while(!AuthenticatedClients.ContainsKey(ConnectedClientIDs[0])
-                || !AuthenticatedClients.ContainsKey(ConnectedClientIDs[1])
-                || !(AuthenticatedClients[ConnectedClientIDs[0]] && AuthenticatedClients[ConnectedClientIDs[1]])) //TODO: qui controlla gli id in realtà dovrebbe controllare gli username
-            {
-                Console.WriteLine("In attesa che i client facciano il login");
-                RequestLogin(ConnectedClientIDs[0]);
-                RequestLogin(ConnectedClientIDs[1]);
-            }
-          
-            currentPlayerID = ConnectedClientIDs[0];
+
+            //while(!AuthenticatedClients.ContainsKey(ConnectedClientIDs[0])
+            //    || !AuthenticatedClients.ContainsKey(ConnectedClientIDs[1])
+            //    || !(AuthenticatedClients[ConnectedClientIDs[0]] && AuthenticatedClients[ConnectedClientIDs[1]])) //TODO: qui controlla gli id in realtà dovrebbe controllare gli username
+            //{
+            //    Console.WriteLine("In attesa che i client facciano il login");
+            //    RequestLogin(ConnectedClientIDs[0]);
+            //    RequestLogin(ConnectedClientIDs[1]);
+            //}
             
             //invio il messaggio di inizio partita ai client
             serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[0]); 
@@ -139,51 +148,78 @@ namespace WebSocketTrisServer
             return false;
         }
 
+        public static void Game(int indexOfCell, string ID)
+        {
+            if (board[indexOfCell] == '#')
+            {
+                if (ConnectedClientIDs[0].Equals(ID))
+                    board[indexOfCell] = 'X';
+                else if (ConnectedClientIDs[1].Equals(ID))
+                    board[indexOfCell] = 'O';
+
+                // Passa il turno all'altro giocatore
+                Console.WriteLine("Il player ha fatto la mossa");
+                isPlayer1Turn = !isPlayer1Turn;
+                currentPlayerID = isPlayer1Turn ? ConnectedClientIDs[0] : ConnectedClientIDs[1];
+                CheckWin();
+                Print();
+                if (_winBool)
+                {
+                    return;
+                }
+                RequestMove(currentPlayerID);
+            }
+            else
+            {
+                Console.WriteLine("La cella è già occupata.");
+                serviceHost.Sessions.SendTo("La cella è già occupata", ID);
+                RequestMove(currentPlayerID);
+            }
+        }
+
+        public static void PlayWithBot()
+        {
+            //non deve attendere il secondo client
+
+        }
+        public static void PlayWithClient2()
+        {
+            //deve attendere il secondo client
+
+        }
         public static void MessageHandler(string ID, object message)
         {
+            int indexOfCell;
             if (ID != currentPlayerID)
             {
                 Console.WriteLine($"Non è il tuo turno, giocatore {ID}");
                 return;
             }
 
-            int indexOfCell;
-            if (int.TryParse((string)message, out indexOfCell) && indexOfCell >= 1 && indexOfCell <= 9)
+            if ((int.TryParse((string)message, out indexOfCell) && indexOfCell >= 1 && indexOfCell <= 9))
             {
                 indexOfCell--; // Adatto l'indice della cella alla rappresentazione (0-8)
-
-                if (board[indexOfCell] == '#')
-                {
-                    if (ConnectedClientIDs[0].Equals(ID))
-                        board[indexOfCell] = 'X';
-                    else if (ConnectedClientIDs[1].Equals(ID))
-                        board[indexOfCell] = 'O';
-
-                    // Passa il turno all'altro giocatore
-                    Console.WriteLine("Il player ha fatto la mossa");
-                    isPlayer1Turn = !isPlayer1Turn;
-                    currentPlayerID = isPlayer1Turn ? ConnectedClientIDs[0] : ConnectedClientIDs[1];
-                    CheckWin();
-                    Print();
-                    if (_winBool)
-                    {
-                        return;
-                    }
-                    RequestMove(currentPlayerID);
-                }
-                else
-                {
-                    Console.WriteLine("La cella è già occupata.");
-                    serviceHost.Sessions.SendTo("La cella è già occupata", ID);
-                    RequestMove(currentPlayerID);
-
-                }
+                Game(indexOfCell, ID);
             }
             else
             {
                 Console.WriteLine("Mossa non valida.");
                 serviceHost.Sessions.SendTo("Mossa non valida.", ID);
                 RequestMove(currentPlayerID);
+            }
+
+
+            if ((string)message == "a" || (string)message == "b")
+            {
+                if ((string)message == "a")
+                {
+                    //bot 
+
+                } else if ((string)message == "b")
+                {
+                    //client 2
+
+                }
             }
         }
 
