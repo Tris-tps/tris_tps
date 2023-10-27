@@ -10,7 +10,6 @@ using System.Linq.Expressions;
 namespace Client;
 public class Program
 {
-    private static string myCurrentID = "";
     private static List<string> board = new List<string>();
     public static WebSocket client;
 
@@ -34,8 +33,7 @@ public class Program
 
     public static void PrintBoard(string boardString)
     {
-        List<string> board = new List<string>();
-
+        board.Clear();
         for (int i = 0; i < boardString.Length; i++)
         {
             board.Add(boardString[i].ToString());
@@ -56,6 +54,19 @@ public class Program
         }
     }
 
+    private static void LoginManager()
+    {
+        Console.WriteLine("Inserisci 'login:username' per effettuare il login.");
+        Console.WriteLine("Inserisci 'register:username' per registrarti.");
+
+        var login = Console.ReadLine();
+        if (!login.StartsWith("login:") && !login.StartsWith("register:")) 
+        {
+            LoginManager();
+        }
+        client.Send(login);
+    }
+
     static void Main(string[] args)
     {
         Thread threadWhileTrue = new Thread(() =>
@@ -73,7 +84,7 @@ public class Program
     static void Message(object? obj, MessageEventArgs e)
     {
         var data = e.Data;
-        if (!(data[0] == '*') && !(data == "+") && data[0] != '?') //il ' * ' è utilizzato per identificare che il dato sia la board
+        if (!(data[0] == '*') && !(data == "+") && data[0] != '?' && data != "login") //il ' * ' è utilizzato per identificare che il dato sia la board
         {
             Console.WriteLine(data);
         }
@@ -85,6 +96,10 @@ public class Program
         {
             var var = data.Split('?');
             ChooseMode(var[1] + var[2]);
+        }
+        else if (data == "login")
+        {
+            LoginManager();
         }
         else
         {
