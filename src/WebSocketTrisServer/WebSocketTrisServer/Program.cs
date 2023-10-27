@@ -67,20 +67,21 @@ namespace WebSocketTrisServer
             server.Start();
             
             serviceHost = server.WebSocketServices["/"];
+
             while (ConnectedClientIDs.Count < 1)
             {
                 Console.WriteLine("In attesa che i client si connettano...");
-                Thread.Sleep(200);
+                Thread.Sleep(1000);
             }
 
             currentPlayerID = ConnectedClientIDs[0];
             serviceHost.Sessions.SendTo("?vuoi giocare con il bot o con un'altra persona? \n a) bot \n b) persona", currentPlayerID);
             
-            while (ConnectedClientIDs.Count < 2)
-            {
-                Console.WriteLine("In attesa che i client si connettano...");
-                Thread.Sleep(200);
-            }
+            //while (ConnectedClientIDs.Count < 2)
+            //{
+            //    Console.WriteLine("In attesa che i client si connettano...");
+            //    Thread.Sleep(200);
+            //}
 
             //while(!AuthenticatedClients.ContainsKey(ConnectedClientIDs[0])
             //    || !AuthenticatedClients.ContainsKey(ConnectedClientIDs[1])
@@ -90,9 +91,12 @@ namespace WebSocketTrisServer
             //    RequestLogin(ConnectedClientIDs[0]);
             //    RequestLogin(ConnectedClientIDs[1]);
             //}
-            
+        }
+
+        public static void IniziaGioco()
+        {
             //invio il messaggio di inizio partita ai client
-            serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[0]); 
+            serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[0]);
             serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[1]);
             //caso ipotetico dove inizia il client ConnectedClientIDs[0]
             Thread.Sleep(100);
