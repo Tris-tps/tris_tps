@@ -7,7 +7,7 @@ using System;
 using WebSocketSharp;
 using System.Linq.Expressions;
 
-namespace Client;
+namespace Client_2;
 public class Program
 {
     private static string myCurrentID = "";
@@ -51,7 +51,7 @@ public class Program
             while (true) { }
         });
         threadWhileTrue.Start();
-        Console.WriteLine("client_1");
+        Console.WriteLine("client_2");
         client = new WebSocket("ws://127.0.0.1:5000");
         Thread.Sleep(100);
         client.Connect();
