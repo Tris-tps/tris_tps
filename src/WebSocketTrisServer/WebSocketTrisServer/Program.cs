@@ -37,6 +37,18 @@ namespace WebSocketTrisServer
         private static char[] board = new char[9] {'#', '#', '#', '#', '#', '#', '#', '#', '#'};
         private static bool isPlayer1Turn = true;
         private static string currentPlayerID = "";
+        private static readonly int[][] _winningCombinations = new int[][]
+        {
+            new int[] {0, 1, 2}, // Righe
+            new int[] {3, 4, 5},
+            new int[] {6, 7, 8},
+            new int[] {0, 3, 6}, // Colonne
+            new int[] {1, 4, 7},
+            new int[] {2, 5, 8},
+            new int[] {0, 4, 8}, // Diagonali
+            new int[] {2, 4, 6}
+        };
+        private static Login _login = new Login();
 
         private static void Main(string[] args)
         {
@@ -60,6 +72,9 @@ namespace WebSocketTrisServer
                 Thread.Sleep(200);
             }
             currentPlayerID = ConnectedClientIDs[0];
+            RequestLogin(ConnectedClientIDs[0]);
+            RequestLogin(ConnectedClientIDs[1]);
+            
             //invio il messaggio di inizio partita ai client
             serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[0]); 
             serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[1]);
@@ -101,19 +116,7 @@ namespace WebSocketTrisServer
 
         public static bool CheckWin()
         {
-            int[][] winningCombinations = new int[][]
-            {
-            new int[] {0, 1, 2}, // Righe
-            new int[] {3, 4, 5},
-            new int[] {6, 7, 8},
-            new int[] {0, 3, 6}, // Colonne
-            new int[] {1, 4, 7},
-            new int[] {2, 5, 8},
-            new int[] {0, 4, 8}, // Diagonali
-            new int[] {2, 4, 6}
-            };
-
-            foreach (var combination in winningCombinations)
+            foreach (var combination in _winningCombinations)
             {
                 if (combination.All(index => board[index] == 'X'))
                 {
@@ -175,6 +178,14 @@ namespace WebSocketTrisServer
                 serviceHost.Sessions.SendTo("Mossa non valida.", ID);
                 RequestMove(currentPlayerID);
             }
+        }
+
+        private static void RequestLogin(string ID)
+        {
+            // Richiedi login o registrazione
+            serviceHost.Sessions.SendTo("Benvenuto! Effettua il login o registrati.", ID);
+            serviceHost.Sessions.SendTo("Inserisci 'login:username:password' per effettuare il login.", ID);
+            serviceHost.Sessions.SendTo("Inserisci 'register:username:password' per registrarti.", ID);
         }
     }
 }
