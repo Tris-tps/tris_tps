@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSocketTrisServer", "WebS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csproj", "{91E13BB6-E1B1-480B-A2D5-CFA878D245D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSocketServer", "WebSocketServer\WebSocketServer.csproj", "{CDD8E52B-C949-4097-92BA-90F45D7F67E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client_2", "Client_2\Client_2.csproj", "{D3FDC525-41B7-46B0-BAB3-DC9A05D0B981}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{91E13BB6-E1B1-480B-A2D5-CFA878D245D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91E13BB6-E1B1-480B-A2D5-CFA878D245D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91E13BB6-E1B1-480B-A2D5-CFA878D245D5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CDD8E52B-C949-4097-92BA-90F45D7F67E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CDD8E52B-C949-4097-92BA-90F45D7F67E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CDD8E52B-C949-4097-92BA-90F45D7F67E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CDD8E52B-C949-4097-92BA-90F45D7F67E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3FDC525-41B7-46B0-BAB3-DC9A05D0B981}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3FDC525-41B7-46B0-BAB3-DC9A05D0B981}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3FDC525-41B7-46B0-BAB3-DC9A05D0B981}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3FDC525-41B7-46B0-BAB3-DC9A05D0B981}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

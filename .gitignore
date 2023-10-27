@@ -433,3 +433,6 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio
+
+# Users Credentials db
+src/WebSocketTrisServer/WebSocketTrisServer/UsersCredentials.db
