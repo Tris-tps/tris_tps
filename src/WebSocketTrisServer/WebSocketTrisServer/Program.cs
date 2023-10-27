@@ -87,7 +87,7 @@ namespace WebSocketTrisServer
                 Thread.Sleep(2000);
             }
 
-            //serviceHost.Sessions.SendTo("?vuoi giocare con il bot o con un'altra persona? \n a) bot \n b) persona", currentPlayerID);
+            serviceHost.Sessions.SendTo("?vuoi giocare con il bot o con un'altra persona? \n a) bot \n b) persona", currentPlayerID);
 
             while (ConnectedClientIDs.Count < 2)
             {
