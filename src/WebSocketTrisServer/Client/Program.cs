@@ -20,6 +20,19 @@ public class Program
         client.Send(move);
     }
 
+    public static void ChooseMode(string message)
+    {
+        Console.WriteLine("ci siamo?");
+        Console.WriteLine(message);
+        var mode = Console.ReadLine();
+
+        if (mode!="a"&& mode != "b")
+        {
+            ChooseMode(message);
+        }
+        client.Send(mode);
+    }
+
     public static void PrintBoard(string boardString)
     {
         List<string> board = new List<string>();
@@ -61,13 +74,18 @@ public class Program
     static void Message(object? obj, MessageEventArgs e)
     {
         var data = e.Data;
-        if (!(data[0] == '*') && !(data == "+")) //il '*' è utilizzato per identificare che il dato sia la board
+        if (!(data[0] == '*') && !(data == "+") && data[0] != '?') //il ' * ' è utilizzato per identificare che il dato sia la board
         {
             Console.WriteLine(data);
         }
         else if (data == "+")
         {
             MakeMove();
+        } 
+        else if (data[0] == '?')
+        {
+            var var = data.Split('?');
+            ChooseMode(var[1] + var[2]);
         }
         else
         {
