@@ -18,7 +18,7 @@ namespace WebSocketTrisServer
             _dbContext = new LoginDbContext();
         }
 
-        public bool RegisterUser(string username, string password)
+        public bool RegisterUser(string username)
         {
             if (_dbContext.Users.Any(u => u.Username == username))
             {
@@ -31,7 +31,7 @@ namespace WebSocketTrisServer
             return true; // Registrazione avvenuta con successo
         }
 
-        public bool AuthenticateUser(string username, string password)
+        public bool AuthenticateUser(string username)
         {
             return _dbContext.Users.Any(u => u.Username == username );
         }
