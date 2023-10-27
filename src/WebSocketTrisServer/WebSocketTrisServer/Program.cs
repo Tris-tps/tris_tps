@@ -49,7 +49,8 @@ namespace WebSocketTrisServer
             new int[] {2, 4, 6}
         };
         private static Login _login = new Login();
-        public static Dictionary<string, bool> AuthenticatedClients = new Dictionary<string, bool>(); //TODO: aggiusta guarda sotto
+        public static List<string> AuthenticatedClients = new List<string>();
+        private static bool loginIsFinished = false;
 
         private static void Main(string[] args)
         {
@@ -70,27 +71,39 @@ namespace WebSocketTrisServer
 
             while (ConnectedClientIDs.Count < 1)
             {
-                Console.WriteLine("In attesa che i client si connettano...");
+                Console.WriteLine("In attesa che il primo client si connetta...");
                 Thread.Sleep(1000);
             }
 
             currentPlayerID = ConnectedClientIDs[0];
-            serviceHost.Sessions.SendTo("?vuoi giocare con il bot o con un'altra persona? \n a) bot \n b) persona", currentPlayerID);
-            
-            //while (ConnectedClientIDs.Count < 2)
-            //{
-            //    Console.WriteLine("In attesa che i client si connettano...");
-            //    Thread.Sleep(200);
-            //}
 
-            //while(!AuthenticatedClients.ContainsKey(ConnectedClientIDs[0])
-            //    || !AuthenticatedClients.ContainsKey(ConnectedClientIDs[1])
-            //    || !(AuthenticatedClients[ConnectedClientIDs[0]] && AuthenticatedClients[ConnectedClientIDs[1]])) //TODO: qui controlla gli id in realtà dovrebbe controllare gli username
-            //{
-            //    Console.WriteLine("In attesa che i client facciano il login");
-            //    RequestLogin(ConnectedClientIDs[0]);
-            //    RequestLogin(ConnectedClientIDs[1]);
-            //}
+            // Richiedi login o registrazione
+            serviceHost.Sessions.SendTo("Effettua il login o registrati.", currentPlayerID);
+            serviceHost.Sessions.SendTo("login", currentPlayerID);
+            while (AuthenticatedClients.Count < 1)
+            {
+                Console.WriteLine("In attesa che il primo client faccia il login...");
+                Thread.Sleep(2000);
+            }
+
+            //serviceHost.Sessions.SendTo("?vuoi giocare con il bot o con un'altra persona? \n a) bot \n b) persona", currentPlayerID);
+
+            while (ConnectedClientIDs.Count < 2)
+            {
+                Console.WriteLine("In attesa che i client si connettano...");
+                Thread.Sleep(200);
+            }
+            serviceHost.Sessions.SendTo("Effettua il login o registrati.", ConnectedClientIDs[1]);
+            serviceHost.Sessions.SendTo("login", ConnectedClientIDs[1]);
+            while (AuthenticatedClients.Count < 2)
+            {
+                Console.WriteLine("In attesa che il secondo client faccia il login...");
+                Thread.Sleep(1000);
+            }
+            if (AuthenticatedClients.Count == 2)
+                loginIsFinished = true;
+
+            IniziaGioco();
         }
 
         public static void IniziaGioco()
@@ -186,17 +199,39 @@ namespace WebSocketTrisServer
             //non deve attendere il secondo client
 
         }
+
         public static void PlayWithClient2()
         {
             //deve attendere il secondo client
 
         }
+
         public static void MessageHandler(string ID, object message)
         {
             int indexOfCell;
-            if (ID != currentPlayerID)
+            if (ID != currentPlayerID && loginIsFinished)
             {
                 Console.WriteLine($"Non è il tuo turno, giocatore {ID}");
+                return;
+            }
+
+            if ((string)message == "a" || (string)message == "b")
+            {
+                if ((string)message == "a")
+                {
+                    //bot 
+
+                }
+                else if ((string)message == "b")
+                {
+                    //client 2
+
+                }
+            }
+
+            if (message.ToString().StartsWith("login:") || message.ToString().StartsWith("register:"))
+            {
+                RequestLogin(ID, (string)message);
                 return;
             }
 
@@ -207,63 +242,58 @@ namespace WebSocketTrisServer
             }
             else
             {
-                Console.WriteLine("Mossa non valida.");
-                serviceHost.Sessions.SendTo("Mossa non valida.", ID);
+                Console.WriteLine("Input non valido.");
+                serviceHost.Sessions.SendTo("Input non valido.", ID);
                 RequestMove(currentPlayerID);
-            }
-
-
-            if ((string)message == "a" || (string)message == "b")
-            {
-                if ((string)message == "a")
-                {
-                    //bot 
-
-                } else if ((string)message == "b")
-                {
-                    //client 2
-
-                }
             }
         }
 
-        private static void RequestLogin(string ID)
-        {
-            // Richiedi login o registrazione
-            serviceHost.Sessions.SendTo("Benvenuto! Effettua il login o registrati.", ID);
-            serviceHost.Sessions.SendTo("Inserisci 'login:username:password' per effettuare il login.", ID);
-            serviceHost.Sessions.SendTo("Inserisci 'register:username:password' per registrarti.", ID);
-
-            // Leggi l'input dell'utente dalla console
-            string userInput = Console.ReadLine(); //qui devo chiedere l'input al client e non sulla console del server
+        private static void RequestLogin(string ID, string userInput)
+        {          
             string[] inputParts = userInput.Split(':');
 
-            if (inputParts.Length == 3)
+            if (inputParts.Length == 2)
             {
                 string action = inputParts[0].ToLower();
                 string username = inputParts[1];
-                string password = inputParts[2];
                 if (action == "login")
                 {
-                    if (_login.AuthenticateUser(username))
+                    if (!_login.AuthenticateUser(username))
                     {
-                        AuthenticatedClients.Add(username, true);
-                    };
+                        serviceHost.Sessions.SendTo($"Utente {username} non registrato", ID);
+                        serviceHost.Sessions.SendTo("login", ID);
+                    }
+                    else if(_login.AuthenticateUser(username))
+                    {
+                        serviceHost.Sessions.SendTo($"Hai fatto il login!", ID);
+                        AuthenticatedClients.Add(username);
+                    }
                 }
                 else if (action == "register")
                 {
-                    _login.RegisterUser(username);
+                    if (_login.RegisterUser(username))
+                    {
+                        AuthenticatedClients.Add(username);
+                        serviceHost.Sessions.SendTo($"Utente {username} registrato", ID);
+                    }
+                    else if (!_login.RegisterUser(username))
+                    {
+                        serviceHost.Sessions.SendTo($"Utente {username} già esistente, fai il login", ID);
+                        serviceHost.Sessions.SendTo("login", ID);
+                    }
                 }
                 else
                 {
                     serviceHost.Sessions.SendTo("Comando non valido.", ID);
+                    serviceHost.Sessions.SendTo("login", ID);
+
                 }
             }
             else
             {
-                serviceHost.Sessions.SendTo("Input non valido. Assicurati di inserire 'login:username:password' o 'register:username:password'.", ID);
+                serviceHost.Sessions.SendTo("Input non valido. Assicurati di inserire 'login:username' o 'register:username'.", ID);
+                serviceHost.Sessions.SendTo("login", ID);
             }
         }
-
     }
 }
