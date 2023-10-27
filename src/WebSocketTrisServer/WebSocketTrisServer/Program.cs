@@ -23,7 +23,6 @@ namespace WebSocketTrisServer
 
         protected override void OnMessage(MessageEventArgs e)
         {
-            //Console.WriteLine(e.Data);
             Program.MessageHandler(ID, e.Data);
         }
     }
@@ -49,6 +48,7 @@ namespace WebSocketTrisServer
             new int[] {2, 4, 6}
         };
         private static Login _login = new Login();
+        public static Dictionary<string, bool> AuthenticatedClients = new Dictionary<string, bool>(); //TODO: aggiusta guarda sotto
 
         private static void Main(string[] args)
         {
@@ -66,14 +66,21 @@ namespace WebSocketTrisServer
             server.Start();
             
             serviceHost = server.WebSocketServices["/"];
-            while (ConnectedClientIDs.Count < 2) //aspetto che i 2 client si connettanno
+            while (ConnectedClientIDs.Count < 2)
             {
-                Console.WriteLine("In attesa del client");
+                Console.WriteLine("In attesa che i client si connettano...");
                 Thread.Sleep(200);
             }
+            while(!AuthenticatedClients.ContainsKey(ConnectedClientIDs[0])
+                || !AuthenticatedClients.ContainsKey(ConnectedClientIDs[1])
+                || !(AuthenticatedClients[ConnectedClientIDs[0]] && AuthenticatedClients[ConnectedClientIDs[1]])) //TODO: qui controlla gli id in realtà dovrebbe controllare gli username
+            {
+                Console.WriteLine("In attesa che i client facciano il login");
+                RequestLogin(ConnectedClientIDs[0]);
+                RequestLogin(ConnectedClientIDs[1]);
+            }
+          
             currentPlayerID = ConnectedClientIDs[0];
-            RequestLogin(ConnectedClientIDs[0]);
-            RequestLogin(ConnectedClientIDs[1]);
             
             //invio il messaggio di inizio partita ai client
             serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[0]); 
@@ -186,6 +193,37 @@ namespace WebSocketTrisServer
             serviceHost.Sessions.SendTo("Benvenuto! Effettua il login o registrati.", ID);
             serviceHost.Sessions.SendTo("Inserisci 'login:username:password' per effettuare il login.", ID);
             serviceHost.Sessions.SendTo("Inserisci 'register:username:password' per registrarti.", ID);
+
+            // Leggi l'input dell'utente dalla console
+            string userInput = Console.ReadLine(); //qui devo chiedere l'input al client e non sulla console del server
+            string[] inputParts = userInput.Split(':');
+
+            if (inputParts.Length == 3)
+            {
+                string action = inputParts[0].ToLower();
+                string username = inputParts[1];
+                string password = inputParts[2];
+                if (action == "login")
+                {
+                    if (_login.AuthenticateUser(username, password))
+                    {
+                        AuthenticatedClients.Add(username, true);
+                    };
+                }
+                else if (action == "register")
+                {
+                    _login.RegisterUser(username, password);
+                }
+                else
+                {
+                    serviceHost.Sessions.SendTo("Comando non valido.", ID);
+                }
+            }
+            else
+            {
+                serviceHost.Sessions.SendTo("Input non valido. Assicurati di inserire 'login:username:password' o 'register:username:password'.", ID);
+            }
         }
+
     }
 }
