@@ -9,7 +9,7 @@ namespace WebSocketTrisServer
     public class Echo : WebSocketBehavior
     {
         protected override void OnOpen()
-        {
+        {   
             Program.ConnectedClientIDs.Add(ID);
             Console.WriteLine($"Il client {ID} si è connesso");
             //Send("ciao sono il server ti sei appena connesso");
@@ -71,7 +71,7 @@ namespace WebSocketTrisServer
                 Console.WriteLine("In attesa che i client si connettano...");
                 Thread.Sleep(200);
             }
-            while(!AuthenticatedClients.ContainsKey(ConnectedClientIDs[0])
+            while (!AuthenticatedClients.ContainsKey(ConnectedClientIDs[0])
                 || !AuthenticatedClients.ContainsKey(ConnectedClientIDs[1])
                 || !(AuthenticatedClients[ConnectedClientIDs[0]] && AuthenticatedClients[ConnectedClientIDs[1]])) //TODO: qui controlla gli id in realtà dovrebbe controllare gli username
             {
@@ -79,7 +79,7 @@ namespace WebSocketTrisServer
                 RequestLogin(ConnectedClientIDs[0]);
                 RequestLogin(ConnectedClientIDs[1]);
             }
-          
+
             currentPlayerID = ConnectedClientIDs[0];
             
             //invio il messaggio di inizio partita ai client
@@ -205,14 +205,14 @@ namespace WebSocketTrisServer
                 string password = inputParts[2];
                 if (action == "login")
                 {
-                    if (_login.AuthenticateUser(username, password))
+                    if (_login.AuthenticateUser(username))
                     {
                         AuthenticatedClients.Add(username, true);
                     };
                 }
                 else if (action == "register")
                 {
-                    _login.RegisterUser(username, password);
+                    _login.RegisterUser(username);
                 }
                 else
                 {
