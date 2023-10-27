@@ -52,6 +52,7 @@ namespace WebSocketTrisServer
         private static Login _login = new Login();
         public static List<string> AuthenticatedClients = new List<string>();
         private static bool loginIsFinished = false;
+        private static int indexOfCell;
 
         private static void Main(string[] args)
         {
@@ -104,10 +105,10 @@ namespace WebSocketTrisServer
             if (AuthenticatedClients.Count == 2)
                 loginIsFinished = true;
 
-            IniziaGioco();
+            InitializeGame();
         }
 
-        public static void IniziaGioco()
+        public static void InitializeGame()
         {
             //invio il messaggio di inizio partita ai client
             serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[0]);
@@ -209,35 +210,30 @@ namespace WebSocketTrisServer
             }
         }
 
-        public static void PlayWithClient2()
-        {
-            //deve attendere il secondo client
-
-        }
-
         public static void MessageHandler(string ID, object message)
         {
+            if (message.ToString().StartsWith("login:") || message.ToString().StartsWith("register:"))
+            {
+                RequestLogin(ID, (string)message);
+                return;
+            }
+
             if ((string)message == "a" || (string)message == "b")
             {
                 if ((string)message == "a")
                 {
                     //bot 
-                    mode = true;
                     ConnectedClientIDs.Add("Bot");
                     PlayWithBot();
                 }
-                else if ((string)message == "b")
-                {
-                    //client 2
-                    mode = true;
-                }
             }
-            int indexOfCell;
+            
             if (ID != currentPlayerID && loginIsFinished)
             {
                 Console.WriteLine($"Non è il tuo turno, giocatore {ID}");
                 return;
             }
+
             if ((int.TryParse((string)message, out indexOfCell) && indexOfCell >= 1 && indexOfCell <= 9))
             {
                 indexOfCell--; // Adatto l'indice della cella alla rappresentazione (0-8)
@@ -245,18 +241,9 @@ namespace WebSocketTrisServer
             }
             else
             {
-                if (mode)
-                {
-                    Console.WriteLine("Mossa non valida.");
-                    serviceHost.Sessions.SendTo("Mossa non valida.", ID);
-                    RequestMove(currentPlayerID);
-                }
-            }
-
-            if (message.ToString().StartsWith("login:") || message.ToString().StartsWith("register:"))
-            {
-                RequestLogin(ID, (string)message);
-                return;
+                Console.WriteLine("Mossa non valida.");
+                serviceHost.Sessions.SendTo("Mossa non valida.", ID);
+                RequestMove(currentPlayerID);
             }
         }
 
