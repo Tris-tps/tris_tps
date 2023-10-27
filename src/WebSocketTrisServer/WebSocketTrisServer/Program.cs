@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
@@ -10,7 +10,7 @@ namespace WebSocketTrisServer
     public class Echo : WebSocketBehavior
     {
         protected override void OnOpen()
-        {
+        {   
             Program.ConnectedClientIDs.Add(ID);
             Console.WriteLine($"Il client {ID} si è connesso");
             //Send("ciao sono il server ti sei appena connesso");
@@ -245,14 +245,14 @@ namespace WebSocketTrisServer
                 string password = inputParts[2];
                 if (action == "login")
                 {
-                    if (_login.AuthenticateUser(username, password))
+                    if (_login.AuthenticateUser(username))
                     {
                         AuthenticatedClients.Add(username, true);
                     };
                 }
                 else if (action == "register")
                 {
-                    _login.RegisterUser(username, password);
+                    _login.RegisterUser(username);
                 }
                 else
                 {

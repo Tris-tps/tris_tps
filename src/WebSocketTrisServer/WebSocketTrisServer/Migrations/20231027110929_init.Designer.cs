@@ -10,7 +10,7 @@ using WebSocketTrisServer.Data;
 namespace WebSocketTrisServer.Migrations
 {
     [DbContext(typeof(LoginDbContext))]
-    [Migration("20231027085041_init")]
+    [Migration("20231027110929_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -22,12 +22,6 @@ namespace WebSocketTrisServer.Migrations
             modelBuilder.Entity("WebSocketTrisServer.Model.User", b =>
                 {
                     b.Property<string>("Username")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Password")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Username");

@@ -18,22 +18,22 @@ namespace WebSocketTrisServer
             _dbContext = new LoginDbContext();
         }
 
-        public bool RegisterUser(string username, string password)
+        public bool RegisterUser(string username)
         {
             if (_dbContext.Users.Any(u => u.Username == username))
             {
                 return false; // L'utente esiste già
             }
 
-            var user = new User { Username = username, Password = password };
+            var user = new User { Username = username };
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
             return true; // Registrazione avvenuta con successo
         }
 
-        public bool AuthenticateUser(string username, string password)
+        public bool AuthenticateUser(string username)
         {
-            return _dbContext.Users.Any(u => u.Username == username && u.Password == password);
+            return _dbContext.Users.Any(u => u.Username == username );
         }
     }
 }

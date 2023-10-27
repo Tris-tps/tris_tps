@@ -21,12 +21,6 @@ namespace WebSocketTrisServer.Migrations
                     b.Property<string>("Username")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Username");
 
                     b.ToTable("Users");
