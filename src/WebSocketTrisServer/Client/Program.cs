@@ -22,11 +22,10 @@ public class Program
 
     public static void ChooseMode(string message)
     {
-        Console.WriteLine("ci siamo?");
         Console.WriteLine(message);
         var mode = Console.ReadLine();
 
-        if (mode!="a"&& mode != "b")
+        if (mode!="a" && mode != "b")
         {
             ChooseMode(message);
         }
