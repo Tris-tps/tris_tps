@@ -32,21 +32,22 @@ namespace ClientView
             Console.WriteLine(logo2, Color.Red);
         }
 
-        public static void Login()
+        public static string Login()
         {
             string loginText = @"
                                 |              _)       
                                 |   _ \   _` |  |    \  
                                _| \___/ \__, | _| _| _| 
                                         ____/           ";
+            Console.OutputEncoding = Encoding.UTF8;
             
             Console.WriteLine(loginText, Color.White);
 
             string loginUsernameBorder = @"
-                                   /--------------\
-                      USERNAME =  |                |
-                                   \--------------/
-                                    ";
+                                   ╭───────────────╮
+                       USERNAME =  │               │
+                                   ╰───────────────╯
+                                           ";
 
             Console.WriteLine(loginUsernameBorder);
 
@@ -55,19 +56,21 @@ namespace ClientView
 
             
             string username = "";
-            int cont = 1;
+            int cont = 0;
             ConsoleKeyInfo collegamento;
             do
             {
                 collegamento = Console.ReadKey(true);
                 username = Console.ReadLine();
                 //controllo sullo username
-                cont = 1;
+                cont++;
 
                 if (cont==1)
                 {
-                    Console.SetCursorPosition(24, 20);
-                    Console.WriteLine("Username Corretto. Premere invio per accedere");
+                    Console.SetCursorPosition(22, 21);
+                    Console.WriteLine("Username Corretto. Attendi Per accedere");
+                    Thread.Sleep(2000);
+                    break;
                 }
                 else
                 {
@@ -77,8 +80,7 @@ namespace ClientView
                 }
             } while (collegamento.Key != ConsoleKey.Enter);
 
-            Console.Clear();
-            Console.WriteLine(username);
+            return username;
 
         }
 
