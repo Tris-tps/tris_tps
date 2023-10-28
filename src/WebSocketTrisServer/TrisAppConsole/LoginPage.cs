@@ -7,7 +7,7 @@ using Colorful;
 using Console = Colorful.Console;
 using System.Drawing;
 
-namespace TrisAppConsole
+namespace ClientView
 {
     public class LoginPage
     {
