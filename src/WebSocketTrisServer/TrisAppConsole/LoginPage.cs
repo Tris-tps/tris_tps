@@ -34,6 +34,7 @@ namespace ClientView
 
         public static string Login()
         {
+            Console.SetCursorPosition(33, 10);
             string loginText = @"
                                 |              _)       
                                 |   _ \   _` |  |    \  
@@ -49,14 +50,13 @@ namespace ClientView
                                    ╰───────────────╯
                                            ";
 
-            Console.WriteLine(loginUsernameBorder);
-
+            Console.Write(loginUsernameBorder);
 
             Console.SetCursorPosition(37, 17);
 
-            
             string username = "";
-            int cont = 0;
+            int cont = -1;
+            bool state = true;
             ConsoleKeyInfo collegamento;
             do
             {
@@ -70,15 +70,17 @@ namespace ClientView
                     Console.SetCursorPosition(22, 21);
                     Console.WriteLine("Username Corretto. Attendi Per accedere");
                     Thread.Sleep(2000);
-                    break;
+                    state = false;
                 }
                 else
                 {
-                    Console.SetCursorPosition(24, 20);
+                    Console.SetCursorPosition(22, 21);
                     Console.WriteLine("Username Sbagliato. Reinserire le credenziali");
                     Console.SetCursorPosition(37, 17);
                 }
-            } while (collegamento.Key != ConsoleKey.Enter);
+            } while (state == true);
+
+            Console.SetCursorPosition(37, 17);
 
             return username;
 

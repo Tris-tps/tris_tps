@@ -11,13 +11,22 @@ namespace ClientView
             Console.Title = "TrisApp";
             LoginPage.WriteLogo();
             
-            Console.SetCursorPosition(33, 10);
             string clientUsername = "";
             clientUsername =  LoginPage.Login();
 
             Console.Clear();
 
-            Console.WriteLine(clientUsername);
+            HomePage.WriteHome();
+
+            int i = 0;
+            i = HomePage.ChooseMode();
+
+            if (i>0)
+            {
+                HomePage.Gioca();
+                Console.Clear();
+            }
+           
 
             Console.WriteLine("Premere un tasto qualsiasi per uscire ...");
             Console.ReadKey(true);
