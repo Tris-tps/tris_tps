@@ -30,9 +30,8 @@ namespace WebSocketTrisServer
 
     public class Program
     {
-        public static bool mode = false;
         public static List<string> ConnectedClientIDs = ConnectedClientIDs = new();
-        public static bool _winBool = false;
+        public static bool _winOrDrawBool = false;
         public static WebSocketServer server;
         public static WebSocketServiceHost serviceHost;
         public static char[] board = new char[9] {'#', '#', '#', '#', '#', '#', '#', '#', '#'};
@@ -53,6 +52,7 @@ namespace WebSocketTrisServer
         public static List<string> AuthenticatedClients = new List<string>();
         private static bool loginIsFinished = false;
         private static int indexOfCell;
+        private static bool isPlayingWithBot = false;
 
         private static void Main(string[] args)
         {
@@ -85,34 +85,39 @@ namespace WebSocketTrisServer
             while (AuthenticatedClients.Count < 1)
             {
                 Console.WriteLine("In attesa che il primo client faccia il login...");
-                Thread.Sleep(2000);
+                Thread.Sleep(1000);
             }
 
             serviceHost.Sessions.SendTo("?vuoi giocare con il bot o con un'altra persona? \n a) bot \n b) persona", currentPlayerID);
+            //Thread.Sleep(2000); dovrei aspettare che specifichi se vuole giocare con il client o con il server
 
-            while (ConnectedClientIDs.Count < 2)
+            if (!isPlayingWithBot)
             {
-                Console.WriteLine("In attesa che i client si connettano...");
-                Thread.Sleep(200);
-            }
-            serviceHost.Sessions.SendTo("Effettua il login o registrati.", ConnectedClientIDs[1]);
-            serviceHost.Sessions.SendTo("login", ConnectedClientIDs[1]);
-            while (AuthenticatedClients.Count < 2)
-            {
-                Console.WriteLine("In attesa che il secondo client faccia il login...");
-                Thread.Sleep(1000);
-            }
-            if (AuthenticatedClients.Count == 2)
-                loginIsFinished = true;
+                while (ConnectedClientIDs.Count < 2)
+                {
+                    Console.WriteLine("In attesa che i client si connettano...");
+                    Thread.Sleep(200);
+                }
+                serviceHost.Sessions.SendTo("Effettua il login o registrati.", ConnectedClientIDs[1]);
+                serviceHost.Sessions.SendTo("login", ConnectedClientIDs[1]);
+                while (AuthenticatedClients.Count < 2)
+                {
+                    Console.WriteLine("In attesa che il secondo client faccia il login...");
+                    Thread.Sleep(1000);
+                }
+                if (AuthenticatedClients.Count == 2)
+                    loginIsFinished = true;
 
-            InitializeGame();
+                InitializeGame();
+            }
         }
 
         public static void InitializeGame()
         {
             //invio il messaggio di inizio partita ai client
             serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[0]);
-            serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[1]);
+            if(!isPlayingWithBot)
+                serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[1]);
             //caso ipotetico dove inizia il client ConnectedClientIDs[0]
             Thread.Sleep(100);
             Print();
@@ -143,7 +148,7 @@ namespace WebSocketTrisServer
 
         public static void SendWinMessages(string winPlayerId, string looserPlayerId)
         {
-            _winBool = true;
+            _winOrDrawBool = true;
             serviceHost.Sessions.SendTo("Hai vinto!!!", winPlayerId);
             serviceHost.Sessions.SendTo("Hai perso", looserPlayerId);
             Console.WriteLine("hai vinto");
@@ -167,6 +172,19 @@ namespace WebSocketTrisServer
             return false;
         }
 
+        private static bool CheckDraw()
+        {
+            foreach (var cell in board)
+            {
+                if (cell == '#')
+                    return false;
+            }
+            _winOrDrawBool = true;
+            serviceHost.Sessions.SendTo("La partita è finita in pareggio", ConnectedClientIDs[0]);
+            serviceHost.Sessions.SendTo("La partita è finita in pareggio", ConnectedClientIDs[1]);
+            return true;
+        }
+
         public static void Game(int indexOfCell, string ID)
         {
             if (board[indexOfCell] == '#')
@@ -185,9 +203,10 @@ namespace WebSocketTrisServer
                 }
 
                 CheckWin();
+                CheckDraw();
                 Print();
 
-                if (_winBool)
+                if (_winOrDrawBool)
                 {
                     return;
                 }
@@ -203,7 +222,7 @@ namespace WebSocketTrisServer
 
         public static void PlayWithBot()
         {
-            while (!_winBool)
+            while (!_winOrDrawBool)
             {
                 Task.WaitAll(RequestMove(ConnectedClientIDs[0]));
                 Game(Bot.BotMove(ref board), "Bot");
@@ -212,22 +231,14 @@ namespace WebSocketTrisServer
 
         public static void MessageHandler(string ID, object message)
         {
-            if (message.ToString().StartsWith("login:") || message.ToString().StartsWith("register:"))
+            if ((string)message == "a")
             {
-                RequestLogin(ID, (string)message);
-                return;
+                //bot 
+                isPlayingWithBot = true;
+                ConnectedClientIDs.Add("Bot");
+                PlayWithBot();
             }
 
-            if ((string)message == "a" || (string)message == "b")
-            {
-                if ((string)message == "a")
-                {
-                    //bot 
-                    ConnectedClientIDs.Add("Bot");
-                    PlayWithBot();
-                }
-            }
-            
             if (ID != currentPlayerID && loginIsFinished)
             {
                 Console.WriteLine($"Non è il tuo turno, giocatore {ID}");
@@ -239,11 +250,17 @@ namespace WebSocketTrisServer
                 indexOfCell--; // Adatto l'indice della cella alla rappresentazione (0-8)
                 Game(indexOfCell, ID);
             }
-            else
+            else if(isPlayingWithBot)
             {
                 Console.WriteLine("Mossa non valida.");
                 serviceHost.Sessions.SendTo("Mossa non valida.", ID);
                 RequestMove(currentPlayerID);
+            }
+
+            if (message.ToString().StartsWith("login:") || message.ToString().StartsWith("register:"))
+            {
+                RequestLogin(ID, (string)message);
+                return;
             }
         }
 
