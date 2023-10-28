@@ -53,6 +53,7 @@ namespace WebSocketTrisServer
         private static bool loginIsFinished = false;
         private static int indexOfCell;
         private static bool isPlayingWithBot = false;
+        private static bool playerHasMoved = false;
 
         private static void Main(string[] args)
         {
@@ -107,9 +108,8 @@ namespace WebSocketTrisServer
                 }
                 if (AuthenticatedClients.Count == 2)
                     loginIsFinished = true;
-
-                InitializeGame();
             }
+            InitializeGame();
         }
 
         public static void InitializeGame()
@@ -140,8 +140,9 @@ namespace WebSocketTrisServer
             serviceHost.Sessions.SendTo(BoardConvert(), currentPlayerID);
         }
 
-        public static async Task RequestMove(string ID)
+        public static void RequestMove(string ID)
         {
+            playerHasMoved = true;
             serviceHost.Sessions.SendTo("é il tuo turno, digita la tua mossa!", ID);
             serviceHost.Sessions.SendTo("+", ID); //mando al client il "segnale", il quale specifica che è il suo turno, vedere nel client l'if del "+"
         }
@@ -224,8 +225,13 @@ namespace WebSocketTrisServer
         {
             while (!_winOrDrawBool)
             {
-                Task.WaitAll(RequestMove(ConnectedClientIDs[0]));
-                Game(Bot.BotMove(ref board), "Bot");
+                RequestMove(ConnectedClientIDs[0]);
+                Print();
+                if (playerHasMoved)
+                {
+                    Game(Bot.BotMove(ref board), "Bot");
+                    playerHasMoved = !playerHasMoved;
+                }
             }
         }
 
