@@ -1,7 +1,7 @@
 ﻿using Colorful;
 using Console = Colorful.Console;
 
-namespace TrisAppConsole
+namespace ClientView
 {
     internal class Program
     {
