@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Diagnostics;
 using System.Net;
@@ -36,6 +37,8 @@ namespace WebSocketTrisServer
         public static WebSocketServiceHost serviceHost;
         public static char[] board = new char[9] {'#', '#', '#', '#', '#', '#', '#', '#', '#'};
         private static bool isPlayer1Turn = true;
+        public static string zucche = "";
+        public static int[] posizione = new int[2];
         private static string currentPlayerID = "";
         private static readonly int[][] _winningCombinations = new int[][]
         {
@@ -55,13 +58,45 @@ namespace WebSocketTrisServer
         private static bool isPlayingWithBot = false;
         private static bool playerHasMoved = false;
 
-        private static void Main(string[] args)
+        public static void ClearCurrentConsoleLine()
         {
+            int currentLineCursor = Console.CursorTop;
+            Console.SetCursorPosition(0, 16);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, currentLineCursor);
+        }
+
+        public static void ThreadZucche()
+        {
+            while (true)
+            {
+                zucche = zucche + "\U0001F383";
+                Thread.Sleep(50000);
+                if (zucche.Length >= 12)
+                {
+                    zucche = "";
+                    ClearCurrentConsoleLine();
+                }
+                posizione[0] = Console.CursorLeft;
+                posizione[1] = Console.CursorTop;
+                Console.SetCursorPosition(0, 16);
+                Console.Write(zucche);
+                Console.SetCursorPosition(posizione[0], posizione[1]);
+            }
+        }
+
+        public static void Main(string[] args)
+        {
+
             Thread threadWhileTrue = new Thread(() =>
             {
                 while (true) { }
             });
+
             threadWhileTrue.Start();
+
+            Thread tZucche = new Thread(ThreadZucche); // Passa il riferimento del metodo, senza chiamare il metodo
+            tZucche.Start();
             server = new WebSocketServer("ws://127.0.0.1:5000");
             server.AddWebSocketService("/", () => //inizializer del server, inserisce i servizi
             {
@@ -71,6 +106,8 @@ namespace WebSocketTrisServer
             server.Start();
             
             serviceHost = server.WebSocketServices["/"];
+
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             while (ConnectedClientIDs.Count < 1)
             {
@@ -271,7 +308,7 @@ namespace WebSocketTrisServer
         }
 
         private static void RequestLogin(string ID, string userInput)
-        {          
+        {       
             string[] inputParts = userInput.Split(':');
 
             if (inputParts.Length == 2)
