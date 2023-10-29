@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{13F2A063-9C50-4A1E-9CA9-EB70637CE229}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProvaPanz", "ProvaPanz\ProvaPanz.csproj", "{0D278AC9-6819-4A5A-B5DC-7AD67D0C1BC1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13F2A063-9C50-4A1E-9CA9-EB70637CE229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13F2A063-9C50-4A1E-9CA9-EB70637CE229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13F2A063-9C50-4A1E-9CA9-EB70637CE229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13F2A063-9C50-4A1E-9CA9-EB70637CE229}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D278AC9-6819-4A5A-B5DC-7AD67D0C1BC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D278AC9-6819-4A5A-B5DC-7AD67D0C1BC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D278AC9-6819-4A5A-B5DC-7AD67D0C1BC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D278AC9-6819-4A5A-B5DC-7AD67D0C1BC1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ABABE3BA-35A3-45C2-81C7-1E4779B28C5B}
+	EndGlobalSection
+EndGlobal
