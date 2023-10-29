@@ -12,10 +12,12 @@ namespace ClientView
             Console.Title = "TrisApp";
             Console.CursorVisible = false;
 
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+
             LoginPage.WriteLogo();
-            
+
             string clientUsername = "";
-            clientUsername =  LoginPage.Login();
+            clientUsername = LoginPage.Login();
 
             Console.Clear();
 
@@ -30,7 +32,9 @@ namespace ClientView
                 Console.Clear();
             }
            
+            GamePage.DisplayTable();
 
+            Console.SetCursorPosition(0, 26);
             Console.WriteLine("Premere un tasto qualsiasi per uscire ...");
             Console.ReadKey(true);
         }
