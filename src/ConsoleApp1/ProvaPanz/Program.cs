@@ -56,6 +56,7 @@ namespace ProvaPanz
             string vittoria = ResultsPage.Vincita();
             string sconfitta = ResultsPage.Perdita();
             string pareggio = ResultsPage.Pareggio();
+
             Console.WriteLine(vittoria);
             Console.WriteLine(sconfitta);
             Console.WriteLine(pareggio);
