@@ -31,10 +31,30 @@ namespace ClientView
                 HomePage.Gioca();
                 Console.Clear();
             }
-           
-            GamePage.DisplayTable();
 
-            Console.SetCursorPosition(0, 26);
+            int r = 0; 
+            r = GamePage.DisplayTable();
+
+            Console.Clear();
+
+            if (r == 1)
+            {
+                ResultsPage.DisplayWin();
+            }
+            else if (r == 2)
+            {
+                ResultsPage.DisplayDraw();
+            }
+            else if (r == 3)
+            {
+                ResultsPage.DisplayLose();
+            }
+            else 
+            {
+                Console.WriteLine("finocchio");
+            }
+
+            Console.SetCursorPosition(0, 23);
             Console.WriteLine("Premere un tasto qualsiasi per uscire ...");
             Console.ReadKey(true);
         }

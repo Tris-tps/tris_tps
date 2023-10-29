@@ -83,7 +83,7 @@ namespace ClientView
                 }
             }
         }
-        public static void DisplayTable()
+        public static int DisplayTable()
         {
             string tableDoubleLines = @"  
                                                     ║       ║      
@@ -173,6 +173,12 @@ namespace ClientView
             PrintCircle(56, 2); //casella in alto a destra (3)
             PrintCross(56, 10); //casella in mezzo a destra (5)
             PrintCircle(56, 18); //casella in basso a destra (9)
+
+
+            Console.SetCursorPosition(0, 26);
+            Console.WriteLine("1 for win, 2 for draw, 3 for lose, >3 for gays");
+            int i = int.Parse(Console.ReadLine());
+            return i;
         }
     }
 }
