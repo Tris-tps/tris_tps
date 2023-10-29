@@ -36,7 +36,7 @@ namespace ClientView
                                     ";
             Console.WriteLine(settingsPrint);
 
-            Console.SetCursorPosition(0, 15);
+            Console.SetCursorPosition(0, 16);
             Console.WriteLine("Scegliere la difficoltà. Premi invio su quella che desideri muovendondoti su e giù");
 
             string frecciaSelezioneDx = "────>";
@@ -75,10 +75,12 @@ namespace ClientView
                     Console.SetCursorPosition(24, 18);
                     Console.Write(frecciaSelezioneDx);
                     Console.SetCursorPosition(31, 20);
-                    Console.Write("UTENTE vs BOT", Color.White);
+                    Console.WriteLine("UTENTE vs BOT", Color.White);
                     Console.SetCursorPosition(31, 18);
-                    Console.Write("UTENTE vs UTENTE", Color.Red);
-                    mode = 0;
+                    Console.Write("                ");
+                    Console.SetCursorPosition(31, 18);
+                    Console.WriteLine("UTENTE vs UTENTE", Color.Red);
+                    mode = 1;
                 }
                 else
                 {
@@ -89,8 +91,8 @@ namespace ClientView
                     Console.SetCursorPosition(31, 18);
                     Console.Write("UTENTE vs UTENTE", Color.White);
                     Console.SetCursorPosition(31, 20);
-                    Console.Write("UTENTE vs BOT", Color.Red);
-                    mode = 1;
+                    Console.WriteLine("UTENTE vs BOT", Color.Red);
+                    mode = 2;
                 }
             } while (key != ConsoleKey.Enter);
 
@@ -105,14 +107,14 @@ namespace ClientView
 
             Console.SetCursorPosition(29, 21);
             string gioca = @"
-                 ╭────────────────────────────────────────╮
-                 │  ██████  ██  ██████   ██████  █████    │
-                 │  ██       ██ ██    ██ ██      ██   ██  │
-                 │  ██   ███ ██ ██    ██ ██      ███████  │
-                 │  ██    ██ ██ ██    ██ ██      ██   ██  │
-                 │  ██    ██ ██ ██    ██ ██      ██   ██  │
-                 │   ██████  ██  ██████   ██████ ██   ██  │
-                 ╰────────────────────────────────────────╯
+                   ╭────────────────────────────────────────╮
+                   │  ██████  ██  ██████   ██████  █████    │
+                   │  ██       ██ ██    ██ ██      ██   ██  │
+                   │  ██   ███ ██ ██    ██ ██      ███████  │
+                   │  ██    ██ ██ ██    ██ ██      ██   ██  │
+                   │  ██    ██ ██ ██    ██ ██      ██   ██  │
+                   │   ██████  ██  ██████   ██████ ██   ██  │
+                   ╰────────────────────────────────────────╯
                                      ";
             Console.Write(gioca);
 

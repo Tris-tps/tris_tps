@@ -68,7 +68,9 @@ namespace ClientView
                 if (cont==1)
                 {
                     Console.SetCursorPosition(22, 21);
-                    Console.WriteLine("Username Corretto. Attendi Per accedere");
+                    Console.WriteLine("                                                 ");
+                    Console.SetCursorPosition(22, 21);
+                    Console.WriteLine("Username Corretto. Attendi per accedere");
                     Thread.Sleep(2000);
                     state = false;
                 }
@@ -76,6 +78,8 @@ namespace ClientView
                 {
                     Console.SetCursorPosition(22, 21);
                     Console.WriteLine("Username Sbagliato. Reinserire le credenziali");
+                    Console.SetCursorPosition(37, 17);
+                    Console.Write("          ");
                     Console.SetCursorPosition(37, 17);
                 }
             } while (state == true);

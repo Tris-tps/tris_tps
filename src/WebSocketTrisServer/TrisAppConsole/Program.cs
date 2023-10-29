@@ -9,6 +9,8 @@ namespace ClientView
         {
             Console.SetWindowSize(40, 30);
             Console.Title = "TrisApp";
+            Console.CursorVisible = false;
+
             LoginPage.WriteLogo();
             
             string clientUsername = "";
