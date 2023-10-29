@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Client\Client.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client_2", "Client_2\Client_2.csproj", "{D3FDC525-41B7-46B0-BAB3-DC9A05D0B981}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrisAppConsole", "TrisAppConsole\TrisAppConsole.csproj", "{B6A410C3-5BA5-4802-B9A2-A4E57DD52DF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientView", "TrisAppConsole\ClientView.csproj", "{B6A410C3-5BA5-4802-B9A2-A4E57DD52DF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
