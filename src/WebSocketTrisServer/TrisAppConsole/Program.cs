@@ -1,9 +1,10 @@
 ﻿using Colorful;
 using Console = Colorful.Console;
+using System.Drawing;
 
 namespace ClientView
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {

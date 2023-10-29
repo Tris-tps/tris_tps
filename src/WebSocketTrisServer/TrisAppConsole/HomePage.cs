@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Colorful;
+using Console = Colorful.Console;
 using System.Drawing;
 
 namespace ClientView
@@ -21,7 +23,7 @@ namespace ClientView
                     |____||____|`.___.'|_____||_____||________| 
                                 ";
 
-            Console.WriteLine(homeLogo);
+            Console.WriteLine(homeLogo, Color.Orange);
         }
 
         public static int ChooseMode()
@@ -43,7 +45,7 @@ namespace ClientView
             string frecciaSelezioneSx = "<────";
 
             Console.SetCursorPosition(31, 18);
-            Console.WriteLine("UTENTE vs UTENTE");
+            Console.WriteLine("UTENTE vs UTENTE", Color.Red);
 
             Console.SetCursorPosition(31, 20);
             Console.Write("UTENTE vs BOT");
@@ -76,8 +78,6 @@ namespace ClientView
                     Console.Write(frecciaSelezioneDx);
                     Console.SetCursorPosition(31, 20);
                     Console.WriteLine("UTENTE vs BOT", Color.White);
-                    Console.SetCursorPosition(31, 18);
-                    Console.Write("                ");
                     Console.SetCursorPosition(31, 18);
                     Console.WriteLine("UTENTE vs UTENTE", Color.Red);
                     mode = 1;
