@@ -15,7 +15,7 @@
 [![UML Use Case](https://img.shields.io/badge/UML_Use_Case-FFFF00.svg?style=for-the-badge)](https://en.wikipedia.org/wiki/Use_case_diagram)
 
 
-Benvenuti nella repository del progetto "Tris", una versione del gioco del tris (Tic Tac Toe) implementato in C# Console. Questa implementazione consente ai giocatori di collegarsi tramite un server Sql Light per sfidarsi o giocare contro un avversario automatico basato sull'algoritmo Minimax. Il codice è rilasciato sotto la licenza [GNU General Public License v3.0](https://opensource.org/licenses/GPL-3.0).
+Benvenuti nella repository del progetto "Tris", una versione del gioco del tris (Tic Tac Toe) implementato in C# Console. Questa implementazione consente ai giocatori di collegarsi tramite un server Sql Lite per sfidarsi o giocare contro un avversario automatico basato sull'algoritmo Minimax. Il codice è rilasciato sotto la licenza [GNU General Public License v3.0](https://opensource.org/licenses/GPL-3.0).
 
 ## Collaboratori
 
@@ -34,10 +34,10 @@ Il progetto è stato ideato come parte integrante del percorso educativo della c
 ## Descrizione Dettagliata del Programma
 
 ### Introduzione
-Il progetto "Tris" è un'implementazione avanzata del classico gioco del tris (Tic Tac Toe) sviluppato in C# Console. Va oltre la semplice rappresentazione delle regole di base, offrendo un'esperienza interattiva in grado di connettere due giocatori attraverso un server Sql Light. Inoltre, presenta la possibilità di sfidare un avversario virtuale, il quale sfrutta un'intelligenza artificiale basata sull'algoritmo Minimax per creare partite competitive e coinvolgenti.
+Il progetto "Tris" è un'implementazione avanzata del classico gioco del tris (Tic Tac Toe) sviluppato in C# Console. Va oltre la semplice rappresentazione delle regole di base, offrendo un'esperienza interattiva in grado di connettere due giocatori attraverso un server Sql Lite. Inoltre, presenta la possibilità di sfidare un avversario virtuale, il quale sfrutta un'intelligenza artificiale basata sull'algoritmo Minimax per creare partite competitive e coinvolgenti.
 
 ### Implementazione del Gioco
-Questo progetto offre un'implementazione esaustiva e efficiente delle regole classiche del tris. Attraverso la console C#, consente a due giocatori di competere sullo stesso dispositivo o attraverso una connessione di rete. La struttura modulare e flessibile del codice consente l'interazione multi-client attraverso il server Sql Light, garantendo un'esperienza di gioco fluida e intuitiva.
+Questo progetto offre un'implementazione esaustiva e efficiente delle regole classiche del tris. Attraverso la console C#, consente a due giocatori di competere sullo stesso dispositivo o attraverso una connessione di rete. La struttura modulare e flessibile del codice consente l'interazione multi-client attraverso il server Sql Lite, garantendo un'esperienza di gioco fluida e intuitiva.
 
 ### Giocatore AI e Algoritmo Minimax
 Una delle caratteristiche più rilevanti di questo progetto è la presenza di un giocatore AI basato sull'algoritmo Minimax. Questa intelligenza artificiale apprende dalle mosse precedenti e calcola le mosse ottimali, valutando le possibili strategie di gioco per massimizzare le probabilità di vittoria o minimizzare le possibilità di sconfitta. L'algoritmo Minimax, implementato con cura e precisione, analizza in profondità le possibili mosse e crea un'esperienza di gioco sfidante, adattandosi alle scelte del giocatore umano.
@@ -72,7 +72,7 @@ Per iniziare a giocare al Tris con l'Intelligenza Artificiale, segui questi semp
 
 1. Clona questo repository sul tuo computer.
 2. Esegui il progetto utilizzando un ambiente che supporta C#.
-3. Collega i client tramite il server Sql Light per iniziare a giocare o affrontare il bot AI.
+3. Collega i client tramite il server Sql Lite per iniziare a giocare o affrontare il bot AI.
 
 ## Ringraziamenti
 
