@@ -34,9 +34,6 @@ public class Program
             Console.WriteLine("Mossa non valida. Inserisci un numero tra 1 e 9");
             MakeMove();
         }
-
-        // Dopo l'invio della mossa, la tabella corrente viene memorizzata come tabella precedente
-        //PrintBoard(); // Stampa la nuova tabella con la mossa effettuata
     }
 
     private static void ChooseMode(string message)
@@ -77,8 +74,9 @@ public class Program
         var currentBoard = string.Join("", board);
         if (currentBoard != _previousBoard)
         {
-            // Se la tabella è stata aggiornata, stampa la nuova tabella
+            // Se la tabella è stata aggiornata, stampa la nuova tabella con i limiti
             Console.Clear();
+            GamePage.DisplayTable(); // Stampa i limiti della tabella
             for (int i = 1; i < board.Count(); i++)
             {
                 if (board[i] == "X")
@@ -94,6 +92,7 @@ public class Program
             }
         }
     }
+
 
     /*
     private static void PrintBoard(string boardString)
