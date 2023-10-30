@@ -7,7 +7,7 @@ using Colorful;
 using Console = Colorful.Console;
 using System.Drawing;
 
-namespace WebSocketTrisServer
+namespace Client
 {
     public class HomePage
     {

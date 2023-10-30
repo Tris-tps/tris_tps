@@ -73,10 +73,8 @@ public class Program
 
         if (!login.StartsWith("login:") && !login.StartsWith("register:"))
         {
-            Console.Clear();
             LoginManager();
         }
-        Console.Clear();
         _client.Send(login);
     }
 

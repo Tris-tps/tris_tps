@@ -7,7 +7,7 @@ using Colorful;
 using Console = Colorful.Console;
 using System.Drawing;
 
-namespace WebSocketTrisServer
+namespace Client
 {
     public class LoginPage
     {
@@ -84,6 +84,8 @@ namespace WebSocketTrisServer
                        USERNAME =  │               │
                                    ╰───────────────╯
                                            ";
+
+            Console.SetCursorPosition(34, 18);
 
             Console.Write(loginUsernameBorder);
 
