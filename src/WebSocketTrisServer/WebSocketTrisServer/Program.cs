@@ -127,7 +127,7 @@ namespace WebSocketTrisServer
             }
 
             serviceHost.Sessions.SendTo("?vuoi giocare con il bot o con un'altra persona? \n a) bot \n b) persona", currentPlayerID);
-            //Thread.Sleep(2000); dovrei aspettare che specifichi se vuole giocare con il client o con il server
+            Thread.Sleep(2000); //dovrei aspettare che specifichi se vuole giocare con il client o con il server
 
             if (!isPlayingWithBot)
             {
@@ -145,8 +145,8 @@ namespace WebSocketTrisServer
                 }
                 if (AuthenticatedClients.Count == 2)
                     loginIsFinished = true;
+                InitializeGame();
             }
-            InitializeGame();
         }
 
         public static void InitializeGame()
@@ -237,8 +237,13 @@ namespace WebSocketTrisServer
                 Console.WriteLine("Il player ha fatto la mossa");
                 playerHasMoved = true;
                 isPlayer1Turn = !isPlayer1Turn;
-                currentPlayerID = isPlayer1Turn ? ConnectedClientIDs[0] : ConnectedClientIDs[1];
-                Print();
+                if(!isPlayingWithBot)
+                {
+                    currentPlayerID = isPlayer1Turn ? ConnectedClientIDs[0] : ConnectedClientIDs[1];
+                    Print();
+                }
+                    
+                    
                 CheckWin();
                 CheckDraw();
 

@@ -101,7 +101,7 @@ public class Program
         {
             LoginManager();
         }
-        else
+        else if (data[0] == '*')
         {
             PrintBoard(data);
         }
