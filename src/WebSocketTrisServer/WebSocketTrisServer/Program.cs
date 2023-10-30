@@ -186,11 +186,13 @@ namespace WebSocketTrisServer
         public static void SendWinMessages(string winPlayerId, string looserPlayerId)
         {
             _winOrDrawBool = true;
-            serviceHost.Sessions.SendTo("Hai vinto!!!", winPlayerId);
-            serviceHost.Sessions.SendTo("Hai perso", looserPlayerId);
-            Console.WriteLine("hai vinto");
+            SendMessage("Hai Vinto!", winPlayerId);
+            SendMessage("Hai Perso!", looserPlayerId);
         }
-
+        public static void SendMessage(string message, string ID)
+        {
+            serviceHost.Sessions.SendTo(message, ID);
+        }
         public static bool CheckWin()
         {
             foreach (var combination in _winningCombinations)
@@ -217,8 +219,8 @@ namespace WebSocketTrisServer
                     return false;
             }
             _winOrDrawBool = true;
-            serviceHost.Sessions.SendTo("La partita è finita in pareggio", ConnectedClientIDs[0]);
-            serviceHost.Sessions.SendTo("La partita è finita in pareggio", ConnectedClientIDs[1]);
+            SendMessage("La partita è finita in pareggio", ConnectedClientIDs[0]);
+            SendMessage("La partita è finita in pareggio", ConnectedClientIDs[1]);
             return true;
         }
 
@@ -235,11 +237,7 @@ namespace WebSocketTrisServer
                 Console.WriteLine("Il player ha fatto la mossa");
                 playerHasMoved = true;
                 isPlayer1Turn = !isPlayer1Turn;
-                if (ConnectedClientIDs[1] != "Bot")
-                {
-                    currentPlayerID = isPlayer1Turn ? ConnectedClientIDs[0] : ConnectedClientIDs[1];
-                }
-                //Print();
+                currentPlayerID = isPlayer1Turn ? ConnectedClientIDs[0] : ConnectedClientIDs[1];
                 CheckWin();
                 CheckDraw();
 
@@ -266,7 +264,7 @@ namespace WebSocketTrisServer
             else
             {
                 Console.WriteLine("La cella è già occupata.");
-                serviceHost.Sessions.SendTo("La cella è già occupata", ID);
+                SendMessage("La cella è già occupata", ID);
                 RequestMove(currentPlayerID);
             }
         }
@@ -334,12 +332,12 @@ namespace WebSocketTrisServer
                 {
                     if (!_login.AuthenticateUser(username))
                     {
-                        serviceHost.Sessions.SendTo($"Utente {username} non registrato", ID);
-                        serviceHost.Sessions.SendTo("login", ID);
+                        SendMessage($"Utente {username} non registrato", ID);
+                        SendMessage("login", ID);
                     }
                     else if(_login.AuthenticateUser(username))
                     {
-                        serviceHost.Sessions.SendTo($"Hai fatto il login!", ID);
+                        SendMessage($"Hai fatto il login!", ID);
                         AuthenticatedClients.Add(username);
                     }
                 }
@@ -348,25 +346,25 @@ namespace WebSocketTrisServer
                     if (_login.RegisterUser(username))
                     {
                         AuthenticatedClients.Add(username);
-                        serviceHost.Sessions.SendTo($"Utente {username} registrato", ID);
+                        SendMessage($"Utente {username} registrato", ID);
                     }
                     else if (!_login.RegisterUser(username))
                     {
-                        serviceHost.Sessions.SendTo($"Utente {username} già esistente, fai il login", ID);
-                        serviceHost.Sessions.SendTo("login", ID);
+                        SendMessage($"Utente {username} già esistente, fai il login", ID);
+                        SendMessage("login", ID);
                     }
                 }
                 else
                 {
-                    serviceHost.Sessions.SendTo("Comando non valido.", ID);
-                    serviceHost.Sessions.SendTo("login", ID);
+                    SendMessage("Comando non valido.", ID);
+                    SendMessage("login", ID);
 
                 }
             }
             else
             {
-                serviceHost.Sessions.SendTo("Input non valido. Assicurati di inserire 'login:username' o 'register:username'.", ID);
-                serviceHost.Sessions.SendTo("login", ID);
+                SendMessage("Input non valido. Assicurati di inserire 'login:username' o 'register:username'.", ID);
+                SendMessage("login", ID);
             }
         }
     }
