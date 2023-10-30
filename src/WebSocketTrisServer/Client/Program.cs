@@ -142,7 +142,8 @@ public class Program
     private static void Message(object? obj, MessageEventArgs e)
     {
         var data = e.Data;
-        if (!(data[0] == '*') && !(data == "+") && data[0] != '?' && data != "login") //il ' * ' è utilizzato per identificare che il dato sia la board
+        if (data[0] != '*' && data != "+" && data[0] != '?' && data != "login"
+            && data!= "Hai Vinto!" && data != "Hai Perso!" && data != "La partita è finita in pareggio") //il ' * ' è utilizzato per identificare che il dato sia la board
         {
             Console.SetCursorPosition(28, 27);
             Console.WriteLine("                                            ");
