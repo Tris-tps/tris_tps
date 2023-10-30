@@ -81,6 +81,12 @@ Questo progetto è rilasciato sotto la licenza [GNU General Public License v3.0]
 
 alsiasi modifica apportata a questo software e successivamente distribuita deve anch'essa essere rilasciata con la stessa licenza open source.
 
----
+Documentazione UML e Studio di Fattibilità
 
-Puoi utilizzare questo testo come base per aggiornare il README del tuo progetto su GitHub. Assicurati di personalizzarlo in base alle tue esigenze e di includere i dettagli specifici del progetto.
+All'interno di questa repository, troverai una documentazione dettagliata che include diagrammi UML (Unified Modeling Language), tra cui diagrammi delle classi, diagrammi delle sequenze e diagrammi dei casi d'uso. Questa documentazione offre una visione chiara e strutturata della struttura del progetto, delle interazioni tra i componenti e delle funzionalità implementate.
+
+Inoltre, è disponibile uno studio di fattibilità che analizza l'idoneità del progetto "Tris" e delle sue funzionalità. Questo studio fornisce una valutazione approfondita delle risorse necessarie, dei vincoli tecnici e delle potenziali sfide da affrontare durante lo sviluppo e la distribuzione del gioco.
+
+La documentazione UML e lo studio di fattibilità sono strumenti cruciali per comprendere il progetto in modo approfondito e pianificare le fasi future del suo sviluppo.
+
+---
