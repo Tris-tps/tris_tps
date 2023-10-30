@@ -90,11 +90,9 @@ namespace Client
 
             Console.Write(loginUsernameBorder);
 
-            Console.SetCursorPosition(14, 24);
+            Console.SetCursorPosition(17, 21);
             Console.WriteLine("Inserisci 'login:username' per effettuare il login.");
-            Console.SetCursorPosition(14, 25);
-            Console.WriteLine();
-            Console.SetCursorPosition(14, 26);
+            Console.SetCursorPosition(17, 23);
             Console.WriteLine("Inserisci 'register:username' per registrarti.");
 
             Console.SetCursorPosition(29, 17);
