@@ -152,9 +152,9 @@ namespace WebSocketTrisServer
         public static void InitializeGame()
         {
             //invio il messaggio di inizio partita ai client
-            serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[0]);
+            SendMessage("La partita è iniziata", ConnectedClientIDs[0]);
             if(!isPlayingWithBot)
-                serviceHost.Sessions.SendTo("La partita è iniziata", ConnectedClientIDs[1]);
+                SendMessage("La partita è iniziata", ConnectedClientIDs[1]);
             //caso ipotetico dove inizia il client ConnectedClientIDs[0]
             Thread.Sleep(100);
             Print();
@@ -174,7 +174,7 @@ namespace WebSocketTrisServer
 
         public static void Print()
         {
-            serviceHost.Sessions.SendTo(BoardConvert(), currentPlayerID);
+            SendMessage(BoardConvert(), currentPlayerID);
         }
 
         public static void RequestMove(string ID)
@@ -238,6 +238,7 @@ namespace WebSocketTrisServer
                 playerHasMoved = true;
                 isPlayer1Turn = !isPlayer1Turn;
                 currentPlayerID = isPlayer1Turn ? ConnectedClientIDs[0] : ConnectedClientIDs[1];
+                Print();
                 CheckWin();
                 CheckDraw();
 
@@ -297,6 +298,7 @@ namespace WebSocketTrisServer
             if (ID != currentPlayerID && loginIsFinished)
             {
                 Console.WriteLine($"Non è il tuo turno, giocatore {ID}");
+                SendMessage("Non è il tuo turno", ID);
                 return;
             }
 
@@ -305,7 +307,6 @@ namespace WebSocketTrisServer
                 indexOfCell--; // Adatto l'indice della cella alla rappresentazione (0-8)
                 Game(indexOfCell, ID);
             }
-
             else if(isPlayingWithBot)
             {
                 //Console.WriteLine("Mossa non valida.");
