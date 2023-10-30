@@ -7,19 +7,26 @@ using System;
 using WebSocketSharp;
 using System.Linq.Expressions;
 
-namespace Client_2;
+namespace _client_2;
 public class Program
 {
     private static List<string> board = new List<string>();
-    public static WebSocket client;
+    private static WebSocket _client;
 
-    public static void MakeMove()
+    private static void MakeMove()
     {
         var move = Console.ReadLine();
-        client.Send(move);
+
+        if (int.TryParse(move, out int moveInt) && moveInt >= 1 && moveInt <= 9)
+            _client.Send(move);
+        else
+        {
+            Console.WriteLine("Mossa non valida. Inserisci un numero tra 1 e 9");
+            MakeMove();
+        }
     }
 
-    public static void ChooseMode(string message)
+    private static void ChooseMode(string message)
     {
         Console.WriteLine(message);
         var mode = Console.ReadLine();
@@ -28,10 +35,10 @@ public class Program
         {
             ChooseMode(message);
         }
-        client.Send(mode);
+        _client.Send(mode);
     }
 
-    public static void PrintBoard(string boardString)
+    private static void PrintBoard(string boardString)
     {
         board.Clear();
         for (int i = 0; i < boardString.Length; i++)
@@ -64,7 +71,7 @@ public class Program
         {
             LoginManager();
         }
-        client.Send(login);
+        _client.Send(login);
     }
 
     static void Main(string[] args)
@@ -75,13 +82,13 @@ public class Program
         });
         threadWhileTrue.Start();
         Console.WriteLine("client_2");
-        client = new WebSocket("ws://127.0.0.1:5000");
+        _client = new WebSocket("ws://127.0.0.1:5000");
         Thread.Sleep(100);
-        client.Connect();
-        client.OnMessage += Message;
+        _client.Connect();
+        _client.OnMessage += Message;
     }
 
-    static void Message(object? obj, MessageEventArgs e)
+    private static void Message(object? obj, MessageEventArgs e)
     {
         var data = e.Data;
         if (!(data[0] == '*') && !(data == "+") && data[0] != '?' && data != "login") //il ' * ' è utilizzato per identificare che il dato sia la board
@@ -101,7 +108,7 @@ public class Program
         {
             LoginManager();
         }
-        else
+        else if (data[0] == '*')
         {
             PrintBoard(data);
         }
