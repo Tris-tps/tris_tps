@@ -15,7 +15,6 @@ namespace WebSocketTrisServer
         {
             Program.ConnectedClientIDs.Add(ID);
             Console.WriteLine($"Il client {ID} si è connesso");
-            //Send("ciao sono il server ti sei appena connesso");
         }
 
         protected override void OnClose(CloseEventArgs e)
@@ -191,10 +190,12 @@ namespace WebSocketTrisServer
             SendMessage("Hai Vinto!", winPlayerId);
             SendMessage("Hai Perso!", looserPlayerId);
         }
+
         public static void SendMessage(string message, string ID)
         {
             serviceHost.Sessions.SendTo(message, ID);
         }
+
         public static bool CheckWin()
         {
             foreach (var combination in _winningCombinations)
@@ -202,12 +203,12 @@ namespace WebSocketTrisServer
                 if (combination.All(index => board[index] == 'X'))
                 {
                     SendWinMessages(ConnectedClientIDs[0], ConnectedClientIDs[1]);
-                    return true; // Abbiamo una combinazione vincente
+                    return true;
                 }
                 if (combination.All(index => board[index] == 'O'))
                 {
                     SendWinMessages(ConnectedClientIDs[1], ConnectedClientIDs[0]);
-                    return true; // Abbiamo una combinazione vincente
+                    return true;
                 }
             }
             return false;
@@ -237,7 +238,6 @@ namespace WebSocketTrisServer
 
                 // Passa il turno all'altro giocatore
                 Console.WriteLine("Il player ha fatto la mossa");
-                Print();
                 playerHasMoved = true;
                 isPlayer1Turn = !isPlayer1Turn;
                 if(!isPlayingWithBot)
@@ -277,20 +277,6 @@ namespace WebSocketTrisServer
             }
         }
 
-        //public static void PlayWithBot()
-        //{
-        //    while (!_winOrDrawBool)
-        //    {
-        //        RequestMove(ConnectedClientIDs[0]);
-        //        Print();
-        //        if (playerHasMoved)
-        //        {
-        //            Game(Bot.BotMove(ref board), "Bot");
-        //            playerHasMoved = !playerHasMoved;
-        //        }
-        //    }
-        //}
-
         public static void MessageHandler(string ID, object message)
         {
             if ((string)message == "a")
@@ -314,12 +300,6 @@ namespace WebSocketTrisServer
                 indexOfCell--; // Adatto l'indice della cella alla rappresentazione (0-8)
                 Game(indexOfCell, ID);
             }
-            else if (isPlayingWithBot)
-            {
-                //Console.WriteLine("Mossa non valida.");
-                //serviceHost.Sessions.SendTo("Mossa non valida.", ID);
-                //RequestMove(currentPlayerID);
-            }
 
             if (message.ToString().StartsWith("login:") || message.ToString().StartsWith("register:"))
             {
@@ -340,8 +320,8 @@ namespace WebSocketTrisServer
                 {
                     if (AuthenticatedClients.Count != 0 && AuthenticatedClients[0] == username)
                     {
-                        serviceHost.Sessions.SendTo($"L'utente {username} ha già fatto il login da un altro dispositivo", ID);
-                        serviceHost.Sessions.SendTo("login", ID);
+                        SendMessage($"L'utente {username} ha già fatto il login da un altro dispositivo", ID);
+                        SendMessage("login", ID);
                     }
                     else if (!_login.AuthenticateUser(username))
                     {
