@@ -1,5 +1,17 @@
 # Tris - Gioco del Tris in C# Console con Intelligenza Artificiale
 
+[![C#](https://img.shields.io/badge/C%23-FFF44F.svg?style=for-the-badge&logo=c-sharp&logoColor=white)](https://docs.microsoft.com/en-us/dotnet/csharp/)
+[![SQLite](https://img.shields.io/badge/SQLite-003B57.svg?style=for-the-badge&logo=sqlite&logoColor=white)](https://www.sqlite.org/index.html)
+[![WebSocketSharp](https://img.shields.io/badge/WebSocketSharp-FF00FF.svg?style=for-the-badge)](https://github.com/sta/websocket-sharp)
+[![.NET Core 7.0](https://img.shields.io/badge/.NET_Core-00CED1.svg?style=for-the-badge&logo=.net&logoColor=white)](https://dotnet.microsoft.com/download/dotnet/3.1)
+[![Colorful.Console](https://img.shields.io/badge/Colorful.Console-00AEFF.svg?style=for-the-badge)](https://github.com/tomakita/Colorful.Console)
+[![Microsoft.EntityFrameworkCore](https://img.shields.io/badge/Microsoft.EntityFrameworkCore-722BE3.svg?style=for-the-badge)](https://docs.microsoft.com/en-us/ef/)
+[![Microsoft.EntityFrameworkCore](https://img.shields.io/badge/Microsoft.EntityFrameworkCore-FF7F50.svg?style=for-the-badge)](https://docs.microsoft.com/en-us/ef/)
+[![Microsoft.EntityFrameworkCore.Design](https://img.shields.io/badge/Microsoft.EntityFrameworkCore.Design-FF0000.svg?style=for-the-badge)](https://docs.microsoft.com/en-us/ef/)
+[![Microsoft.EntityFrameworkCore.Sqlite](https://img.shields.io/badge/Microsoft.EntityFrameworkCore.Sqlite-0000FF.svg?style=for-the-badge)](https://docs.microsoft.com/en-us/ef/)
+[![Microsoft.EntityFrameworkCore.Tools](https://img.shields.io/badge/Microsoft.EntityFrameworkCore.Tools-7D7F7D.svg?style=for-the-badge)](https://docs.microsoft.com/en-us/ef/)
+[![WebSocketSharp-NonPreRelease](https://img.shields.io/badge/WebSocketSharp_NonPreRelease-8EEBEC.svg?style=for-the-badge)](https://github.com/sta/websocket-sharp)
+
 Benvenuti nella repository del progetto "Tris", una versione del gioco del tris (Tic Tac Toe) implementato in C# Console. Questa implementazione consente ai giocatori di collegarsi tramite un server Sql Light per sfidarsi o giocare contro un avversario automatico basato sull'algoritmo Minimax. Il codice è rilasciato sotto la licenza [GNU General Public License v3.0](https://opensource.org/licenses/GPL-3.0).
 
 ## Collaboratori
