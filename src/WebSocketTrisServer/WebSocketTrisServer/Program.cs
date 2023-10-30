@@ -204,7 +204,7 @@ namespace WebSocketTrisServer
         {
             if (_winOrDrawBool)
                 return;
-            SendMessage("é il tuo turno, digita la tua mossa!", ID);
+            SendMessage("È il tuo turno, digita la tua mossa!: ", ID);
             SendMessage("+", ID); //mando al client il "segnale", il quale specifica che è il suo turno, vedere nel client l'if del "+"
         }
 

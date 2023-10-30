@@ -25,13 +25,18 @@ public class Program
     {
         var move = Console.ReadLine();
 
-        GamePage.DisplayTable(); // Stampa la tabella corrente
 
         if (int.TryParse(move, out int moveInt) && moveInt >= 1 && moveInt <= 9)
+        {
             client.Send(move);
+            GamePage.DisplayTable();
+        }
         else
         {
-            Console.WriteLine("Mossa non valida. Inserisci un numero tra 1 e 9");
+            Console.SetCursorPosition(22, 27);
+            Console.WriteLine("                                                                   ");
+            Console.SetCursorPosition(22, 27);
+            Console.Write("Mossa non valida. Inserisci un numero tra 1 e 9: ");
             MakeMove();
         }
     }
@@ -51,6 +56,8 @@ public class Program
         HomePage.Gioca();
 
         client.Send(mode);
+
+        GamePage.DisplayTable();
     }
 
     private static void PrintBoard(string boardString)
@@ -93,83 +100,6 @@ public class Program
         }
     }
 
-
-    /*
-    private static void PrintBoard(string boardString)
-    {
-        // Salva la tabella precedente
-        _previousBoard = string.Join("", board);
-
-        board.Clear();
-
-        for (int i = 0; i < boardString.Length; i++)
-        {
-            board.Add(boardString[i].ToString());
-            if (i == 0)
-            {
-                var temp = board[i].Split('*');
-                board[i] = temp[1];
-            }
-        }
-
-        // Controlla se la tabella è stata aggiornata
-        var currentBoard = string.Join("", board);
-        if (currentBoard != _previousBoard)
-        {
-            // Se la tabella è stata aggiornata, stampa la nuova tabella
-            Console.Clear();
-            for (int i = 0; i < board.Count(); i++)
-            {
-                if (board[i] == "X")
-                {
-                    int[] coordinates = table[i+1];
-                    GamePage.PrintCross(coordinates[0], coordinates[1]);
-                }
-                else if (board[i] == "O")
-                {
-                    int[] coordinates = table[i+1];
-                    GamePage.PrintCircle(coordinates[0], coordinates[1]);
-                }
-            }
-        }
-    }
-    */
-
-    /*
-    private static void PrintBoard(string boardString)
-    {
-        board.Clear();
-
-        for (int i = 0; i < boardString.Length; i++)
-        {
-            board.Add(boardString[i].ToString());
-            if (i == 0)
-            {
-                var temp = board[i].Split('*');
-                board[i] = temp[1];
-            }
-            //if (i > 0 && i % 3 == 0)
-            //{
-            //    board[i] += "\n";
-            //}
-        }
-
-        for (int i = 1; i < board.Count(); i++)
-        {
-            if (board[i] == "X")
-            {
-                int[] coordinates = table[i];
-                GamePage.PrintCross(coordinates[0], coordinates[1]);
-            }
-            else if (board[i] == "O")
-            {
-                int[] coordinates = table[i];
-                GamePage.PrintCircle(coordinates[0], coordinates[1]);
-            }
-        }
-    }
-    */
-
     public static void LoginManager()
     {
         LoginPage.Login();
@@ -181,7 +111,7 @@ public class Program
         }
         client.Send(login);
         isLoginFinished = true;
-        Thread.Sleep(1000);
+        Thread.Sleep(2000);
     }
 
     static void Main(string[] args)
@@ -192,7 +122,7 @@ public class Program
         });
         threadWhileTrue.Start();
         Console.SetWindowSize(40, 30);
-        Console.Title = "TrisApp";
+        Console.Title = "ClientView_1";
         Console.CursorVisible = false;
         Console.OutputEncoding = System.Text.Encoding.UTF8;
         LoginPage.WriteLogo();
@@ -200,6 +130,7 @@ public class Program
         Thread.Sleep(100);
         client.Connect();
         client.OnMessage += Message;
+
 
         table.Add(1, new int[] { 24, 2 });   // casella in alto a sinistra
         table.Add(4, new int[] { 24, 10 });  // casella in mezzo a sinistra
@@ -217,19 +148,17 @@ public class Program
         var data = e.Data;
         if (!(data[0] == '*') && !(data == "+") && data[0] != '?' && data != "login") //il ' * ' è utilizzato per identificare che il dato sia la board
         {
-            if (!isLoginFinished)
+            Console.SetCursorPosition(28, 27);
+            Console.WriteLine("                                            ");
+            Console.SetCursorPosition(28, 27);
+            if (data == "È il tuo turno, digita la tua mossa!: ")
             {
-                Console.SetCursorPosition(28, 21);
-                Console.WriteLine("                              ");
-                Console.SetCursorPosition(28, 21);
-                Console.WriteLine(data);
+                Console.Write(data);
             }
             else
             {
                 Console.WriteLine(data);
             }
-            
-            
         }
         else if (data == "+")
         {
