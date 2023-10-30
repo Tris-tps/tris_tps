@@ -19,6 +19,7 @@ public class Program
     public static WebSocket client;
     private static bool isLoginFinished = false;
     public static Dictionary<int, int[]> table = new Dictionary<int, int[]>();
+    private static string _previousBoard = string.Empty;
 
     private static void MakeMove()
     {
@@ -52,6 +53,47 @@ public class Program
         client.Send(mode);
     }
 
+
+    private static void PrintBoard(string boardString)
+    {
+        // Salva la tabella precedente
+        _previousBoard = string.Join("", board);
+
+        board.Clear();
+
+        for (int i = 0; i < boardString.Length; i++)
+        {
+            board.Add(boardString[i].ToString());
+            if (i == 0)
+            {
+                var temp = board[i].Split('*');
+                board[i] = temp[1];
+            }
+        }
+
+        // Controlla se la tabella è stata aggiornata
+        var currentBoard = string.Join("", board);
+        if (currentBoard != _previousBoard)
+        {
+            // Se la tabella è stata aggiornata, stampa la nuova tabella
+            Console.Clear();
+            for (int i = 0; i < board.Count(); i++)
+            {
+                if (board[i] == "X")
+                {
+                    int[] coordinates = table[i+1];
+                    GamePage.PrintCross(coordinates[0], coordinates[1]);
+                }
+                else if (board[i] == "O")
+                {
+                    int[] coordinates = table[i+1];
+                    GamePage.PrintCircle(coordinates[0], coordinates[1]);
+                }
+            }
+        }
+    }
+
+    /*
     private static void PrintBoard(string boardString)
     {
         board.Clear();
@@ -84,6 +126,7 @@ public class Program
             }
         }
     }
+    */
 
     public static void LoginManager()
     {
