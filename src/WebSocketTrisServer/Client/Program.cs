@@ -15,10 +15,15 @@ public class Program
 {
     private static List<string> board = new List<string>();
     public static WebSocket client;
+    private static bool isLoginFinished = false;
 
     private static void MakeMove()
     {
+        
+
         var move = Console.ReadLine();
+
+        //GamePage.DisplayTable();
 
         if (int.TryParse(move, out int moveInt) && moveInt >= 1 && moveInt <= 9)
             client.Send(move);
@@ -31,13 +36,18 @@ public class Program
 
     private static void ChooseMode(string message)
     {
-        Console.WriteLine(message);
-        var mode = Console.ReadLine();
+        Console.Clear();
+        HomePage.WriteHome();
+        
+        string mode = HomePage.ChooseMode();
 
         if (mode != "a" && mode != "b")
         {
             ChooseMode(message);
         }
+
+        HomePage.Gioca();
+
         client.Send(mode);
     }
 
@@ -74,6 +84,8 @@ public class Program
             LoginManager();
         }
         client.Send(login);
+        isLoginFinished = true;
+        Thread.Sleep(1000);
     }
 
     static void Main(string[] args)
@@ -99,7 +111,19 @@ public class Program
         var data = e.Data;
         if (!(data[0] == '*') && !(data == "+") && data[0] != '?' && data != "login") //il ' * ' è utilizzato per identificare che il dato sia la board
         {
-            Console.WriteLine(data);
+            if (!isLoginFinished)
+            {
+                Console.SetCursorPosition(28, 21);
+                Console.WriteLine("                              ");
+                Console.SetCursorPosition(28, 21);
+                Console.WriteLine(data);
+            }
+            else
+            {
+                Console.WriteLine(data);
+            }
+            
+            
         }
         else if (data == "+")
         {

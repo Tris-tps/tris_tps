@@ -132,6 +132,8 @@ namespace Client
                                                     |   |   
  
 ";
+
+
             string tableBigDoubleLines = @"
                                   
                                     ║               ║              
@@ -158,8 +160,6 @@ namespace Client
                                     ║               ║              
                                     ║               ║               
 ";
-
-
             Console.WriteLine(tableBigDoubleLines);
                 
             PrintCircle(24, 2); //casella in alto a sinistra (1)

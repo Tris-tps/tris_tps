@@ -26,7 +26,7 @@ namespace Client
             Console.WriteLine(homeLogo, Color.Orange);
         }
 
-        public static int ChooseMode()
+        public static string ChooseMode()
         {
             Console.SetCursorPosition(12, 9);
             string settingsPrint = @"
@@ -53,7 +53,7 @@ namespace Client
             Console.SetCursorPosition(24, 18);
             Console.Write(frecciaSelezioneDx);
 
-            int mode = 0;
+            string returnString = "";
             int cont = 0;
 
             ConsoleKey key;
@@ -80,7 +80,7 @@ namespace Client
                     Console.WriteLine("UTENTE vs BOT", Color.White);
                     Console.SetCursorPosition(31, 18);
                     Console.WriteLine("UTENTE vs UTENTE", Color.Red);
-                    mode = 1;
+                    returnString = "b";
                 }
                 else
                 {
@@ -92,13 +92,14 @@ namespace Client
                     Console.Write("UTENTE vs UTENTE", Color.White);
                     Console.SetCursorPosition(31, 20);
                     Console.WriteLine("UTENTE vs BOT", Color.Red);
-                    mode = 2;
+                    returnString = "a";
+
                 }
             } while (key != ConsoleKey.Enter);
 
             Console.SetCursorPosition(0, 25);
 
-            return mode;
+            return returnString;
         }
 
         public static void Gioca()
@@ -125,6 +126,8 @@ namespace Client
                 Console.SetCursorPosition(37, 25);
             } while (key != ConsoleKey.Enter);
 
+
+            Console.Clear();
         }
     }
 }
