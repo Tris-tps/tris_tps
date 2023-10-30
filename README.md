@@ -81,7 +81,7 @@ Questo progetto è rilasciato sotto la licenza [GNU General Public License v3.0]
 
 alsiasi modifica apportata a questo software e successivamente distribuita deve anch'essa essere rilasciata con la stessa licenza open source.
 
-Documentazione UML e Studio di Fattibilità
+## Documentazione UML e Studio di Fattibilità
 
 All'interno di questa repository, troverai una documentazione dettagliata che include diagrammi UML (Unified Modeling Language), tra cui diagrammi delle classi, diagrammi delle sequenze e diagrammi dei casi d'uso. Questa documentazione offre una visione chiara e strutturata della struttura del progetto, delle interazioni tra i componenti e delle funzionalità implementate.
 
