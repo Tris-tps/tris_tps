@@ -5,7 +5,7 @@
 namespace WebSocketTrisServer.Migrations
 {
     /// <inheritdoc />
-    public partial class NomeDellaMigrazione : Migration
+    public partial class Migrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

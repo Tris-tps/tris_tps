@@ -239,7 +239,7 @@ namespace WebSocketTrisServer
                 {
                     currentPlayerID = isPlayer1Turn ? ConnectedClientIDs[0] : ConnectedClientIDs[1];
                 }
-
+                //Print();
                 CheckWin();
                 CheckDraw();
 

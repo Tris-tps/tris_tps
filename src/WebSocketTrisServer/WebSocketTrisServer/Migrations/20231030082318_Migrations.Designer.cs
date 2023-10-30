@@ -10,8 +10,8 @@ using WebSocketTrisServer.Data;
 namespace WebSocketTrisServer.Migrations
 {
     [DbContext(typeof(LoginDbContext))]
-    [Migration("20231029154738_NomeDellaMigrazione")]
-    partial class NomeDellaMigrazione
+    [Migration("20231030082318_Migrations")]
+    partial class Migrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
