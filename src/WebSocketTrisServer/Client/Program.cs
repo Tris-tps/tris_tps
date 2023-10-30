@@ -25,7 +25,7 @@ public class Program
     {
         var move = Console.ReadLine();
 
-        GamePage.DisplayTable();
+        GamePage.DisplayTable(); // Stampa la tabella corrente
 
         if (int.TryParse(move, out int moveInt) && moveInt >= 1 && moveInt <= 9)
             client.Send(move);
@@ -34,6 +34,9 @@ public class Program
             Console.WriteLine("Mossa non valida. Inserisci un numero tra 1 e 9");
             MakeMove();
         }
+
+        // Dopo l'invio della mossa, la tabella corrente viene memorizzata come tabella precedente
+        //PrintBoard(); // Stampa la nuova tabella con la mossa effettuata
     }
 
     private static void ChooseMode(string message)
@@ -53,7 +56,46 @@ public class Program
         client.Send(mode);
     }
 
+    private static void PrintBoard(string boardString)
+    {
+        // Salva la tabella precedente
+        _previousBoard = string.Join("", board);
 
+        board.Clear();
+
+        for (int i = 0; i < boardString.Length; i++)
+        {
+            board.Add(boardString[i].ToString());
+            if (i == 0)
+            {
+                var temp = board[i].Split('*');
+                board[i] = temp[1];
+            }
+        }
+
+        // Controlla se la tabella è stata aggiornata
+        var currentBoard = string.Join("", board);
+        if (currentBoard != _previousBoard)
+        {
+            // Se la tabella è stata aggiornata, stampa la nuova tabella
+            Console.Clear();
+            for (int i = 1; i < board.Count(); i++)
+            {
+                if (board[i] == "X")
+                {
+                    int[] coordinates = table[i];
+                    GamePage.PrintCross(coordinates[0], coordinates[1]);
+                }
+                else if (board[i] == "O")
+                {
+                    int[] coordinates = table[i];
+                    GamePage.PrintCircle(coordinates[0], coordinates[1]);
+                }
+            }
+        }
+    }
+
+    /*
     private static void PrintBoard(string boardString)
     {
         // Salva la tabella precedente
@@ -92,6 +134,7 @@ public class Program
             }
         }
     }
+    */
 
     /*
     private static void PrintBoard(string boardString)
