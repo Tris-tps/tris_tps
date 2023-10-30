@@ -23,7 +23,7 @@ I principali collaboratori per questo progetto sono:
 
 - [Giorgio Citterio](https://github.com/GiorgioCitterio) (email: Giorgio.Citterio@issgreppi.it)
 - [Umberto Colombo](https://github.com/umbecol) (email: Umberto.Colombo@issgreppi.it)
-- [Andrea Panzeri](https://github.com/AndreaPanzeri) (email: Andrea.Panzeri@issgreppi.it)
+- [Andrea Panzeri](https://github.com/AndreaPanzeri) (email: Andrea.Panzeri.2005@issgreppi.it)
 - [Marco Passoni](https://github.com/MarcoPassoni) (email: Marco.Passoni@issgreppi.it)
 - [Gabriele Viganò](https://github.com/GabrieleViga) (email: Gabriele.Vigano@issgreppi.it)
 
