@@ -9,13 +9,12 @@ namespace ClientView
         static void Main(string[] args)
         {
             Console.SetWindowSize(40, 30);
-            Console.Title = "TrisApp";
+            Console.Title = "Client_1";
             Console.CursorVisible = false;
 
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             LoginPage.WriteLogo();
-
             string clientUsername = "";
             clientUsername = LoginPage.Login();
 

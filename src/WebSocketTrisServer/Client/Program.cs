@@ -5,9 +5,12 @@ using WebSocketTrisServer;
 using System.IO;
 using System;
 using WebSocketSharp;
+using Colorful;
+using Console = Colorful.Console;
+using System.Drawing;
 using System.Linq.Expressions;
-
 namespace Client;
+
 public class Program
 {
     private static List<string> board = new List<string>();
@@ -63,14 +66,17 @@ public class Program
 
     private static void LoginManager()
     {
-        Console.WriteLine("Inserisci 'login:username' per effettuare il login.");
-        Console.WriteLine("Inserisci 'register:username' per registrarti.");
+        //Console.WriteLine("Inserisci 'login:username' per effettuare il login.");
+        //Console.Write("Inserisci 'register:username' per registrarti.");
 
-        var login = Console.ReadLine();
+        var login = LoginPage.Login();
+
         if (!login.StartsWith("login:") && !login.StartsWith("register:"))
         {
+            Console.Clear();
             LoginManager();
         }
+        Console.Clear();
         _client.Send(login);
     }
 
@@ -81,7 +87,11 @@ public class Program
             while (true) { }
         });
         threadWhileTrue.Start();
-        Console.WriteLine("client_1");
+        Console.SetWindowSize(40, 30);
+        Console.Title = "TrisApp";
+        Console.CursorVisible = false;
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        LoginPage.WriteLogo();
         _client = new WebSocket("ws://127.0.0.1:5000");
         Thread.Sleep(100);
         _client.Connect();

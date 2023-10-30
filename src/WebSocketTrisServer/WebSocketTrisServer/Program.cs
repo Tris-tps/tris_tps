@@ -136,7 +136,7 @@ namespace WebSocketTrisServer
             _currentPlayerId = ConnectedClientIDs[0];
 
             // Richiedi login o registrazione
-            SendMessage("Effettua il login o registrati.", _currentPlayerId);
+            //SendMessage("Effettua il login o registrati.", _currentPlayerId);
             SendMessage("login", _currentPlayerId);
 
             while (_authenticatedClients.Count < 1)
