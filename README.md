@@ -4,14 +4,13 @@ Benvenuti nella repository del progetto "Tris", una versione del gioco del tris 
 
 ## Collaboratori
 
-
 I principali collaboratori per questo progetto sono:
 
-- Giorgio Citterio (email: Giorgio.Citterio@issgreppi.it)
-- Umberto Colombo (email: Umberto.Colombo@issgreppi.it)
-- Andrea Panzeri (email: Andrea.Panzeri.2005@issgreppi.it)
-- Marco Passoni (email: Marco.Passoni@issgreppi.it)
-- Gabriele Viganò (email: Gabriele.Vigano@issgreppi.it)
+- [Giorgio Citterio](https://github.com/GiorgioCitterio) (email: Giorgio.Citterio@issgreppi.it)
+- [Umberto Colombo](https://github.com/UmbertoColombo) (email: Umberto.Colombo@issgreppi.it)
+- [Andrea Panzeri](https://github.com/AndreaPanzeri) (email: Andrea.Panzeri@issgreppi.it)
+- [Marco Passoni](https://github.com/MarcoPassoni) (email: Marco.Passoni@issgreppi.it)
+- [Gabriele Viganò](https://github.com/GabrieleVigano) (email: Gabriele.Vigano@issgreppi.it)
 
 ## Descrizione Dettagliata del Programma
 
