@@ -292,7 +292,6 @@ namespace WebSocketTrisServer
                 isPlayingWithBot = true;
                 ConnectedClientIDs.Add("Bot");
                 RequestMove(ID);
-                Print();
                 //PlayWithBot();
             }
 
@@ -308,7 +307,6 @@ namespace WebSocketTrisServer
                 indexOfCell--; // Adatto l'indice della cella alla rappresentazione (0-8)
                 Game(indexOfCell, ID);
             }
-
             else if(isPlayingWithBot)
             {
                 //Console.WriteLine("Mossa non valida.");
