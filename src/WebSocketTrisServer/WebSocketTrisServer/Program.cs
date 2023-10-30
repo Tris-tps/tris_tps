@@ -332,7 +332,12 @@ namespace WebSocketTrisServer
                 string username = inputParts[1];
                 if (action == "login")
                 {
-                    if (!_login.AuthenticateUser(username))
+                    if (AuthenticatedClients.Count != 0 && AuthenticatedClients[0] == username)
+                    {
+                        serviceHost.Sessions.SendTo($"L'utente {username} ha già fatto il login da un altro dispositivo", ID);
+                        serviceHost.Sessions.SendTo("login", ID);
+                    }
+                    else if (!_login.AuthenticateUser(username))
                     {
                         serviceHost.Sessions.SendTo($"Utente {username} non registrato", ID);
                         serviceHost.Sessions.SendTo("login", ID);
