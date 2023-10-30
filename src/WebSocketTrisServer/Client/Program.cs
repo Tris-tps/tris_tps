@@ -9,6 +9,8 @@ using Colorful;
 using Console = Colorful.Console;
 using System.Drawing;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
 namespace Client;
 
 public class Program
@@ -16,14 +18,13 @@ public class Program
     private static List<string> board = new List<string>();
     public static WebSocket client;
     private static bool isLoginFinished = false;
+    public static Dictionary<int, int[]> table = new Dictionary<int, int[]>();
 
     private static void MakeMove()
     {
-        
-
         var move = Console.ReadLine();
 
-        //GamePage.DisplayTable();
+        GamePage.DisplayTable();
 
         if (int.TryParse(move, out int moveInt) && moveInt >= 1 && moveInt <= 9)
             client.Send(move);
@@ -54,6 +55,7 @@ public class Program
     private static void PrintBoard(string boardString)
     {
         board.Clear();
+
         for (int i = 0; i < boardString.Length; i++)
         {
             board.Add(boardString[i].ToString());
@@ -62,15 +64,24 @@ public class Program
                 var temp = board[i].Split('*');
                 board[i] = temp[1];
             }
-            if (i > 0 && i % 3 == 0)
-            {
-                board[i] += "\n";
-            }
+            //if (i > 0 && i % 3 == 0)
+            //{
+            //    board[i] += "\n";
+            //}
         }
 
-        for (int i = 0; i < board.Count; i++)
+        for (int i = 1; i < board.Count(); i++)
         {
-            Console.Write(board[i]);
+            if (board[i] == "X")
+            {
+                int[] coordinates = table[i];
+                GamePage.PrintCross(coordinates[0], coordinates[1]);
+            }
+            else if (board[i] == "O")
+            {
+                int[] coordinates = table[i];
+                GamePage.PrintCircle(coordinates[0], coordinates[1]);
+            }
         }
     }
 
@@ -104,6 +115,16 @@ public class Program
         Thread.Sleep(100);
         client.Connect();
         client.OnMessage += Message;
+
+        table.Add(1, new int[] { 24, 2 });   // casella in alto a sinistra
+        table.Add(4, new int[] { 24, 10 });  // casella in mezzo a sinistra
+        table.Add(7, new int[] { 24, 18 });  // casella in basso a sinistra
+        table.Add(2, new int[] { 40, 2 });   // casella in alto al centro
+        table.Add(5, new int[] { 40, 10 });  // casella in mezzo al centro
+        table.Add(8, new int[] { 40, 18 });  // casella in basso al centro
+        table.Add(3, new int[] { 56, 2 });   // casella in alto a destra
+        table.Add(6, new int[] { 56, 10 });  // casella in mezzo a destra
+        table.Add(9, new int[] { 56, 18 });  // casella in basso a destra
     }
 
     private static void Message(object? obj, MessageEventArgs e)

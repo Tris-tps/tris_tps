@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using Colorful;
 using Console = Colorful.Console;
 using System.Drawing;
+using System.Xml.Schema;
 
 namespace Client
 {
     public class GamePage
     {
-        public static void PrintCircle(int left, int top)
+        public static void PrintCircle(int left, int top) //O
         {
             for (int i = 0; i < 6; i++)
             {
@@ -47,7 +48,7 @@ namespace Client
                 }
             }
         }
-        public static void PrintCross(int left, int top)
+        public static void PrintCross(int left, int top) //X
         {
             for (int i = 0; i < 6; i++)
             {
@@ -83,7 +84,7 @@ namespace Client
                 }
             }
         }
-        public static int DisplayTable()
+        public static void DisplayTable()
         {
             string tableDoubleLines = @"  
                                                     ║       ║      
@@ -161,24 +162,24 @@ namespace Client
                                     ║               ║               
 ";
             Console.WriteLine(tableBigDoubleLines);
-                
-            PrintCircle(24, 2); //casella in alto a sinistra (1)
-            PrintCross(24, 10); //casella in mezzo a sinistra (4)
-            PrintCircle(24, 18); //casella in basso a sinistra (7)
 
-            PrintCross(40, 2); //casella in alto al centro (2)
-            PrintCircle(40, 10); //casella in mezzo al centro (5)
-            PrintCross(40, 18); //casella in basso al centro (8)
+            //PrintCircle(24, 2); //casella in alto a sinistra (1)
+            //PrintCross(24, 10); //casella in mezzo a sinistra (4)
+            //PrintCircle(24, 18); //casella in basso a sinistra (7)
 
-            PrintCircle(56, 2); //casella in alto a destra (3)
-            PrintCross(56, 10); //casella in mezzo a destra (5)
-            PrintCircle(56, 18); //casella in basso a destra (9)
+            //PrintCross(40, 2); //casella in alto al centro (2)
+            //PrintCircle(40, 10); //casella in mezzo al centro (5)
+            //PrintCross(40, 18); //casella in basso al centro (8)
+
+            //PrintCircle(56, 2); //casella in alto a destra (3)
+            //PrintCross(56, 10); //casella in mezzo a destra (5)
+            //PrintCircle(56, 18); //casella in basso a destra (9)
 
 
-            Console.SetCursorPosition(0, 26);
-            Console.WriteLine("1 for win, 2 for draw, 3 for lose, >3 for gays");
-            int i = int.Parse(Console.ReadLine());
-            return i;
+            //Console.SetCursorPosition(0, 26);
+            //Console.WriteLine("1 for win, 2 for draw, 3 for lose, >3 for gays");
+            //int i = int.Parse(Console.ReadLine());
+            //return i;
         }
     }
 }
