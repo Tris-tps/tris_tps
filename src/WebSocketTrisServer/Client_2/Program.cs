@@ -21,7 +21,6 @@ public class Program
 
     public static void ChooseMode(string message)
     {
-        Console.WriteLine("ci siamo?");
         Console.WriteLine(message);
         var mode = Console.ReadLine();
 
