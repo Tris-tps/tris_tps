@@ -1,28 +1,22 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Numerics;
+using System.Linq;
 
-namespace WebSocketTrisServer
+namespace TicTacToe
 {
-    public class Bot
+    class TicTacToeGame
     {
-        //public static char[,] ChangeState(char[] b)
-        //{
-        //    char[,] matrix = new char[3, 3];
-        //    int index = 0;
+        public static char[] board = Enumerable.Repeat('#', 9).ToArray();
 
-        //    for (int i = 0; i < 3; i++)
-        //    {
-        //        for (int j = 0; j < 3; j++)
-        //        {
-        //            matrix[i, j] = b[index];
-        //            index++;
-        //        }
-        //    }
-        //    return matrix;
-        //}
+        public static void PrintBoard()
+        {
+            Console.WriteLine($"{board[0]} | {board[1]} | {board[2]}");
+            Console.WriteLine("--+---+--");
+            Console.WriteLine($"{board[3]} | {board[4]} | {board[5]}");
+            Console.WriteLine("--+---+--");
+            Console.WriteLine($"{board[6]} | {board[7]} | {board[8]}");
+        }
 
-        public static int BotMove(char[] board)
+        public static int BotMove()
         {
             int bestScore = int.MinValue;
             int move = -1;
@@ -56,7 +50,6 @@ namespace WebSocketTrisServer
                 return -10;
             else if (CheckDraw(board))
                 return 0;
-
 
             if (isMaximizing)
             {
@@ -103,6 +96,57 @@ namespace WebSocketTrisServer
         public static bool CheckDraw(char[] b)
         {
             return !b.Contains('#');
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            TicTacToeGame.PrintBoard();
+            while (true)
+            {
+                Console.Write("Inserisci la tua mossa (da 1 a 9): ");
+                string input = Console.ReadLine();
+
+                if (int.TryParse(input, out int move) && move >= 1 && move <= 9 && TicTacToeGame.board[move - 1] == '#')
+                {
+                    TicTacToeGame.board[move - 1] = 'X';
+
+                    //TicTacToeGame.PrintBoard();
+
+                    if (TicTacToeGame.CheckWin(TicTacToeGame.board, 'X'))
+                    {
+                        Console.WriteLine("Hai vinto!");
+                        break;
+                    }
+                    else if (TicTacToeGame.CheckDraw(TicTacToeGame.board))
+                    {
+                        Console.WriteLine("La partita è finita in pareggio.");
+                        break;
+                    }
+
+                    int botMove = TicTacToeGame.BotMove();
+                    TicTacToeGame.board[botMove] = 'O';
+
+                    TicTacToeGame.PrintBoard();
+
+                    if (TicTacToeGame.CheckWin(TicTacToeGame.board, 'O'))
+                    {
+                        Console.WriteLine("Il bot ha vinto!");
+                        break;
+                    }
+                    else if (TicTacToeGame.CheckDraw(TicTacToeGame.board))
+                    {
+                        Console.WriteLine("La partita è finita in pareggio.");
+                        break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Mossa non valida, riprova.");
+                }
+            }
         }
     }
 }
