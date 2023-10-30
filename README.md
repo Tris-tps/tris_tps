@@ -12,6 +12,10 @@ I principali collaboratori per questo progetto sono:
 - [Marco Passoni](https://github.com/MarcoPassoni) (email: Marco.Passoni@issgreppi.it)
 - [Gabriele Viganò](https://github.com/GabrieleViga) (email: Gabriele.Vigano@issgreppi.it)
 
+### Motivo del Progetto
+
+Il progetto è stato ideato come parte integrante del percorso educativo della classe 5iB della scuola [Villa Greppi](https://istitutogreppi.edu.it/) di Monticello Brianza (LC). L'obiettivo principale è stato quello di applicare le conoscenze acquisite durante il corso di studi, mettendo in pratica le competenze informatiche nello sviluppo di un'applicazione funzionale e divertente.
+
 ## Descrizione Dettagliata del Programma
 
 ### Introduzione
