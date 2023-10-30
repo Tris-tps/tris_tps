@@ -14,14 +14,14 @@ namespace Client;
 public class Program
 {
     private static List<string> board = new List<string>();
-    private static WebSocket _client;
+    public static WebSocket client;
 
     private static void MakeMove()
     {
         var move = Console.ReadLine();
 
         if (int.TryParse(move, out int moveInt) && moveInt >= 1 && moveInt <= 9)
-            _client.Send(move);
+            client.Send(move);
         else
         {
             Console.WriteLine("Mossa non valida. Inserisci un numero tra 1 e 9");
@@ -38,7 +38,7 @@ public class Program
         {
             ChooseMode(message);
         }
-        _client.Send(mode);
+        client.Send(mode);
     }
 
     private static void PrintBoard(string boardString)
@@ -64,18 +64,16 @@ public class Program
         }
     }
 
-    private static void LoginManager()
+    public static void LoginManager()
     {
-        //Console.WriteLine("Inserisci 'login:username' per effettuare il login.");
-        //Console.Write("Inserisci 'register:username' per registrarti.");
-
-        var login = LoginPage.Login();
+        LoginPage.Login();
+        string login = Console.ReadLine();
 
         if (!login.StartsWith("login:") && !login.StartsWith("register:"))
         {
             LoginManager();
         }
-        _client.Send(login);
+        client.Send(login);
     }
 
     static void Main(string[] args)
@@ -90,10 +88,10 @@ public class Program
         Console.CursorVisible = false;
         Console.OutputEncoding = System.Text.Encoding.UTF8;
         LoginPage.WriteLogo();
-        _client = new WebSocket("ws://127.0.0.1:5000");
+        client = new WebSocket("ws://127.0.0.1:5000");
         Thread.Sleep(100);
-        _client.Connect();
-        _client.OnMessage += Message;
+        client.Connect();
+        client.OnMessage += Message;
     }
 
     private static void Message(object? obj, MessageEventArgs e)
