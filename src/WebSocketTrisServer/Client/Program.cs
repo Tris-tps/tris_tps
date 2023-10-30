@@ -139,7 +139,6 @@ public class Program
         table.Add(9, new int[] { 56, 18 });  // casella in basso a destra
     }
 
-    /*
     private static void Message(object? obj, MessageEventArgs e)
     {
         var data = e.Data;
@@ -190,8 +189,9 @@ public class Program
             ResultsPage.DisplayDraw();
         }
     }
-    */
 
+
+    /*
     private static void Message(object? obj, MessageEventArgs e)
     {
         var data = e.Data;
@@ -247,6 +247,8 @@ public class Program
                 }
                 break;
         }
+           
     }
+    */
 
 }
