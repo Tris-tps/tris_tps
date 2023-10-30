@@ -17,14 +17,12 @@ public class Program
 {
     private static List<string> board = new List<string>();
     public static WebSocket client;
-    private static bool isLoginFinished = false;
     public static Dictionary<int, int[]> table = new Dictionary<int, int[]>();
     private static string _previousBoard = string.Empty;
 
     private static void MakeMove()
     {
         var move = Console.ReadLine();
-
 
         if (int.TryParse(move, out int moveInt) && moveInt >= 1 && moveInt <= 9)
         {
@@ -110,7 +108,6 @@ public class Program
             LoginManager();
         }
         client.Send(login);
-        isLoginFinished = true;
         Thread.Sleep(2000);
     }
 
@@ -131,7 +128,6 @@ public class Program
         client.Connect();
         client.OnMessage += Message;
 
-
         table.Add(1, new int[] { 24, 2 });   // casella in alto a sinistra
         table.Add(4, new int[] { 24, 10 });  // casella in mezzo a sinistra
         table.Add(7, new int[] { 24, 18 });  // casella in basso a sinistra
@@ -143,6 +139,7 @@ public class Program
         table.Add(9, new int[] { 56, 18 });  // casella in basso a destra
     }
 
+    /*
     private static void Message(object? obj, MessageEventArgs e)
     {
         var data = e.Data;
@@ -177,5 +174,79 @@ public class Program
         {
             PrintBoard(data);
         }
+        else if(data == "Hai Vinto!")
+        {
+            Console.Clear();
+            ResultsPage.DisplayWin();
+        }
+        else if (data == "Hai Perso!")
+        {
+            Console.Clear();
+            ResultsPage.DisplayLose();
+        }
+        else if (data == "La partita è finita in pareggio")
+        {
+            Console.Clear();
+            ResultsPage.DisplayDraw();
+        }
     }
+    */
+
+    private static void Message(object? obj, MessageEventArgs e)
+    {
+        var data = e.Data;
+        Console.SetCursorPosition(28, 27);
+        Console.WriteLine("                                            ");
+        Console.SetCursorPosition(28, 27);
+
+        switch (data)
+        {
+            case "È il tuo turno, digita la tua mossa!: ":
+                Console.Write(data);
+                break;
+
+            case "+":
+                MakeMove();
+                break;
+
+            case string s when s.StartsWith('?'):
+                var parts = s.Split('?');
+                ChooseMode(parts[1] + parts[2]);
+                break;
+
+            case "login":
+                LoginManager();
+                break;
+
+            case string s when s.StartsWith('*'):
+                PrintBoard(s);
+                break;
+
+            case "Hai Vinto!":
+                Console.Clear();
+                ResultsPage.DisplayWin();
+                break;
+
+            case "Hai Perso!":
+                Console.Clear();
+                ResultsPage.DisplayLose();
+                break;
+
+            case "La partita è finita in pareggio":
+                Console.Clear();
+                ResultsPage.DisplayDraw();
+                break;
+
+            default:
+                if (!(data[0] == '*') && !(data == "+") && data[0] != '?' && data != "login")
+                {
+                    if (data != "+")
+                    {
+                        Console.WriteLine(data);
+                    }
+                }
+                break;
+        }
+    }
+
 }
