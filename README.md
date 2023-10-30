@@ -13,7 +13,7 @@
 [![UML Class Diagram](https://img.shields.io/badge/UML_Class_Diagram-008080.svg?style=for-the-badge)](https://en.wikipedia.org/wiki/Class_diagram)
 [![UML Sequence Diagram](https://img.shields.io/badge/UML_Sequence_Diagram-800080.svg?style=for-the-badge)](https://en.wikipedia.org/wiki/Sequence_diagram)
 [![UML Use Case](https://img.shields.io/badge/UML_Use_Case-FFFF00.svg?style=for-the-badge)](https://en.wikipedia.org/wiki/Use_case_diagram)
-[![Xiournal](https://img.shields.io/badge/Xiournal-008000.svg?style=for-the-badge)](link_al_sito_di_Xiournal)
+[![Xiournal](https://img.shields.io/badge/Xournalpp-800080.svg?style=for-the-badge)](https://xournalpp.github.io/)
 
 
 Benvenuti nella repository del progetto "Tris", una versione del gioco del tris (Tic Tac Toe) implementato in C# Console. Questa implementazione consente ai giocatori di collegarsi tramite un server Sql Lite per sfidarsi o giocare contro un avversario automatico basato sull'algoritmo Minimax. Il codice è rilasciato sotto la licenza [GNU General Public License v3.0](https://opensource.org/licenses/GPL-3.0).
