@@ -80,16 +80,21 @@ namespace Client
             Console.WriteLine(loginText, Color.White);
 
             string loginUsernameBorder = @"
-                                   ╭───────────────╮
-                       USERNAME =  │               │
-                                   ╰───────────────╯
+                           ╭──────────────────────────────────╮
+               USERNAME =  │                                  │
+                           ╰──────────────────────────────────╯
                                            ";
 
-            Console.SetCursorPosition(34, 18);
+            Console.SetCursorPosition(0, 15);
 
             Console.Write(loginUsernameBorder);
 
-            Console.SetCursorPosition(37, 17);
+            Console.SetCursorPosition(14, 24);
+            Console.WriteLine("Inserisci 'login:username' per effettuare il login.");
+            Console.SetCursorPosition(14, 25);
+            Console.Write("Inserisci 'register:username' per registrarti.");
+
+            Console.SetCursorPosition(29, 17);
 
             string username = "";
             int cont = -1;
@@ -115,13 +120,13 @@ namespace Client
                 {
                     Console.SetCursorPosition(22, 21);
                     Console.WriteLine("Username Sbagliato. Reinserire le credenziali");
-                    Console.SetCursorPosition(37, 17);
-                    Console.Write("          ");
-                    Console.SetCursorPosition(37, 17);
+                    Console.SetCursorPosition(29, 17);
+                    Console.Write("                                ");
+                    Console.SetCursorPosition(29, 17);
                 }
             } while (state == true);
 
-            Console.SetCursorPosition(37, 17);
+            Console.SetCursorPosition(29, 17);
 
             return username;
 
