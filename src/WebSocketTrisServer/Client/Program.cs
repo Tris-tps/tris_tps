@@ -19,6 +19,7 @@ public class Program
     public static WebSocket client;
     public static Dictionary<int, int[]> table = new Dictionary<int, int[]>();
     private static string _previousBoard = string.Empty;
+    private static bool isGameFinished  = false;
 
     private static void MakeMove()
     {
@@ -170,7 +171,7 @@ public class Program
         {
             LoginManager();
         }
-        else if (data[0] == '*')
+        else if (data[0] == '*' && !isGameFinished)
         {
             PrintBoard(data);
         }
@@ -178,16 +179,19 @@ public class Program
         {
             Console.Clear();
             ResultsPage.DisplayWin();
+            isGameFinished = !isGameFinished;
         }
         else if (data == "Hai Perso!")
-        {
+        { 
             Console.Clear();
             ResultsPage.DisplayLose();
+            isGameFinished = !isGameFinished;
         }
         else if (data == "La partita è finita in pareggio")
         {
             Console.Clear();
             ResultsPage.DisplayDraw();
+            isGameFinished = !isGameFinished;
         }
     }
 
