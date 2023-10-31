@@ -9,7 +9,6 @@ using Colorful;
 using Console = Colorful.Console;
 using System.Drawing;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Client;
 
@@ -169,6 +168,13 @@ public class Program
         else if (data == "login")
         {
             LoginManager();
+        }
+        else if (data == "Mossa non valida. Inserisci un'altra mossa.")
+        {
+            // Gestisci il messaggio di errore qui (ad esempio, stampalo senza cancellare la tabella)
+            Console.SetCursorPosition(22, 27);
+            Console.WriteLine(data);
+            MakeMove(); // Richiedi una nuova mossa
         }
         else if (data[0] == '*')
         {
