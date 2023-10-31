@@ -286,17 +286,16 @@ namespace WebSocketTrisServer
 
             if (_isPlayingWithBot && _playerHasMoved)
             {
-                int botIndex = Bot.BotMove(board);
-                board[botIndex] = 'O';
-                CheckWin();
-                _playerHasMoved = !_playerHasMoved;
-                Print();
-
                 if (_winOrDrawBool)
                 {
                     return;
                 }
 
+                int botIndex = Bot.BotMove(board);
+                board[botIndex] = 'O';
+                CheckWin();
+                _playerHasMoved = !_playerHasMoved;
+                Print();
                 RequestMove(ConnectedClientIDs[0]);
             }
             else if (!_isPlayingWithBot)
