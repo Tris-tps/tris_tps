@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using Colorful;
 using Console = Colorful.Console;
 using System.Drawing;
+using WebSocketTrisServer;
 
-namespace ClientView
+namespace Client
 {
     public class LoginPage
     {
@@ -62,7 +63,7 @@ namespace ClientView
         //    }
         //}
 
-        public static string Login()
+        public static void Login()
         {
             //Thread tZucche = new Thread(ThreadZucche); // Passa il riferimento del metodo, senza chiamare il metodo
             //tZucche.Start();
@@ -80,50 +81,39 @@ namespace ClientView
             Console.WriteLine(loginText, Color.White);
 
             string loginUsernameBorder = @"
-                                   ╭───────────────╮
-                       USERNAME =  │               │
-                                   ╰───────────────╯
+                           ╭──────────────────────────────────╮
+               USERNAME =  │                                  │
+                           ╰──────────────────────────────────╯
                                            ";
+
+            Console.SetCursorPosition(0, 15);
 
             Console.Write(loginUsernameBorder);
 
-            Console.SetCursorPosition(37, 17);
+            Console.SetCursorPosition(17, 21);
+            Console.WriteLine("Inserisci 'login:username' per effettuare il login.");
+            Console.SetCursorPosition(17, 23);
+            Console.WriteLine("Inserisci 'register:username' per registrarti.");
 
-            string username = "";
-            int cont = -1;
-            bool state = true;
-            ConsoleKeyInfo collegamento;
-            do
-            {
-                collegamento = Console.ReadKey(true);
-                username = Console.ReadLine();
-                //controllo sullo username
-                cont++;
+            Console.SetCursorPosition(29, 17);
 
-                if (cont==1)
-                {
-                    Console.SetCursorPosition(22, 21);
-                    Console.WriteLine("                                                 ");
-                    Console.SetCursorPosition(22, 21);
-                    Console.WriteLine("Username Corretto. Attendi per accedere");
-                    Thread.Sleep(2000);
-                    state = false;
-                }
-                else
-                {
-                    Console.SetCursorPosition(22, 21);
-                    Console.WriteLine("Username Sbagliato. Reinserire le credenziali");
-                    Console.SetCursorPosition(37, 17);
-                    Console.Write("          ");
-                    Console.SetCursorPosition(37, 17);
-                }
-            } while (state == true);
-
-            Console.SetCursorPosition(37, 17);
-
-            return username;
-
+            //string login = Console.ReadLine();
+            //if (!login.StartsWith("login:") && !login.StartsWith("register:"))
+            //{
+            //    Console.SetCursorPosition(22, 21);
+            //    Console.WriteLine(message);
+            //    Console.SetCursorPosition(29, 17);
+            //    Console.Write("                                ");
+            //    Console.SetCursorPosition(29, 17);
+            //    Program.LoginManager(message);
+            //}
+            //Program.client.Send(login);
+            //Console.SetCursorPosition(22, 21);
+            //Console.WriteLine("                                                 ");
+            //Console.SetCursorPosition(22, 21);
+            //Console.WriteLine(message);
+            //Thread.Sleep(2000);
+            //Console.SetCursorPosition(29, 17);
         }
-
     }
 }

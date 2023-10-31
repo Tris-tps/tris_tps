@@ -7,12 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Colorful.Console" Version="1.2.15" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\WebSocketTrisServer\WebSocketTrisServer.csproj" />
-  </ItemGroup>
-
 </Project>
