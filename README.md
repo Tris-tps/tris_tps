@@ -1,36 +1,66 @@
-# Tris - Gioco del Tris con Intelligenza Artificiale
+# Tris - Gioco del Tris in C# Console con Intelligenza Artificiale
 
-Benvenuti nella repository del progetto "Tris", una versione del gioco del tris (Tic Tac Toe) che va oltre la semplice implementazione delle regole di base. Questo gioco è stato sviluppato in Java utilizzando Android Studio per la parte grafica ed è rilasciato sotto la licenza [GNU General Public License v3.0](https://opensource.org/licenses/GPL-3.0).
+[![C#](https://img.shields.io/badge/C%23-FFA500.svg?style=for-the-badge&logo=c-sharp&logoColor=white)](https://docs.microsoft.com/en-us/dotnet/csharp/)
+[![SQLite](https://img.shields.io/badge/SQLite-800000.svg?style=for-the-badge&logo=sqlite&logoColor=white)](https://www.sqlite.org/index.html)
+[![WebSocketSharp](https://img.shields.io/badge/WebSocketSharp-32CD32.svg?style=for-the-badge)](https://github.com/sta/websocket-sharp)
+[![.NET Core 7.0](https://img.shields.io/badge/.NET_Core-FF1493.svg?style=for-the-badge&logo=.net&logoColor=white)](https://dotnet.microsoft.com/download/dotnet/3.1)
+[![Colorful.Console](https://img.shields.io/badge/Colorful.Console-00FFFF.svg?style=for-the-badge)](https://github.com/tomakita/Colorful.Console)
+[![Microsoft.EntityFrameworkCore](https://img.shields.io/badge/Microsoft.EntityFrameworkCore-7FFF00.svg?style=for-the-badge)](https://docs.microsoft.com/en-us/ef/)
+[![Microsoft.EntityFrameworkCore.Design](https://img.shields.io/badge/Microsoft.EntityFrameworkCore.Design-DC143C.svg?style=for-the-badge)](https://docs.microsoft.com/en-us/ef/)
+[![Microsoft.EntityFrameworkCore.Sqlite](https://img.shields.io/badge/Microsoft.EntityFrameworkCore.Sqlite-4682B4.svg?style=for-the-badge)](https://docs.microsoft.com/en-us/ef/)
+[![Microsoft.EntityFrameworkCore.Tools](https://img.shields.io/badge/Microsoft.EntityFrameworkCore.Tools-9400D3.svg?style=for-the-badge)](https://docs.microsoft.com/en-us/ef/)
+[![UML](https://img.shields.io/badge/UML-000080.svg?style=for-the-badge)](https://en.wikipedia.org/wiki/Unified_Modeling_Language)
+[![UML Class Diagram](https://img.shields.io/badge/UML_Class_Diagram-008080.svg?style=for-the-badge)](https://en.wikipedia.org/wiki/Class_diagram)
+[![UML Sequence Diagram](https://img.shields.io/badge/UML_Sequence_Diagram-800080.svg?style=for-the-badge)](https://en.wikipedia.org/wiki/Sequence_diagram)
+[![UML Use Case](https://img.shields.io/badge/UML_Use_Case-FFFF00.svg?style=for-the-badge)](https://en.wikipedia.org/wiki/Use_case_diagram)
+[![Xiournal](https://img.shields.io/badge/Xournalpp-800080.svg?style=for-the-badge)](https://xournalpp.github.io/)
+
+
+Benvenuti nella repository del progetto "Tris", una versione del gioco del tris (Tic Tac Toe) implementato in C# Console. Questa implementazione consente ai giocatori di collegarsi tramite un server Sql Lite per sfidarsi o giocare contro un avversario automatico basato sull'algoritmo Minimax. Il codice è rilasciato sotto la licenza [GNU General Public License v3.0](https://opensource.org/licenses/GPL-3.0).
 
 ## Collaboratori
 
 I principali collaboratori per questo progetto sono:
+Per domande, problemi o suggerimenti, puoi contattare direttamente i principali collaboratori del progetto o aprire una issue.
+- [Giorgio Citterio](https://github.com/GiorgioCitterio) (email: Giorgio.Citterio@issgreppi.it)
+- [Umberto Colombo](https://github.com/umbecol) (email: Umberto.Colombo@issgreppi.it)
+- [Andrea Panzeri](https://github.com/AndreaPanzeri) (email: Andrea.Panzeri.2005@issgreppi.it)
+- [Marco Passoni](https://github.com/MarcoPassoni) (email: Marco.Passoni@issgreppi.it)
+- [Gabriele Viganò](https://github.com/GabrieleViga) (email: Gabriele.Vigano@issgreppi.it)
 
-- Giorgio Citterio 
-- Umberto Colombo 
-- Andrea Panzeri
-- Marco Passoni
-- Gabriele Viganò
+### Motivo del Progetto
 
-## Descrizione
+Il progetto è stato ideato come parte integrante del percorso educativo della classe 5iB della scuola [Villa Greppi](https://istitutogreppi.edu.it/) di Monticello Brianza (LC). L'obiettivo principale è stato quello di applicare le conoscenze acquisite durante il corso di studi, mettendo in pratica le competenze informatiche nello sviluppo di un'applicazione funzionale e divertente.
 
-Questo progetto non è solo una semplice implementazione del gioco del tris, ma include anche un giocatore AI basato su machine learning che aggiunge una dimensione interessante al gioco. 
+## Descrizione Dettagliata del Programma
 
-### Implementazione del Tris
+### Introduzione
+Il progetto "Tris" è un'implementazione avanzata del classico gioco del tris (Tic Tac Toe) sviluppato in C# Console. Va oltre la semplice rappresentazione delle regole di base, offrendo un'esperienza interattiva in grado di connettere due giocatori attraverso un server Sql Lite. Inoltre, presenta la possibilità di sfidare un avversario virtuale, il quale sfrutta un'intelligenza artificiale basata sull'algoritmo Minimax per creare partite competitive e coinvolgenti.
 
-Il gioco offre un'implementazione completa delle regole classiche del tris, consentendo a due giocatori di sfidarsi su uno stesso dispositivo. Puoi giocare con un amico o sfidare la nostra AI avanzata!
+### Implementazione del Gioco
+Questo progetto offre un'implementazione esaustiva e efficiente delle regole classiche del tris. Attraverso la console C#, consente a due giocatori di competere sullo stesso dispositivo o attraverso una connessione di rete. La struttura modulare e flessibile del codice consente l'interazione multi-client attraverso il server Sql Lite, garantendo un'esperienza di gioco fluida e intuitiva.
 
-### Giocatore AI
+### Giocatore AI e Algoritmo Minimax
+Una delle caratteristiche più rilevanti di questo progetto è la presenza di un giocatore AI basato sull'algoritmo Minimax. Questa intelligenza artificiale apprende dalle mosse precedenti e calcola le mosse ottimali, valutando le possibili strategie di gioco per massimizzare le probabilità di vittoria o minimizzare le possibilità di sconfitta. L'algoritmo Minimax, implementato con cura e precisione, analizza in profondità le possibili mosse e crea un'esperienza di gioco sfidante, adattandosi alle scelte del giocatore umano.
 
-La caratteristica più intrigante del progetto è il giocatore AI. Questo giocatore AI utilizza un algoritmo basato su machine learning specifico per il gioco del tris, noto come l'algoritmo Tic Tac Toe. L'AI apprende dalle mosse precedenti e prende decisioni basate sull'esperienza accumulata. È in grado di sfidare gli esseri umani in modo intelligente e sempre più competitivo con il passare del tempo.
+### Ottimizzazione delle Prestazioni
+Oltre all'implementazione di un'IA sofisticata, il progetto mira a ottimizzare le prestazioni attraverso un design attento e una gestione efficiente delle risorse. L'architettura del codice è stata sviluppata considerando l'ottimizzazione della memoria e l'efficienza algoritmica, garantendo un'esperienza di gioco fluida e reattiva.
 
-## Algoritmo Tic Tac Toe
+### Espandibilità e Personalizzazione
+La struttura modulare del codice permette una facile espandibilità e personalizzazione del gioco. I programmatori possono facilmente aggiungere nuove funzionalità, ottimizzare le strategie dell'IA o modificare l'interfaccia utente per adattarla alle proprie esigenze. L'architettura flessibile consente agli sviluppatori di estendere il progetto in molteplici direzioni, incoraggiando la creatività e l'innovazione nel mondo del gioco del tris.
 
-L'algoritmo Tic Tac Toe è un componente centrale del nostro giocatore AI. Questo algoritmo di machine learning è stato progettato appositamente per il gioco del tris. Funziona analizzando le mosse precedenti e cercando di prevedere la mossa successiva ottimale in base alle informazioni disponibili. Questo consente al giocatore AI di migliorare costantemente le sue prestazioni man mano che gioca più partite.
+### Sicurezza e Affidabilità
+La sicurezza e l'affidabilità sono elementi chiave integrati nel progetto. Si pone particolare attenzione nella gestione delle connessioni e nel controllo delle operazioni di gioco, garantendo un'esperienza priva di problemi e sicura per tutti gli utenti.
+
+### Roadmap e Sviluppo Futuro
+Il progetto è in costante evoluzione, con una roadmap chiara e obiettivi definiti per migliorare ulteriormente l'esperienza di gioco. Le future implementazioni prevedono l'introduzione di nuove strategie per l'IA, miglioramenti nell'interfaccia utente e l'espansione delle funzionalità di gioco per offrire una varietà di modalità e sfide.
+
+### Conclusioni
+In conclusione, il progetto "Tris" offre non solo il gioco classico del tris ma anche una piattaforma di gioco avanzata che unisce divertimento, sfida e innovazione. L'implementazione dell'IA basata sull'algoritmo Minimax rende il gioco coinvolgente e stimolante, offrendo agli utenti un'esperienza appassionante e strategica.
 
 ## Come contribuire
 
-Siamo lieti di accogliere contributi da parte della comunità. Se desideri contribuire a questo progetto, puoi farlo in vari modi:
+Siamo aperti ai contributi dalla comunità. Se desideri contribuire a questo progetto, puoi farlo in vari modi:
 
 - Segnalando bug o problemi tramite le issues.
 - Aggiungendo nuove funzionalità o migliorando quelle esistenti con pull request.
@@ -42,8 +72,8 @@ Siamo lieti di accogliere contributi da parte della comunità. Se desideri contr
 Per iniziare a giocare al Tris con l'Intelligenza Artificiale, segui questi semplici passaggi:
 
 1. Clona questo repository sul tuo computer.
-2. Apri il progetto in Android Studio.
-3. Esegui il progetto su un emulatore o su un dispositivo Android collegato.
+2. Esegui il progetto utilizzando un ambiente che supporta C#.
+3. Collega i client tramite il server Sql Lite per iniziare a giocare o affrontare il bot AI.
 
 ## Ringraziamenti
 
@@ -55,8 +85,12 @@ Questo progetto è rilasciato sotto la licenza [GNU General Public License v3.0]
 
 È importante notare che, in virtù della licenza GNU GPL v3.0, qualsiasi modifica apportata a questo software e successivamente distribuita deve anch'essa essere rilasciata con la stessa licenza open source.
 
-Per ulteriori dettagli legali sulla licenza, consulta il file LICENSE incluso nella repository.
+## Documentazione UML e Studio di Fattibilità
 
-Buon divertimento e buona codifica!
+All'interno di questa repository, troverai una documentazione dettagliata che include diagrammi UML (Unified Modeling Language), tra cui diagrammi delle classi, diagrammi delle sequenze e diagrammi dei casi d'uso. Questa documentazione offre una visione chiara e strutturata della struttura del progetto, delle interazioni tra i componenti e delle funzionalità implementate.
+
+Inoltre, è disponibile uno studio di fattibilità che analizza l'idoneità del progetto "Tris" e delle sue funzionalità. Questo studio fornisce una valutazione approfondita delle risorse necessarie, dei vincoli tecnici e delle potenziali sfide da affrontare durante lo sviluppo e la distribuzione del gioco.
+
+La documentazione UML e lo studio di fattibilità sono strumenti cruciali per comprendere il progetto in modo approfondito e pianificare le fasi future del suo sviluppo.
 
 ---

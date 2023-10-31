@@ -436,7 +436,5 @@ FodyWeavers.xsd
 
 # Users Credentials db
 src/WebSocketTrisServer/WebSocketTrisServer/UsersCredentials.db
-
 src/WebSocketTrisServer/WebSocketTrisServer/UsersCredentials.db-shm
-
 src/WebSocketTrisServer/WebSocketTrisServer/UsersCredentials.db-wal
