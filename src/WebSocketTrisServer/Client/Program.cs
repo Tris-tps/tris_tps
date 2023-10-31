@@ -1,4 +1,4 @@
-﻿using System.Net.Sockets;
+using System.Net.Sockets;
 using System.Net;
 using System.Text.Json;
 using WebSocketTrisServer;
@@ -9,7 +9,6 @@ using Colorful;
 using Console = Colorful.Console;
 using System.Drawing;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Client;
 
@@ -19,6 +18,7 @@ public class Program
     public static WebSocket client;
     public static Dictionary<int, int[]> table = new Dictionary<int, int[]>();
     private static string _previousBoard = string.Empty;
+    private static bool isGameFinished  = false;
 
     private static void MakeMove()
     {
@@ -170,7 +170,14 @@ public class Program
         {
             LoginManager();
         }
-        else if (data[0] == '*')
+        else if (data == "Mossa non valida. Inserisci un'altra mossa.")
+        {
+            // Gestisci il messaggio di errore qui (ad esempio, stampalo senza cancellare la tabella)
+            Console.SetCursorPosition(22, 27);
+            Console.WriteLine(data);
+            MakeMove(); // Richiedi una nuova mossa
+        }
+        else if (data[0] == '*' && !isGameFinished)
         {
             PrintBoard(data);
         }
@@ -178,16 +185,19 @@ public class Program
         {
             Console.Clear();
             ResultsPage.DisplayWin();
+            isGameFinished = !isGameFinished;
         }
         else if (data == "Hai Perso!")
-        {
+        { 
             Console.Clear();
             ResultsPage.DisplayLose();
+            isGameFinished = !isGameFinished;
         }
         else if (data == "La partita è finita in pareggio")
         {
             Console.Clear();
             ResultsPage.DisplayDraw();
+            isGameFinished = !isGameFinished;
         }
     }
 
