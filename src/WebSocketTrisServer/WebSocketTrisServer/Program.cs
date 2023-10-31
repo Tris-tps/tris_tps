@@ -307,7 +307,7 @@ namespace WebSocketTrisServer
         private static void HandleOccupiedCell(string ID)
         {
             Console.WriteLine("La cella è già occupata.");
-            SendMessage("La cella è già occupata", ID);
+            SendMessage("ERRORE: Mossa non valida. Riprova.", ID);
             RequestMove(_currentPlayerId);
         }
 
@@ -362,41 +362,6 @@ namespace WebSocketTrisServer
             _indexOfCell--; // Adatto l'indice della cella alla rappresentazione (0-8)
             Game(_indexOfCell, ID);
         }
-
-        /*
-        public static void MessageHandler(string ID, object message)
-        {
-            if ((string)message == "a")
-            {
-                //bot 
-                _waitForClientResponse.Set();
-                _isPlayingWithBot = true;
-                ConnectedClientIDs.Add("Bot");
-                RequestMove(ID);
-            }
-            else if((string)message == "b")
-                _waitForClientResponse.Set();
-
-            if (ID != _currentPlayerId && _loginIsFinished)
-            {
-                Console.WriteLine($"Non è il tuo turno, giocatore {ID}");
-                SendMessage("Non è il tuo turno", ID);
-                return;
-            }
-
-            if ((int.TryParse((string)message, out _indexOfCell) && _indexOfCell >= 1 && _indexOfCell <= 9))
-            {
-                _indexOfCell--; // Adatto l'indice della cella alla rappresentazione (0-8)
-                Game(_indexOfCell, ID);
-            }
-
-            if (message.ToString().StartsWith("login:") || message.ToString().StartsWith("register:"))
-            {
-                RequestLogin(ID, (string)message);
-                return;
-            }
-        }
-        */
 
         private static void RequestLogin(string ID, string userInput)
         {
@@ -459,5 +424,42 @@ namespace WebSocketTrisServer
                 SendMessage("login", ID);
             }
         }
+
+        #region old MessageHandler
+        /*
+        public static void MessageHandler(string ID, object message)
+        {
+            if ((string)message == "a")
+            {
+                //bot 
+                _waitForClientResponse.Set();
+                _isPlayingWithBot = true;
+                ConnectedClientIDs.Add("Bot");
+                RequestMove(ID);
+            }
+            else if((string)message == "b")
+                _waitForClientResponse.Set();
+
+            if (ID != _currentPlayerId && _loginIsFinished)
+            {
+                Console.WriteLine($"Non è il tuo turno, giocatore {ID}");
+                SendMessage("Non è il tuo turno", ID);
+                return;
+            }
+
+            if ((int.TryParse((string)message, out _indexOfCell) && _indexOfCell >= 1 && _indexOfCell <= 9))
+            {
+                _indexOfCell--; // Adatto l'indice della cella alla rappresentazione (0-8)
+                Game(_indexOfCell, ID);
+            }
+
+            if (message.ToString().StartsWith("login:") || message.ToString().StartsWith("register:"))
+            {
+                RequestLogin(ID, (string)message);
+                return;
+            }
+        }
+        */
+        #endregion
     }
 }

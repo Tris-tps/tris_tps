@@ -170,9 +170,8 @@ public class Program
         {
             LoginManager();
         }
-        else if (data == "Mossa non valida. Inserisci un'altra mossa.")
+        else if (data == "ERRORE: Mossa non valida. Riprova.")
         {
-            // Gestisci il messaggio di errore qui (ad esempio, stampalo senza cancellare la tabella)
             Console.SetCursorPosition(22, 27);
             Console.WriteLine(data);
             MakeMove(); // Richiedi una nuova mossa

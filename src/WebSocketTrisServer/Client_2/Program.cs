@@ -6,6 +6,7 @@ using System.IO;
 using System;
 using WebSocketSharp;
 using System.Linq.Expressions;
+using Client_2;
 
 namespace _client_2;
 public class Program
