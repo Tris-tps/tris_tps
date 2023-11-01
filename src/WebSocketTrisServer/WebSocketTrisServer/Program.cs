@@ -56,7 +56,7 @@ namespace WebSocketTrisServer
         private static List<string> _authenticatedClients = new List<string>();
         private static bool _loginIsFinished = false;
         private static int _indexOfCell;
-        private static bool _isPlayingWithBot = default;
+        public static bool isPlayingWithBot = default;
         private static bool _playerHasMoved = false;
         private static ManualResetEventSlim _waitForClientResponse = new ManualResetEventSlim(false);
 
@@ -106,7 +106,7 @@ namespace WebSocketTrisServer
 
             AskForGameMode();
             
-            if (!_isPlayingWithBot)
+            if (!isPlayingWithBot)
             {
                 HandleSecondClientAccess();
             }
@@ -176,7 +176,7 @@ namespace WebSocketTrisServer
         {
             //invio il messaggio di inizio partita ai client
             SendMessage("La partita è iniziata", ConnectedClientIDs[0]);
-            if (!_isPlayingWithBot)
+            if (!isPlayingWithBot)
                 SendMessage("La partita è iniziata", ConnectedClientIDs[1]);
             //caso ipotetico dove inizia il client ConnectedClientIDs[0]
             Thread.Sleep(100);
@@ -212,7 +212,7 @@ namespace WebSocketTrisServer
         {
             Thread.Sleep(1000);
             _winOrDrawBool = true;
-            if(!_isPlayingWithBot)
+            if(!isPlayingWithBot)
                 SendMessage("Hai Vinto!", winPlayerId);
             SendMessage("Hai Perso!", looserPlayerId);
         }
@@ -242,7 +242,7 @@ namespace WebSocketTrisServer
             }
             _winOrDrawBool = true;
             SendMessage("La partita è finita in pareggio", ConnectedClientIDs[0]);
-            if(!_isPlayingWithBot)
+            if(!isPlayingWithBot)
                 SendMessage("La partita è finita in pareggio", ConnectedClientIDs[1]);
             return true;
         }
@@ -275,7 +275,7 @@ namespace WebSocketTrisServer
             _playerHasMoved = true;
             _isPlayer1Turn = !_isPlayer1Turn;
 
-            if (!_isPlayingWithBot)
+            if (!isPlayingWithBot)
             {
                 Print();
                 _currentPlayerId = _isPlayer1Turn ? ConnectedClientIDs[0] : ConnectedClientIDs[1];
@@ -285,7 +285,7 @@ namespace WebSocketTrisServer
             CheckWin();
             CheckDraw();
 
-            if (_isPlayingWithBot && _playerHasMoved)
+            if (isPlayingWithBot && _playerHasMoved)
             {
                 if (_winOrDrawBool)
                 {
@@ -299,7 +299,7 @@ namespace WebSocketTrisServer
                 _playerHasMoved = !_playerHasMoved;
                 RequestMove(ConnectedClientIDs[0]);
             }
-            else if (!_isPlayingWithBot)
+            else if (!isPlayingWithBot)
             {
                 RequestMove(_currentPlayerId);
             }
@@ -339,18 +339,27 @@ namespace WebSocketTrisServer
             }
             else if (messageString == "nuovaPartita")
             {
+                ResetGame();
                 ConnectedClientIDs.Remove("Bot");
-                _winOrDrawBool = !_winOrDrawBool;
-                board = new char[9] { '#', '#', '#', '#', '#', '#', '#', '#', '#' };
-                _playerHasMoved = !_playerHasMoved;
                 HandleBotSelection(ID);
             }
+        }
+
+        private static void ResetGame()
+        {
+            _winOrDrawBool = false;
+            board = new char[9] { '#', '#', '#', '#', '#', '#', '#', '#', '#' };
+            _isPlayer1Turn = true;
+            _currentPlayerId = ConnectedClientIDs[0];
+            _playerHasMoved = false;
+
+            //_waitForClientResponse.Reset();
         }
 
         private static void HandleBotSelection(string ID)
         {
             _waitForClientResponse.Set();
-            _isPlayingWithBot = true;
+            isPlayingWithBot = true;
             ConnectedClientIDs.Add("Bot");
             RequestMove(ID);
         }
@@ -469,7 +478,7 @@ namespace WebSocketTrisServer
             {
                 //bot 
                 _waitForClientResponse.Set();
-                _isPlayingWithBot = true;
+                isPlayingWithBot = true;
                 ConnectedClientIDs.Add("Bot");
                 RequestMove(ID);
             }

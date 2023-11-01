@@ -9,6 +9,7 @@ using Colorful;
 using Console = Colorful.Console;
 using System.Drawing;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace Client_2;
 
@@ -178,84 +179,33 @@ public class Program
             Console.Clear();
             ResultsPage.DisplayWin();
             isGameFinished = !isGameFinished;
-            DispalyChoose();
+            if (WebSocketTrisServer.Program.isPlayingWithBot)
+            {
+                DispalyChoose();
+            }
         }
         else if (data == "Hai Perso!")
         {
             Console.Clear();
             ResultsPage.DisplayLose();
             isGameFinished = !isGameFinished;
-            DispalyChoose();
+            if (WebSocketTrisServer.Program.isPlayingWithBot)
+            {
+                DispalyChoose();
+            }
         }
         else if (data == "La partita è finita in pareggio")
         {
             Console.Clear();
             ResultsPage.DisplayDraw();
             isGameFinished = !isGameFinished;
-            DispalyChoose();
+            if (WebSocketTrisServer.Program.isPlayingWithBot)
+            {
+                DispalyChoose();
+            }
         }
     }
 
-
-    /*
-    private static void Message(object? obj, MessageEventArgs e)
-    {
-        var data = e.Data;
-        Console.SetCursorPosition(28, 27);
-        Console.WriteLine("                                            ");
-        Console.SetCursorPosition(28, 27);
-
-        switch (data)
-        {
-            case "È il tuo turno, digita la tua mossa!: ":
-                Console.Write(data);
-                break;
-
-            case "+":
-                MakeMove();
-                break;
-
-            case string s when s.StartsWith('?'):
-                var parts = s.Split('?');
-                ChooseMode(parts[1] + parts[2]);
-                break;
-
-            case "login":
-                LoginManager();
-                break;
-
-            case string s when s.StartsWith('*'):
-                PrintBoard(s);
-                break;
-
-            case "Hai Vinto!":
-                Console.Clear();
-                ResultsPage.DisplayWin();
-                break;
-
-            case "Hai Perso!":
-                Console.Clear();
-                ResultsPage.DisplayLose();
-                break;
-
-            case "La partita è finita in pareggio":
-                Console.Clear();
-                ResultsPage.DisplayDraw();
-                break;
-
-            default:
-                if (!(data[0] == '*') && !(data == "+") && data[0] != '?' && data != "login")
-                {
-                    if (data != "+")
-                    {
-                        Console.WriteLine(data);
-                    }
-                }
-                break;
-        }
-           
-    }
-    */
     private static void DispalyChoose()
     {
         Console.SetCursorPosition(0, 16);
@@ -321,6 +271,11 @@ public class Program
             client.Send("nuovaPartita");
             board.Clear();
             board = new() { "#", "#", "#", "#", "#", "#", "#", "#", "#" };
+            isGameFinished = false;
+        }
+        else
+        {
+            Environment.Exit(0);
         }
     }
 }
