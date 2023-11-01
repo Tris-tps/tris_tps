@@ -435,9 +435,19 @@ namespace WebSocketTrisServer
 
         private static void HandleGuest(string ID)
         {
-            string username = "Guest";
-            _authenticatedClients.Add(username);
-            ConnectedClientIDs.Add(ID);
+            if (ConnectedClientIDs[0] == "Guest")
+            {
+                string username = "Guest_2";
+                _authenticatedClients.Add(username);
+                ConnectedClientIDs.Add(ID);
+            }
+            else
+            {
+                string username = "Guest";
+                _authenticatedClients.Add(username);
+                ConnectedClientIDs.Add(ID);
+            }
+
             _loginIsFinished = true;
             Console.WriteLine("Accesso come guest effettuato!");
             SendMessage($"Hai fatto l'accesso come Guest", ID);
