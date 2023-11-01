@@ -336,6 +336,11 @@ namespace WebSocketTrisServer
             {
                 RequestLogin(ID, messageString);
             }
+            else if (messageString == "nuovaPartita")
+            {
+                ConnectedClientIDs.Remove("Bot");
+                HandleBotSelection(ID);
+            }
         }
 
         private static void HandleBotSelection(string ID)
@@ -375,7 +380,7 @@ namespace WebSocketTrisServer
 
             string[] inputParts = userInput.Split(':');
 
-            if (inputParts.Length != 2 && !(userInput == "guest" || userInput == "Guest"))
+            if (inputParts.Length != 2)
             {
                 SendMessage("Input non valido. Assicurati di inserire 'login:username' o 'register:username'.", ID);
                 SendMessage("login", ID);
@@ -448,13 +453,8 @@ namespace WebSocketTrisServer
                 ConnectedClientIDs.Add(ID);
             }
 
-            _loginIsFinished = true;
             Console.WriteLine("Accesso come guest effettuato!");
             SendMessage($"Hai fatto l'accesso come Guest", ID);
-            if (!_isPlayingWithBot && ConnectedClientIDs.Count < 2)
-            {
-                InitializeGame();
-            }
         }
 
         #region old MessageHandler

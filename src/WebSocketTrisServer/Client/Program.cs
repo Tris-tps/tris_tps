@@ -321,12 +321,12 @@ public class Program
                 mode = 2;
             }
         } while (key != ConsoleKey.Enter);
+
         if(mode == 1)
         {
             HomePage.Gioca();
-            client.Send("b");
-            GamePage.DisplayTable();
-            
+            client.Send("nuovaPartita");
+            board.Clear();
         }
     }
 }
