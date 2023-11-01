@@ -10,7 +10,7 @@ using WebSocketTrisServer.Data;
 namespace WebSocketTrisServer.Migrations
 {
     [DbContext(typeof(LoginDbContext))]
-    [Migration("20231101171435_init")]
+    [Migration("20231101173958_init")]
     partial class init
     {
         /// <inheritdoc />
