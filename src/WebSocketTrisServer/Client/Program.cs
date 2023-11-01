@@ -14,7 +14,7 @@ namespace Client;
 
 public class Program
 {
-    private static List<string> board = new List<string>();
+    private static List<string> board = new List<string>() { "#", "#", "#", "#", "#", "#", "#", "#", "#" };
     public static WebSocket client;
     public static Dictionary<int, int[]> table = new Dictionary<int, int[]>();
     private static string _previousBoard = string.Empty;
@@ -24,7 +24,7 @@ public class Program
     {
         var move = Console.ReadLine();
 
-        if (int.TryParse(move, out int moveInt) && moveInt >= 1 && moveInt <= 9)
+        if (int.TryParse(move, out int moveInt) && moveInt >= 1 && moveInt <= 9 && board[moveInt] == "#")
         {
             client.Send(move);
             GamePage.DisplayTable();
@@ -34,7 +34,7 @@ public class Program
             Console.SetCursorPosition(22, 27);
             Console.WriteLine("                                                                   ");
             Console.SetCursorPosition(22, 27);
-            Console.Write("Mossa non valida. Inserisci un numero tra 1 e 9: ");
+            Console.Write("Mossa non valida o cella occupata. Reinserire una mossa: ");
             MakeMove();
         }
     }
@@ -169,12 +169,6 @@ public class Program
         {
             LoginManager();
         }
-        else if (data == "ERRORE: Mossa non valida. Riprova.")
-        {
-            Console.SetCursorPosition(22, 27);
-            Console.WriteLine(data);
-            MakeMove(); // Richiedi una nuova mossa
-        }
         else if (data[0] == '*' && !isGameFinished)
         {
             PrintBoard(data);
@@ -268,7 +262,6 @@ public class Program
         Console.WriteLine("Vuoi giocare ancora?");
 
         string frecciaSelezioneDx = "────>";
-        string frecciaSelezioneSx = "<────";
 
         Console.SetCursorPosition(31, 18);
         Console.WriteLine("Gioca ancora", Color.Red);
@@ -279,7 +272,7 @@ public class Program
         Console.SetCursorPosition(24, 18);
         Console.Write(frecciaSelezioneDx);
 
-        int mode = 0;
+        int mode;
         int cont = 0;
 
         ConsoleKey key;
@@ -327,6 +320,7 @@ public class Program
             HomePage.Gioca();
             client.Send("nuovaPartita");
             board.Clear();
+            board = new(){ "#", "#", "#", "#", "#", "#", "#", "#", "#" };
         }
     }
 }

@@ -210,6 +210,7 @@ namespace WebSocketTrisServer
 
         private static void SendWinMessages(string winPlayerId, string looserPlayerId)
         {
+            Thread.Sleep(1000);
             _winOrDrawBool = true;
             if(!_isPlayingWithBot)
                 SendMessage("Hai Vinto!", winPlayerId);
@@ -293,9 +294,9 @@ namespace WebSocketTrisServer
 
                 int botIndex = Bot.BotMove(board);
                 board[botIndex] = 'O';
+                Print();
                 CheckWin();
                 _playerHasMoved = !_playerHasMoved;
-                Print();
                 RequestMove(ConnectedClientIDs[0]);
             }
             else if (!_isPlayingWithBot)
@@ -307,7 +308,7 @@ namespace WebSocketTrisServer
         private static void HandleOccupiedCell(string ID)
         {
             Console.WriteLine("La cella è già occupata.");
-            SendMessage("ERRORE: Mossa non valida. Riprova.", ID);
+            SendMessage("La cella è già occupata. Riprova: ", ID);
             RequestMove(_currentPlayerId);
         }
 
@@ -339,6 +340,9 @@ namespace WebSocketTrisServer
             else if (messageString == "nuovaPartita")
             {
                 ConnectedClientIDs.Remove("Bot");
+                _winOrDrawBool = !_winOrDrawBool;
+                board = new char[9] { '#', '#', '#', '#', '#', '#', '#', '#', '#' };
+                _playerHasMoved = !_playerHasMoved;
                 HandleBotSelection(ID);
             }
         }
