@@ -103,7 +103,7 @@ public class Program
         LoginPage.Login();
         string login = Console.ReadLine();
 
-        if (!login.StartsWith("login:") && !login.StartsWith("register:"))
+        if (!login.StartsWith("login:") && !login.StartsWith("register:") && !(login=="guest" || login=="Guest"))
         {
             LoginManager();
         }

@@ -332,7 +332,7 @@ namespace WebSocketTrisServer
             {
                 HandleGameMove(ID);
             }
-            else if (messageString.StartsWith("login:") || messageString.StartsWith("register:"))
+            else if (messageString.StartsWith("login:") || messageString.StartsWith("register:") || messageString == "guest" || messageString == "Guest")
             {
                 RequestLogin(ID, messageString);
             }
@@ -365,9 +365,17 @@ namespace WebSocketTrisServer
 
         private static void RequestLogin(string ID, string userInput)
         {
+            if (string.IsNullOrEmpty(userInput)) { return; }
+
+            if (!userInput.Contains(':'))
+            {
+                HandleGuest(ID);
+                return;
+            }
+
             string[] inputParts = userInput.Split(':');
 
-            if (inputParts.Length != 2)
+            if (inputParts.Length != 2 && !(userInput == "guest" || userInput == "Guest"))
             {
                 SendMessage("Input non valido. Assicurati di inserire 'login:username' o 'register:username'.", ID);
                 SendMessage("login", ID);
@@ -422,6 +430,20 @@ namespace WebSocketTrisServer
             {
                 SendMessage($"Utente {username} già esistente, fai il login", ID);
                 SendMessage("login", ID);
+            }
+        }
+
+        private static void HandleGuest(string ID)
+        {
+            string username = "Guest";
+            _authenticatedClients.Add(username);
+            ConnectedClientIDs.Add(ID);
+            _loginIsFinished = true;
+            Console.WriteLine("Accesso come guest effettuato!");
+            SendMessage($"Hai fatto l'accesso come Guest", ID);
+            if (!_isPlayingWithBot && ConnectedClientIDs.Count < 2)
+            {
+                InitializeGame();
             }
         }
 
