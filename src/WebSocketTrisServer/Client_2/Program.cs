@@ -118,7 +118,6 @@ public class Program
             while (true) { }
         });
         threadWhileTrue.Start();
-        Console.SetWindowSize(40, 30);
         Console.Title = "ClientView_1";
         Console.CursorVisible = false;
         Console.OutputEncoding = System.Text.Encoding.UTF8;
