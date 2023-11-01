@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Data;
 using System.Diagnostics;
@@ -56,36 +55,9 @@ namespace WebSocketTrisServer
         private static List<string> _authenticatedClients = new List<string>();
         private static bool _loginIsFinished = false;
         private static int _indexOfCell;
-        public static bool isPlayingWithBot = default;
+        private static bool _isPlayingWithBot = false;
         private static bool _playerHasMoved = false;
         private static ManualResetEventSlim _waitForClientResponse = new ManualResetEventSlim(false);
-
-        private static void ClearCurrentConsoleLine()
-        {
-            int currentLineCursor = Console.CursorTop;
-            Console.SetCursorPosition(0, 16);
-            Console.Write(new string(' ', Console.WindowWidth));
-            Console.SetCursorPosition(0, currentLineCursor);
-        }
-
-        private static void ThreadZucche()
-        {
-            while (true)
-            {
-                zucche = zucche + "\U0001F383";
-                Thread.Sleep(50000);
-                if (zucche.Length >= 12)
-                {
-                    zucche = "";
-                    ClearCurrentConsoleLine();
-                }
-                posizione[0] = Console.CursorLeft;
-                posizione[1] = Console.CursorTop;
-                Console.SetCursorPosition(0, 16);
-                Console.Write(zucche);
-                Console.SetCursorPosition(posizione[0], posizione[1]);
-            }
-        }
 
         public static void Main(string[] args)
         {
@@ -106,7 +78,7 @@ namespace WebSocketTrisServer
 
             AskForGameMode();
             
-            if (!isPlayingWithBot)
+            if (!_isPlayingWithBot)
             {
                 HandleSecondClientAccess();
             }
@@ -176,9 +148,8 @@ namespace WebSocketTrisServer
         {
             //invio il messaggio di inizio partita ai client
             SendMessage("La partita è iniziata", ConnectedClientIDs[0]);
-            if (!isPlayingWithBot)
+            if (!_isPlayingWithBot)
                 SendMessage("La partita è iniziata", ConnectedClientIDs[1]);
-            //caso ipotetico dove inizia il client ConnectedClientIDs[0]
             Thread.Sleep(100);
             Print();
             Thread.Sleep(100);
@@ -210,9 +181,9 @@ namespace WebSocketTrisServer
 
         private static void SendWinMessages(string winPlayerId, string looserPlayerId)
         {
-            Thread.Sleep(1000);
+            Thread.Sleep(1250);
             _winOrDrawBool = true;
-            if(!isPlayingWithBot)
+            if(!_isPlayingWithBot)
                 SendMessage("Hai Vinto!", winPlayerId);
             SendMessage("Hai Perso!", looserPlayerId);
         }
@@ -242,7 +213,7 @@ namespace WebSocketTrisServer
             }
             _winOrDrawBool = true;
             SendMessage("La partita è finita in pareggio", ConnectedClientIDs[0]);
-            if(!isPlayingWithBot)
+            if(!_isPlayingWithBot)
                 SendMessage("La partita è finita in pareggio", ConnectedClientIDs[1]);
             return true;
         }
@@ -275,7 +246,7 @@ namespace WebSocketTrisServer
             _playerHasMoved = true;
             _isPlayer1Turn = !_isPlayer1Turn;
 
-            if (!isPlayingWithBot)
+            if (!_isPlayingWithBot)
             {
                 Print();
                 _currentPlayerId = _isPlayer1Turn ? ConnectedClientIDs[0] : ConnectedClientIDs[1];
@@ -285,7 +256,7 @@ namespace WebSocketTrisServer
             CheckWin();
             CheckDraw();
 
-            if (isPlayingWithBot && _playerHasMoved)
+            if (_isPlayingWithBot && _playerHasMoved)
             {
                 if (_winOrDrawBool)
                 {
@@ -299,7 +270,7 @@ namespace WebSocketTrisServer
                 _playerHasMoved = !_playerHasMoved;
                 RequestMove(ConnectedClientIDs[0]);
             }
-            else if (!isPlayingWithBot)
+            else if (!_isPlayingWithBot)
             {
                 RequestMove(_currentPlayerId);
             }
@@ -352,14 +323,13 @@ namespace WebSocketTrisServer
             _isPlayer1Turn = true;
             _currentPlayerId = ConnectedClientIDs[0];
             _playerHasMoved = false;
-
-            //_waitForClientResponse.Reset();
         }
 
         private static void HandleBotSelection(string ID)
         {
             _waitForClientResponse.Set();
-            isPlayingWithBot = true;
+            _isPlayingWithBot = true;
+            SendMessage("bot", ID);
             ConnectedClientIDs.Add("Bot");
             RequestMove(ID);
         }
@@ -470,41 +440,31 @@ namespace WebSocketTrisServer
             SendMessage($"Hai fatto l'accesso come Guest", ID);
         }
 
-        #region old MessageHandler
-        /*
-        public static void MessageHandler(string ID, object message)
+        private static void ClearCurrentConsoleLine()
         {
-            if ((string)message == "a")
-            {
-                //bot 
-                _waitForClientResponse.Set();
-                isPlayingWithBot = true;
-                ConnectedClientIDs.Add("Bot");
-                RequestMove(ID);
-            }
-            else if((string)message == "b")
-                _waitForClientResponse.Set();
+            int currentLineCursor = Console.CursorTop;
+            Console.SetCursorPosition(0, 16);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, currentLineCursor);
+        }
 
-            if (ID != _currentPlayerId && _loginIsFinished)
+        private static void ThreadZucche()
+        {
+            while (true)
             {
-                Console.WriteLine($"Non è il tuo turno, giocatore {ID}");
-                SendMessage("Non è il tuo turno", ID);
-                return;
-            }
-
-            if ((int.TryParse((string)message, out _indexOfCell) && _indexOfCell >= 1 && _indexOfCell <= 9))
-            {
-                _indexOfCell--; // Adatto l'indice della cella alla rappresentazione (0-8)
-                Game(_indexOfCell, ID);
-            }
-
-            if (message.ToString().StartsWith("login:") || message.ToString().StartsWith("register:"))
-            {
-                RequestLogin(ID, (string)message);
-                return;
+                zucche = zucche + "\U0001F383";
+                Thread.Sleep(500);
+                if (zucche.Length >= 12)
+                {
+                    zucche = "";
+                    ClearCurrentConsoleLine();
+                }
+                posizione[0] = Console.CursorLeft;
+                posizione[1] = Console.CursorTop;
+                Console.SetCursorPosition(0, 16);
+                Console.Write(zucche);
+                Console.SetCursorPosition(posizione[0], posizione[1]);
             }
         }
-        */
-        #endregion
     }
 }
