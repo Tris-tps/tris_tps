@@ -5,6 +5,7 @@ using WebSocketSharp;
 using Colorful;
 using Console = Colorful.Console;
 using System.Drawing;
+using NAudio.Wave;
 
 namespace Client;
 
@@ -24,9 +25,40 @@ public class Program
             while (true) { }
         });
         threadWhileTrue.Start();
+        InitializeTable();
         SetupConsole();
         ConnectToServer();
-        InitializeTable();
+        Thread music = new Thread(() =>
+        {
+            StartMusic();
+        });
+        music.Start();
+    }
+
+    private static void StartMusic()
+    {
+        //setup path for music
+        var folder = AppContext.BaseDirectory;
+        var musicFilePath = Path.Combine(folder, "..\\..\\..\\music.mp3");
+
+        try
+        {
+            using (var audioFile = new AudioFileReader(musicFilePath))
+            using (var outputDevice = new WaveOutEvent())
+            {
+                outputDevice.Init(audioFile);
+                outputDevice.Play();
+
+                while (outputDevice.PlaybackState == PlaybackState.Playing)
+                {
+                    // Attendi il termine della riproduzione o esegui altre operazioni
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Si è verificato un errore: " + ex.Message);
+        }
     }
 
     private static void SetupConsole()
@@ -103,8 +135,11 @@ public class Program
             Console.Clear();
             ResultsPage.DisplayWin();
             isGameFinished = !isGameFinished;
-            if(_isPlayingWithBot)
+            if (_isPlayingWithBot)
+            {
                 DisplayChoose();
+                return;
+            }
             Thread.Sleep(2000);
             Environment.Exit(0);
         }
@@ -114,7 +149,10 @@ public class Program
             ResultsPage.DisplayLose();
             isGameFinished = !isGameFinished;
             if (_isPlayingWithBot)
+            {
                 DisplayChoose();
+                return;
+            }
             Thread.Sleep(2000);
             Environment.Exit(0);
         }
@@ -124,7 +162,10 @@ public class Program
             ResultsPage.DisplayDraw();
             isGameFinished = !isGameFinished;
             if (_isPlayingWithBot)
+            {
                 DisplayChoose();
+                return;
+            }
             Thread.Sleep(2000);
             Environment.Exit(0);
         }
