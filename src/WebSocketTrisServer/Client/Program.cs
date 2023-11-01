@@ -1,30 +1,181 @@
-using System.Net.Sockets;
-using System.Net;
-using System.Text.Json;
-using WebSocketTrisServer;
-using System.IO;
 using System;
+using System.Collections.Generic;
+using System.Threading;
 using WebSocketSharp;
 using Colorful;
 using Console = Colorful.Console;
 using System.Drawing;
-using System.Linq.Expressions;
+using NAudio.Wave;
 
 namespace Client;
 
 public class Program
 {
-    private static List<string> board = new List<string>();
+    private static List<string> board = new List<string>() { "#", "#", "#", "#", "#", "#", "#", "#", "#" };
     public static WebSocket client;
     public static Dictionary<int, int[]> table = new Dictionary<int, int[]>();
     private static string _previousBoard = string.Empty;
     private static bool isGameFinished  = false;
+    private static bool _isPlayingWithBot = default;
+
+    static void Main(string[] args)
+    {
+        Thread threadWhileTrue = new Thread(() =>
+        {
+            while (true) { }
+        });
+        threadWhileTrue.Start();
+        InitializeTable();
+        SetupConsole();
+        ConnectToServer();
+        Thread music = new Thread(() =>
+        {
+            StartMusic();
+        });
+        music.Start();
+    }
+
+    private static void StartMusic()
+    {
+        //setup path for music
+        var folder = AppContext.BaseDirectory;
+        var musicFilePath = Path.Combine(folder, "..\\..\\..\\music.mp3");
+
+        try
+        {
+            using (var audioFile = new AudioFileReader(musicFilePath))
+            using (var outputDevice = new WaveOutEvent())
+            {
+                outputDevice.Init(audioFile);
+                outputDevice.Play();
+
+                while (outputDevice.PlaybackState == PlaybackState.Playing)
+                {
+                    // Attendi il termine della riproduzione o esegui altre operazioni
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Si è verificato un errore: " + ex.Message);
+        }
+    }
+
+    private static void SetupConsole()
+    {
+        Console.Title = "ClientView_1";
+        Console.CursorVisible = false;
+        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        LoginPage.WriteLogo();
+    }
+
+    private static void ConnectToServer()
+    {
+        client = new WebSocket("ws://127.0.0.1:5000");
+        Thread.Sleep(100);
+        client.Connect();
+        client.OnMessage += Message;
+    }
+
+    private static void InitializeTable()
+    {
+        table.Add(1, new int[] { 24, 2 });   // casella in alto a sinistra
+        table.Add(4, new int[] { 24, 10 });  // casella in mezzo a sinistra
+        table.Add(7, new int[] { 24, 18 });  // casella in basso a sinistra
+        table.Add(2, new int[] { 40, 2 });   // casella in alto al centro
+        table.Add(5, new int[] { 40, 10 });  // casella in mezzo al centro
+        table.Add(8, new int[] { 40, 18 });  // casella in basso al centro
+        table.Add(3, new int[] { 56, 2 });   // casella in alto a destra
+        table.Add(6, new int[] { 56, 10 });  // casella in mezzo a destra
+        table.Add(9, new int[] { 56, 18 });  // casella in basso a destra
+    }
+
+    private static void Message(object? obj, MessageEventArgs e)
+    {
+        var data = e.Data;
+
+        if (!data.StartsWith('*') && !data.StartsWith('+') && !data.StartsWith('?') && data != "login"
+            && data != "Hai Vinto!" && data != "Hai Perso!" && data != "La partita è finita in pareggio"
+            && data != "bot") //il ' * ' è utilizzato per identificare che il dato sia la board
+        {
+            Console.SetCursorPosition(28, 27);
+            Console.WriteLine("                                            ");
+            Console.SetCursorPosition(28, 27);
+            if (data == "È il tuo turno, digita la tua mossa!: ")
+            {
+                Console.Write(data);
+            }
+            else
+            {
+                Console.WriteLine(data);
+            }
+        }
+        else if (data.StartsWith("*") && !isGameFinished)
+        {
+            PrintBoard(data);
+        }
+        else if (data == "+")
+        {
+            MakeMove();
+        }
+        else if (data.StartsWith("?"))
+        {
+            ChooseMode(data);
+        }
+        else if (data == "login")
+        {
+            LoginManager();
+        }
+        else if(data == "bot")
+        {
+            _isPlayingWithBot = true;
+        }
+        else if (data == "Hai Vinto!")
+        {
+            Console.Clear();
+            ResultsPage.DisplayWin();
+            isGameFinished = !isGameFinished;
+            if (_isPlayingWithBot)
+            {
+                DisplayChoose();
+                return;
+            }
+            Thread.Sleep(2000);
+            Environment.Exit(0);
+        }
+        else if (data == "Hai Perso!")
+        {
+            Console.Clear();
+            ResultsPage.DisplayLose();
+            isGameFinished = !isGameFinished;
+            if (_isPlayingWithBot)
+            {
+                DisplayChoose();
+                return;
+            }
+            Thread.Sleep(2000);
+            Environment.Exit(0);
+        }
+        else if (data == "La partita è finita in pareggio")
+        {
+            Console.Clear();
+            ResultsPage.DisplayDraw();
+            isGameFinished = !isGameFinished;
+            if (_isPlayingWithBot)
+            {
+                DisplayChoose();
+                return;
+            }
+            Thread.Sleep(2000);
+            Environment.Exit(0);
+        }
+    }
 
     private static void MakeMove()
     {
         var move = Console.ReadLine();
 
-        if (int.TryParse(move, out int moveInt) && moveInt >= 1 && moveInt <= 9)
+        if (int.TryParse(move, out int moveInt) && moveInt >= 1 && moveInt <= 9 && board[moveInt] == "#")
         {
             client.Send(move);
             GamePage.DisplayTable();
@@ -34,7 +185,7 @@ public class Program
             Console.SetCursorPosition(22, 27);
             Console.WriteLine("                                                                   ");
             Console.SetCursorPosition(22, 27);
-            Console.Write("Mossa non valida. Inserisci un numero tra 1 e 9: ");
+            Console.Write("Mossa non valida o cella occupata. Reinserire una mossa: ");
             MakeMove();
         }
     }
@@ -43,7 +194,7 @@ public class Program
     {
         Console.Clear();
         HomePage.WriteHome();
-        
+
         string mode = HomePage.ChooseMode();
 
         if (mode != "a" && mode != "b")
@@ -103,163 +254,85 @@ public class Program
         LoginPage.Login();
         string login = Console.ReadLine();
 
-        if (!login.StartsWith("login:") && !login.StartsWith("register:"))
+        if (!login.StartsWith("login:") && !login.StartsWith("register:") && !(login == "guest" || login == "Guest"))
         {
             LoginManager();
         }
         client.Send(login);
-        Thread.Sleep(2000);
+        //Thread.Sleep(2500);
     }
 
-    static void Main(string[] args)
+    private static void DisplayChoose()
     {
-        Thread threadWhileTrue = new Thread(() =>
-        {
-            while (true) { }
-        });
-        threadWhileTrue.Start();
-        Console.SetWindowSize(40, 30);
-        Console.Title = "ClientView_1";
-        Console.CursorVisible = false;
-        Console.OutputEncoding = System.Text.Encoding.UTF8;
-        LoginPage.WriteLogo();
-        client = new WebSocket("ws://127.0.0.1:5000");
-        Thread.Sleep(100);
-        client.Connect();
-        client.OnMessage += Message;
+        Console.SetCursorPosition(0, 16);
+        Console.WriteLine("Vuoi giocare ancora?");
 
-        table.Add(1, new int[] { 24, 2 });   // casella in alto a sinistra
-        table.Add(4, new int[] { 24, 10 });  // casella in mezzo a sinistra
-        table.Add(7, new int[] { 24, 18 });  // casella in basso a sinistra
-        table.Add(2, new int[] { 40, 2 });   // casella in alto al centro
-        table.Add(5, new int[] { 40, 10 });  // casella in mezzo al centro
-        table.Add(8, new int[] { 40, 18 });  // casella in basso al centro
-        table.Add(3, new int[] { 56, 2 });   // casella in alto a destra
-        table.Add(6, new int[] { 56, 10 });  // casella in mezzo a destra
-        table.Add(9, new int[] { 56, 18 });  // casella in basso a destra
-    }
+        string frecciaSelezioneDx = "────>";
 
-    private static void Message(object? obj, MessageEventArgs e)
-    {
-        var data = e.Data;
-        if (data[0] != '*' && data != "+" && data[0] != '?' && data != "login"
-            && data!= "Hai Vinto!" && data != "Hai Perso!" && data != "La partita è finita in pareggio") //il ' * ' è utilizzato per identificare che il dato sia la board
+        Console.SetCursorPosition(31, 18);
+        Console.WriteLine("Gioca ancora", Color.Red);
+
+        Console.SetCursorPosition(31, 20);
+        Console.Write("ESCI");
+
+        Console.SetCursorPosition(24, 18);
+        Console.Write(frecciaSelezioneDx);
+
+        int mode;
+        int cont = 0;
+
+        ConsoleKey key;
+        do
         {
-            Console.SetCursorPosition(28, 27);
-            Console.WriteLine("                                            ");
-            Console.SetCursorPosition(28, 27);
-            if (data == "È il tuo turno, digita la tua mossa!: ")
+            key = Console.ReadKey(true).Key;
+
+            if (key == ConsoleKey.UpArrow)
             {
-                Console.Write(data);
+                cont = 0;
+            }
+            else if (key == ConsoleKey.DownArrow)
+            {
+                cont = 1;
+            }
+
+            if (cont == 0)
+            {
+                Console.SetCursorPosition(24, 20);
+                Console.Write("      ");
+                Console.SetCursorPosition(24, 18);
+                Console.Write(frecciaSelezioneDx);
+                Console.SetCursorPosition(31, 20);
+                Console.WriteLine("ESCI", Color.White);
+                Console.SetCursorPosition(31, 18);
+                Console.WriteLine("Gioca ancora", Color.Red);
+                mode = 1;
             }
             else
             {
-                Console.WriteLine(data);
+                Console.SetCursorPosition(24, 18);
+                Console.Write("      ");
+                Console.SetCursorPosition(24, 20);
+                Console.Write(frecciaSelezioneDx);
+                Console.SetCursorPosition(31, 18);
+                Console.Write("Gioca ancora", Color.White);
+                Console.SetCursorPosition(31, 20);
+                Console.WriteLine("ESCI", Color.Red);
+                mode = 2;
             }
-        }
-        else if (data == "+")
+        } while (key != ConsoleKey.Enter);
+
+        if(mode == 1)
         {
-            MakeMove();
-        }
-        else if (data[0] == '?')
+            HomePage.Gioca();
+            client.Send("nuovaPartita");
+            board.Clear();
+            board = new(){ "#", "#", "#", "#", "#", "#", "#", "#", "#" };
+            isGameFinished = false;
+            _isPlayingWithBot = default;
+        } 
+        else
         {
-            var var = data.Split('?');
-            ChooseMode(var[1] + var[2]);
-        }
-        else if (data == "login")
-        {
-            LoginManager();
-        }
-        else if (data == "Mossa non valida. Inserisci un'altra mossa.")
-        {
-            // Gestisci il messaggio di errore qui (ad esempio, stampalo senza cancellare la tabella)
-            Console.SetCursorPosition(22, 27);
-            Console.WriteLine(data);
-            MakeMove(); // Richiedi una nuova mossa
-        }
-        else if (data[0] == '*' && !isGameFinished)
-        {
-            PrintBoard(data);
-        }
-        else if(data == "Hai Vinto!")
-        {
-            Console.Clear();
-            ResultsPage.DisplayWin();
-            isGameFinished = !isGameFinished;
-        }
-        else if (data == "Hai Perso!")
-        { 
-            Console.Clear();
-            ResultsPage.DisplayLose();
-            isGameFinished = !isGameFinished;
-        }
-        else if (data == "La partita è finita in pareggio")
-        {
-            Console.Clear();
-            ResultsPage.DisplayDraw();
-            isGameFinished = !isGameFinished;
+            Environment.Exit(0);
         }
     }
-
-
-    /*
-    private static void Message(object? obj, MessageEventArgs e)
-    {
-        var data = e.Data;
-        Console.SetCursorPosition(28, 27);
-        Console.WriteLine("                                            ");
-        Console.SetCursorPosition(28, 27);
-
-        switch (data)
-        {
-            case "È il tuo turno, digita la tua mossa!: ":
-                Console.Write(data);
-                break;
-
-            case "+":
-                MakeMove();
-                break;
-
-            case string s when s.StartsWith('?'):
-                var parts = s.Split('?');
-                ChooseMode(parts[1] + parts[2]);
-                break;
-
-            case "login":
-                LoginManager();
-                break;
-
-            case string s when s.StartsWith('*'):
-                PrintBoard(s);
-                break;
-
-            case "Hai Vinto!":
-                Console.Clear();
-                ResultsPage.DisplayWin();
-                break;
-
-            case "Hai Perso!":
-                Console.Clear();
-                ResultsPage.DisplayLose();
-                break;
-
-            case "La partita è finita in pareggio":
-                Console.Clear();
-                ResultsPage.DisplayDraw();
-                break;
-
-            default:
-                if (!(data[0] == '*') && !(data == "+") && data[0] != '?' && data != "login")
-                {
-                    if (data != "+")
-                    {
-                        Console.WriteLine(data);
-                    }
-                }
-                break;
-        }
-           
-    }
-    */
-
 }
