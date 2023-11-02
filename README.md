@@ -16,7 +16,7 @@
 [![Xiournal](https://img.shields.io/badge/Xournalpp-800080.svg?style=for-the-badge)](https://xournalpp.github.io/)
 
 
-Benvenuti nella repository del progetto "Tris", una versione del gioco del tris (Tic Tac Toe) implementato in C# Console. Questa implementazione consente ai giocatori di collegarsi tramite un server Sql Lite per sfidarsi o giocare contro un avversario automatico basato sull'algoritmo Minimax. Il codice è rilasciato sotto la licenza [GNU General Public License v3.0](https://opensource.org/licenses/GPL-3.0).
+Benvenuti nella repository del progetto "Tris", una versione del gioco del tris (Tic Tac Toe) implementato in C# Console. Questa implementazione consente ai giocatori di collegarsi tramite un server websocket con database Sql Lite per sfidarsi o giocare contro un avversario automatico basato sull'algoritmo Minimax. Il codice è rilasciato sotto la licenza [GNU General Public License v3.0](https://opensource.org/licenses/GPL-3.0).
 
 ## Collaboratori
 
@@ -35,10 +35,10 @@ Il progetto è stato ideato come parte integrante del percorso educativo della c
 ## Descrizione Dettagliata del Programma
 
 ### Introduzione
-Il progetto "Tris" è un'implementazione avanzata del classico gioco del tris (Tic Tac Toe) sviluppato in C# Console. Va oltre la semplice rappresentazione delle regole di base, offrendo un'esperienza interattiva in grado di connettere due giocatori attraverso un server Sql Lite. Inoltre, presenta la possibilità di sfidare un avversario virtuale, il quale sfrutta un'intelligenza artificiale basata sull'algoritmo Minimax per creare partite competitive e coinvolgenti.
+Il progetto "Tris" è un'implementazione avanzata del classico gioco del tris (Tic Tac Toe) sviluppato in C# Console. Va oltre la semplice rappresentazione delle regole di base, offrendo un'esperienza interattiva in grado di connettere due giocatori attraverso un server web socket e con database Sql Lite. Inoltre, presenta la possibilità di sfidare un avversario virtuale, il quale sfrutta un'intelligenza artificiale basata sull'algoritmo Minimax per creare partite competitive e coinvolgenti.
 
 ### Implementazione del Gioco
-Questo progetto offre un'implementazione esaustiva e efficiente delle regole classiche del tris. Attraverso la console C#, consente a due giocatori di competere sullo stesso dispositivo o attraverso una connessione di rete. La struttura modulare e flessibile del codice consente l'interazione multi-client attraverso il server Sql Lite, garantendo un'esperienza di gioco fluida e intuitiva.
+Questo progetto offre un'implementazione esaustiva e efficiente delle regole classiche del tris. Attraverso la console C#, consente a due giocatori di competere sullo stesso dispositivo o attraverso una connessione di rete. La struttura modulare e flessibile del codice consente l'interazione multi-client attraverso il server web socket, garantendo un'esperienza di gioco fluida e intuitiva.
 
 ### Giocatore AI e Algoritmo Minimax
 Una delle caratteristiche più rilevanti di questo progetto è la presenza di un giocatore AI basato sull'algoritmo Minimax. Questa intelligenza artificiale apprende dalle mosse precedenti e calcola le mosse ottimali, valutando le possibili strategie di gioco per massimizzare le probabilità di vittoria o minimizzare le possibilità di sconfitta. L'algoritmo Minimax, implementato con cura e precisione, analizza in profondità le possibili mosse e crea un'esperienza di gioco sfidante, adattandosi alle scelte del giocatore umano.
@@ -110,7 +110,7 @@ Apri il progetto in Visual Studio Community. Assicurati di configurare correttam
 Avvia il progetto utilizzando Visual Studio Community. Questo passaggio garantisce che il server e i client siano pronti per l'interazione.
 
 #### Passaggio 6: Collegare i Client al Server
-Collega i client al server Sql Lite per iniziare a giocare o sfidare l'Intelligenza Artificiale nel gioco del Tris.
+Collega i client al server web socket per iniziare a giocare o sfidare l'Intelligenza Artificiale nel gioco del Tris.
 
 Questa procedura ti guiderà attraverso l'installazione e l'avvio del progetto, consentendoti di tuffarti nel mondo del Tris con l'Intelligenza Artificiale. Buon divertimento giocando!
 
