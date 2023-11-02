@@ -75,6 +75,7 @@ Inizia clonando il repository sul tuo computer. Assicurati di avere Git installa
 ```bash
 git clone https://github.com/Tris-tps/tris_tps
 ```
+In alternativa al passaggio della clonazione, si puó procedere anche con il download della cartella main .Zip.
 
 #### Passaggio 2: Aprire Package Manager Console
 Per utilizzare il Package Manager Console, segui questi passaggi:
