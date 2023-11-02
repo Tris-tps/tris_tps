@@ -52,12 +52,6 @@ La struttura modulare del codice permette una facile espandibilità e personaliz
 ### Sicurezza e Affidabilità
 La sicurezza e l'affidabilità sono elementi chiave integrati nel progetto. Si pone particolare attenzione nella gestione delle connessioni e nel controllo delle operazioni di gioco, garantendo un'esperienza priva di problemi e sicura per tutti gli utenti.
 
-### Roadmap e Sviluppo Futuro
-Il progetto è in costante evoluzione, con una roadmap chiara e obiettivi definiti per migliorare ulteriormente l'esperienza di gioco. Le future implementazioni prevedono l'introduzione di nuove strategie per l'IA, miglioramenti nell'interfaccia utente e l'espansione delle funzionalità di gioco per offrire una varietà di modalità e sfide.
-
-### Conclusioni
-In conclusione, il progetto "Tris" offre non solo il gioco classico del tris ma anche una piattaforma di gioco avanzata che unisce divertimento, sfida e innovazione. L'implementazione dell'IA basata sull'algoritmo Minimax rende il gioco coinvolgente e stimolante, offrendo agli utenti un'esperienza appassionante e strategica.
-
 ## Come contribuire
 
 Siamo aperti ai contributi dalla comunità. Se desideri contribuire a questo progetto, puoi farlo in vari modi:
@@ -67,13 +61,60 @@ Siamo aperti ai contributi dalla comunità. Se desideri contribuire a questo pro
 - Migliorando la documentazione.
 - Aiutando a testare il gioco e segnalando eventuali problemi.
 
-## Installazione
+Certamente! Ecco una versione ampliata e più accattivante:
 
-Per iniziare a giocare al Tris con l'Intelligenza Artificiale, segui questi semplici passaggi:
+---
 
-1. Clona questo repository sul tuo computer.
-2. Esegui il progetto utilizzando un ambiente che supporta C#.
-3. Collega i client tramite il server Sql Lite per iniziare a giocare o affrontare il bot AI.
+### Guida all'Installazione e Avvio del Gioco del Tris con Intelligenza Artificiale
+
+Benvenuto alla guida per l'installazione del gioco del Tris con Intelligenza Artificiale! Segui attentamente questi passaggi per iniziare a divertirti con il gioco.
+
+#### Passaggio 1: Clonare il Repository
+Inizia clonando il repository sul tuo computer. Assicurati di avere Git installato e digita il seguente comando nel terminale:
+
+```bash
+git clone https://github.com/Tris-tps/tris_tps
+```
+
+#### Passaggio 2: Aprire Package Manager Console
+Per utilizzare il Package Manager Console, segui questi passaggi:
+
+1. **Apertura del Package Manager Console:** Una volta aperto il progetto in Visual Studio, vai al menu in alto e seleziona `Strumenti (Tools)`.
+
+2. **Seleziona NuGet Package Manager:** Trova l'opzione `NuGet Package Manager` nel menu `Strumenti (Tools)`. Espandi questa voce e clicca su `Console del gestore pacchetti (Package Manager Console)`.
+
+3. **Console del gestore pacchetti:** Si aprirà una finestra contenente la Console del gestore pacchetti, dove inserirai comandi specifici di NuGet per gestire i pacchetti del tuo progetto.
+
+#### Passaggio 3: Eseguire la migrazione della soluzione
+Prima di avviare il progetto "WebSocketTrisServer", esegui la migrazione della soluzione:
+
+- Naviga nella directory del progetto "WebSocketTrisServer".
+- Cancella la cartella "Migrations".
+- Apri Visual Studio Community e accedi alla "Console di gestione pacchetti di Visual Studio".
+- Utilizza i seguenti comandi nella "Package Manager Console":
+  
+  ```powershell
+  Add-Migration 'Init'
+  Update-Database
+  ```
+
+#### Passaggio 4: Aprire e Configurare il Progetto in Visual Studio
+Apri il progetto in Visual Studio Community. Assicurati di configurare correttamente l'avvio multiplo per una corretta esecuzione del gioco:
+
+- Nella "Solution Explorer", fai clic con il tasto destro sulla "Solution" e seleziona "Proprietà".
+- Abilita la sezione "Multiple Startup Projects".
+- Seleziona le voci "WebSocketTrisServer", "Client" e "Client_2".
+- Imposta "WebSocketTrisServer" come progetto principale spostandolo in cima alla lista.
+
+#### Passaggio 5: Avviare il Progetto
+Avvia il progetto utilizzando Visual Studio Community. Questo passaggio garantisce che il server e i client siano pronti per l'interazione.
+
+#### Passaggio 6: Collegare i Client al Server
+Collega i client al server Sql Lite per iniziare a giocare o sfidare l'Intelligenza Artificiale nel gioco del Tris.
+
+Questa procedura ti guiderà attraverso l'installazione e l'avvio del progetto, consentendoti di tuffarti nel mondo del Tris con l'Intelligenza Artificiale. Buon divertimento giocando!
+
+---
 
 ## Ringraziamenti
 
